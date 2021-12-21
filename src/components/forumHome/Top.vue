@@ -1,70 +1,35 @@
 <template>
   <nav class="navbar is-light" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand" style="margin-left: 40px">
-      <a class="navbar-item" href="https://bulma.io">
-        <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28"/>
-      </a>
-
-      <a
-          role="button"
-          class="navbar-burger burger"
-          aria-label="menu"
-          aria-expanded="false"
-          data-target="navbarBasicExample"
-      >
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </a>
+    <div class="navbar-brand" style="margin-left: 40px; ">
+      <img src="../../assets/logo/TFOR.png" style=" width: 112px; height: 56px;"/>
     </div>
 
     <div id="navbarBasicExample" class="navbar-menu" style="margin-left: 5%">
       <div class="navbar-start">
         <a class="navbar-item" style="color: #FF9607">推荐</a>
-
         <a class="navbar-item " style="color: #F1403C">热榜</a>
-
         <a class="navbar-item">表白墙</a>
-
         <a class="navbar-item">二手市场</a>
 
-        <!--        <div class="navbar-item has-dropdown is-hoverable">-->
-        <!--          <a class="navbar-link">全部分区</a>-->
-
-        <!--          <div class="navbar-dropdown">-->
-        <!--            <a class="navbar-item" @click="userhome">个人主页</a>-->
-        <!--            <a class="navbar-item">全部板块</a>-->
-        <!--            <a class="navbar-item">全部帖子</a>-->
-        <!--            <hr class="navbar-divider"/>-->
-        <!--            <a class="navbar-item">Report an issue</a>-->
-        <!--          </div>-->
-        <!--        </div>-->
         <a class="navbar-item">
-          <el-dropdown   trigger="click" style="font-size: 16px!important;">
-              <span class="el-dropdown-link" >
+          <el-dropdown trigger="click" style="font-size: 16px!important;">
+              <span class="el-dropdown-link">
             全部分区<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
-            <el-dropdown-menu slot="dropdown" >
-              <el-dropdown-item v-for="item in this.zoneinfo" :key="item.zoneId" style="font-size: 16px!important;">{{item.zoneName}}</el-dropdown-item>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item v-for="item in this.zoneinfo" :key="item.zoneId" style="font-size: 16px!important;">
+                {{ item.zoneName }}
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </a>
 
         <div class="level-left">
-          <div class="level-item">
-            <p class="subtitle is-5"></p>
-          </div>
-          <div class="level-item">
-            <div class="field has-addons">
-              <p class="control">
-                <input class="input" type="text" placeholder="Find a post"/>
-              </p>
-              <p class="control">
-                <button class="button">搜索</button>
-              </p>
-            </div>
-          </div>
+          <el-input placeholder="请输入查找关键字" v-model="input" class="searchClass">
+            <el-button slot="append" icon="el-icon-search"></el-button>
+          </el-input>
         </div>
+
       </div>
 
       <div class="navbar-end" v-if="!$store.state.isLogin">
@@ -119,6 +84,66 @@
     </div>
   </nav>
 </template>
+
+<style>
+.searchClass {
+  border: 1px solid #c5c5c5;
+  border-radius: 20px;
+  background: #f4f4f4;
+  width: 400px;
+}
+
+.searchClass .el-input-group__prepend {
+  border: none;
+  background-color: transparent;
+  padding: 0 10px 0 30px;
+}
+
+.searchClass .el-input-group__append {
+  border: none;
+  background-color: transparent;
+}
+
+.searchClass .el-input__inner {
+  height: 36px;
+  line-height: 36px;
+  border: none;
+  background-color: transparent;
+}
+
+.searchClass .el-icon-search {
+  font-size: 16px;
+}
+
+.searchClass .centerClass {
+  height: 100%;
+  line-height: 100%;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: right;
+}
+
+.searchClass .line {
+  width: 1px;
+  height: 26px;
+  background-color: #c5c5c5;
+  margin-left: 14px;
+}
+
+.searchClass:hover {
+  border: 1px solid #D5E3E8;
+  background: #fff;
+}
+
+.searchClass:hover .line {
+  background-color: #D5E3E8;
+}
+
+.searchClass:hover .el-icon-search {
+  color: #409eff;
+  font-size: 16px;
+}
+</style>
 
 <script>
 import {userLogin} from "@/api";
