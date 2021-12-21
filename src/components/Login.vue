@@ -1,298 +1,273 @@
 <template>
-  <div>
-    <div id="Top">
-      <div class="content">
-        <div style="padding-top: 6px;">
-          <table cellpadding="0" cellspacing="0" border="0" width="100%">
-            <tbody>
-              <tr>
-                <td width="570" align="right" style="padding-top: 2px;">
-                  <a href="/" class="top">首页</a>&nbsp;&nbsp;&nbsp;
-                  <a href="/signup" class="top">注册</a>
-                  &nbsp;&nbsp;&nbsp;
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    <div id="Wrapper">
-      <div class="content">
-        <div id="Leftbar"></div>
+  <div
+      class="login-wrap"
+      :style="{
+      backgroundImage: 'url(' + coverImgUrl + ')',
+      backgroundSize: '100% 100%',
+      backgroundRepeat: 'no-repeat',
+    }"
+  >
+    <iframe
+        id="geoPage"
+        width="0"
+        height="0"
+        frameborder="0"
+        style="display: none"
+        scrolling="no"
+        src="https://apis.map.qq.com/tools/geolocation?key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp"
+    >
+    </iframe>
 
-        <div id="Main">
-          <div class="sep20"></div>
-          <div class="box">
-            <div class="header">
-              <a href="/">重工论坛</a>
-              <span class="chevron">&nbsp;›&nbsp;</span> 登录 &nbsp;
-              <li class="fa fa-lock"></li>
-            </div>
-            <div class="cell">
-              <form method="post" action="/signin">
-                <table cellpadding="5" cellspacing="0" border="0" width="100%">
-                  <tbody>
-                    <tr>
-                      <td width="120" align="right">电子邮箱</td>
-                      <td width="auto" align="left">
-                        <input
-                          type="text"
-                          class="sl"
-                          name="47898fbf4d5420a894dbd060f6763916611cd25baefcabca3234cea3fd5a5703"
-                          value
-                          autofocus="autofocus"
-                          autocorrect="off"
-                          spellcheck="false"
-                          autocapitalize="off"
-                          placeholder="电子邮箱地址"
-                          v-model="email"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td width="120" align="right">密码</td>
-                      <td width="auto" align="left">
-                        <input
-                          type="password"
-                          class="sl"
-                          name="cb10b4e849cb70f260623e3843c990f983a01cbb5f5899afd878f367e58ed4cb"
-                          value
-                          autocorrect="off"
-                          spellcheck="false"
-                          autocapitalize="off"
-                          v-model="password"
-                        />
-                      </td>
-                    </tr>
+    <div class="main">
+      <div class="ms-login">
+        <div class="ms-title">
+          <img src="../assets/logo/TFOR.png" width="60px" />
+          <div style="height: 40px; line-height: 40px">同济论坛</div>
+        </div>
+        <el-form
+            :model="param"
+            :rules="rules"
+            ref="login"
+            label-width="0px"
+            class="ms-content"
+        >
+          <el-form-item prop="username">
+            <el-input v-model="param.userid" placeholder="username">
+              <template #prepend>
+                <el-button icon="el-icon-user"></el-button>
+              </template>
+            </el-input>
+          </el-form-item>
+          <el-form-item prop="password">
+            <el-input
+                type="password"
+                placeholder="password"
+                v-model="param.password"
+                show-password
+            >
+              <template #prepend>
+                <el-button icon="el-icon-lock"></el-button>
+              </template>
+            </el-input>
+          </el-form-item>
+          <el-form-item prop="password">
+            <el-card>
+              <template>
+                <p>请选择登录身份</p>
+                <el-radio v-model="role" label="user">用户</el-radio>
+                <el-radio v-model="role" label="hotel">商家</el-radio>
+                <el-radio v-model="role" label="administrator">管理员</el-radio>
+              </template>
+            </el-card>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitForm()" style="width: 140px"
+            >登录</el-button
+            >
+            <el-button type="primary" @click="goRegister()" style="width: 140px"
+            >注册</el-button
+            >
+          </el-form-item>
+          <el-button
+              type="text"
+              @click="forgetPassword()"
+              style="width: 70px; text-align: left"
+          >忘记密码</el-button
+          >
+          <el-button
+              type="text"
+              @click="mailVisible = true"
+              style="width: 128px"
+          >验证码登录</el-button
+          >
+          <el-button
+              type="text"
+              @click="hotelRegister()"
+              style="width: 70px; text-align: right"
+          >商家入驻</el-button
+          >
+        </el-form>
+      </div>
+    </div>
+    <el-dialog title="验证码登录" :visible="mailVisible" width="640px">
+      <el-form ref="login" label-width="80px" class="ms-content">
+        <el-form-item label="邮箱/手机">
+          <el-input style="width: 340px" v-model="param.userid"> </el-input>
+          <el-button
+              type="primary"
+              style="float: right"
+              @click="sendVerifyCodeLogin"
+          >发送验证码</el-button
+          >
+        </el-form-item>
+        <el-form-item label="验证方式">
+          <el-radio v-model="loginType" label="1">手机号验证</el-radio>
+          <el-radio v-model="loginType" label="2">邮箱验证</el-radio>
+        </el-form-item>
+        <el-form-item label="验证码">
+          <el-input style="width: 340px" v-model="verifycode"> </el-input>
+        </el-form-item>
+      </el-form>
+      <div style="margin-left: 230px">
+        <el-button type="primary" @click="mailLogin">登录</el-button>
+        <el-button @click="mailVisible = false">关闭</el-button>
+      </div>
+    </el-dialog>
 
-                    <tr>
-                      <td width="120" align="right"></td>
-                      <td width="auto" align="left">
-                        <input type="hidden" value="62970" name="once" />
-                        <input type="button" class="super normal button" value="登录" @click="login" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td width="120" align="right"></td>
-                      <td width="auto" align="left">
-                        <a href="/forgot">我忘记密码了</a>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <input type="hidden" value="/" name="next" />
-              </form>
-            </div>
-          </div>
-        </div>
+    <el-dialog title="找回密码" :visible="forgetVisible" width="780px">
+      <el-form ref="login" label-width="90px" class="ms-content">
+        <el-form-item label="邮箱/手机号">
+          <el-input style="width: 450px" v-model="param.userid"> </el-input>
+          <el-button
+              type="primary"
+              style="float: right"
+              @click="sendVerifyCodeFind"
+          >发送验证码</el-button
+          >
+        </el-form-item>
+
+        <el-form-item label="验证方式">
+          <el-radio v-model="loginType" label="1">手机号验证</el-radio>
+          <el-radio v-model="loginType" label="2">邮箱验证</el-radio>
+        </el-form-item>
+
+        <el-form-item label="验证码">
+          <el-input style="width: 450px" v-model="verifycode"> </el-input>
+        </el-form-item>
+
+        <el-form-item label="新密码">
+          <el-input style="width: 450px" v-model="param.password"> </el-input>
+        </el-form-item>
+
+        <el-form-item label="确认新密码">
+          <el-input style="width: 450px" v-model="param.checkPassword">
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <div style="margin-left: 260px">
+        <el-button type="primary" @click="resetPassword">重置密码</el-button>
+        <el-button @click="forgetVisible = false">关闭</el-button>
       </div>
-      <div class="c"></div>
-      <div class="sep20"></div>
-    </div>
-    <div id="Bottom">
-      <div class="content">
-        <div class="inner">
-          <div class="sep10"></div>
-          <div class="fr">
-            <a href="https://www.digitalocean.com/?refcode=1b51f1a7651d" target="_blank">
-              <div id="DigitalOcean"></div>
-            </a>
-          </div>
-          <strong>
-            <a href="/about" class="dark" target="_self">关于</a> &nbsp;
-            <span class="snow">·</span> &nbsp;
-            <a href="/faq" class="dark" target="_self">FAQ</a> &nbsp;
-            <span class="snow">·</span> &nbsp;
-            <a href="/p/7v9TEc53" class="dark" target="_self">API</a> &nbsp;
-            <span class="snow">·</span> &nbsp;
-            <a href="/mission" class="dark" target="_self">我们的愿景</a> &nbsp;
-            <span class="snow">·</span> &nbsp;
-            <a href="/advertise" class="dark" target="_self">广告投放</a> &nbsp;
-            <span class="snow">·</span> &nbsp;
-            <a href="/advertise/2017.html" class="dark" target="_self">感谢</a> &nbsp;
-            <span class="snow">·</span> &nbsp;
-            <a href="/tools" class="dark" target="_self">实用小工具</a>
-            &nbsp;
-          </strong>
-          &nbsp;
-          <span class="snow">·</span>
-          &nbsp;
-          <div class="sep20"></div>创意工作者们的社区
-          <div class="sep5"></div>World is powered by solitude
-          <div class="sep20"></div>
-          <span class="small fade">
-            VERSION: 3.9.8.3 · 4ms · UTC 01:44 · PVG 09:44 · LAX 17:44 · JFK 20:44
-            <br />♥ Do have faith in what you're doing.
-          </span>
-          <div class="sep10"></div>
-        </div>
-      </div>
-    </div>
+    </el-dialog>
   </div>
 </template>
 
-
-
-
 <script>
-import { userLogin } from "@/api";
+import axios from "axios";
+
 export default {
   data() {
     return {
-      password: "",
-      email: ""
+      loginType: "1",
+      verifycode: "",
+      forgetVisible: false,
+      mailVisible: false,
+      role: "user",
+      userinfo: [],
+      adminList: {},
+      hotelList: {},
+      imgList: [],
+      coverImgUrl: require("../assets/imgs/login-bg.jpg"),
+      param: {
+        password: "000001",
+        userid: "0000000001",
+        checkPassword: "",
+      },
+      rules: {
+        username: [
+          {
+            required: true,
+            message: "请输入注册邮箱/手机号",
+            trigger: "blur",
+          },
+        ],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+      },
     };
   },
   methods: {
-    login() {
-      userLogin(this.email, this.password)
-        .then(res => {
-          const { data } = res;
-          this.user = data;
-          console.log(data);
-          if (data != null) {
-            this.$store.dispatch("aLogin", {
-              user: data,
-              message: "",
-              success: () => {
-                console.log("欢迎您");
-              }
-            });
-          } else {
-            alert("该用户不存在");
-          }
-          this.$router.go(-1);
-        })
-        .catch(() => {});
-    }
-  }
+    hotelRegister() {
+      this.$router.push("/hotelRegister");
+    },
+    submitForm() {
+
+    },
+    Login() {
+    },
+    sendVerifyCodeFind() {
+
+    },
+    sendVerifyCodeLogin() {
+
+    },
+    goRegister() {
+      this.$router.push("/Register");
+    },
+    forgetPassword() {
+      this.forgetVisible = true;
+    },
+    mailLogin() {
+      this.mailVisible = true;
+    },
+    resetPassword() {
+      if (this.param.password != this.param.checkPassword) {
+        this.$message.error("两次输入的密码不一致");
+        return;
+      }
+      axios.patch(
+          "http://49.234.18.247:8080/api/Users/" +
+          this.param.userid +
+          "&" +
+          this.verifycode +
+          "&" +
+          this.param.password
+      );
+    },
+  },
+  created() {},
 };
 </script>
 
-
 <style scoped>
-.table {
-  display: table;
-  border-collapse: separate;
-  border-color: grey;
+.login-wrap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
-
-.tbody {
-  display: table-row-group;
-  vertical-align: middle;
-  border-color: inherit;
-}
-.tr {
-  display: table-row;
-  vertical-align: inherit;
-  border-color: inherit;
-}
-.box {
-  background-color: #fff;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
-  border-bottom: 1px solid #e2e2e2;
-}
-.header {
-  padding: 10px;
-  font-size: 15px;
-  line-height: 120%;
-  text-align: left;
-  border-bottom: 1px solid #e2e2e2;
-  overflow: auto;
-}
-.cell {
-  padding: 10px;
-  font-size: 14px;
-  line-height: 120%;
-  text-align: left;
-  border-bottom: 1px solid #e2e2e2;
-}
-.Leftbar {
-  width: 0;
-  float: left;
-}
-.Rightbar {
-  width: 270px;
-  float: right;
-  margin-right: 20px;
-}
-.Main {
-  width: auto;
-  margin: 0 310px 0 20px;
-}
-a.dark:active,
-a.dark:link,
-a.dark:visited {
-  color: gray;
-  text-decoration: none;
-}
-a:active,
-a:link,
-a:visited {
-  color: #778087;
-  text-decoration: none;
-  word-break: break-word;
-}
-.fr {
-  float: right;
-  text-align: right;
-}
-.sep10 {
-  height: 10px;
-}
-.inner {
-  padding: 10px;
-  font-size: 14px;
-  line-height: 150%;
-  text-align: left;
-}
-div {
-  display: block;
-}
-:root {
-  --box-background-color: #fff;
-  --box-background-alt-color: #f9f9f9;
-  --box-background-hover-color: #fafafa;
-  --box-foreground-color: #000;
-  --box-border-color: #e2e2e2;
-  --box-border-radius: 3px;
-}
-#Top {
+.ms-title {
+  width: 100%;
+  margin-top: 15px;
   text-align: center;
-  background-color: var(--box-background-color);
-  height: 44px;
-  font-size: 15px;
-  font-weight: 500;
-  background-size: 44px 44px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.22);
-  padding: 0 20px;
+  font-size: 24px;
+  color: #2d8cf0;
+  border-bottom: 1px solid #ddd;
 }
-#Wrapper {
-  text-align: center;
-  background-color: #e2e2e2;
-  background-image: url(/static/img/shadow_light.png);
-  background-repeat: repeat-x;
+.main {
+  height: 100%;
+  width: 350px;
+  display: flex;
+  align-items: center;
 }
-#Bottom {
-  border-top: 1px solid rgba(0, 0, 0, 0.22);
-  background-color: var(--box-background-color);
-  text-align: center;
-  color: #999;
-  padding: 0 10px;
+.ms-login {
+  width: 350px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  overflow: hidden;
 }
-body {
-  padding: 0;
-  margin: 0;
-  font-family: helvetica neue, luxi sans, dejavu sans, segoe ui,
-    hiragino sans gb, microsoft yahei, sans-serif;
+.ms-content {
+  padding: 20px 30px 30px 30px;
 }
-.sep20 {
-  height: 20px;
+.login-btn {
+  width: 100px;
 }
-.content {
-  min-width: 600px;
-  max-width: 1100px;
-  margin: 0 auto;
+.login-btn button {
+  width: 100%;
+  height: 36px;
+  margin-bottom: 10px;
+}
+.login-tips {
+  font-size: 12px;
+  line-height: 30px;
+  color: #1f2d3d;
 }
 </style>

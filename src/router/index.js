@@ -70,7 +70,6 @@ const routes = [
     name: "PostArticle",
     component: () => import("../components/articlehome/PostArticle")
   }
-  ,
 ];
 
 const router = new VueRouter({
