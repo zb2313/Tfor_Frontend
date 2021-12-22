@@ -1,15 +1,30 @@
 <template>
   <nav class="navbar is-light" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand" style="margin-left: 40px; ">
-      <img src="../../assets/logo/TFOR.png" style=" width: 112px; height: 56px;"/>
+    <div class="navbar-brand" style="margin-left: 40px; padding: 10px 0">
+      <img src="../../assets/logo/TFOR.png" style=" width: 112px; height: 56px; "/>
     </div>
 
     <div id="navbarBasicExample" class="navbar-menu" style="margin-left: 5%">
       <div class="navbar-start">
-        <a class="navbar-item" style="color: #FF9607">推荐</a>
-        <a class="navbar-item " style="color: #F1403C">热榜</a>
-        <a class="navbar-item">表白墙</a>
-        <a class="navbar-item">二手市场</a>
+        <a class="navbar-item" style="color: #FF9607" @click="chooseZone(1,0)">推荐</a>
+        <a class="navbar-item " style="color: #F1403C">
+          <el-dropdown trigger="click" style="font-size: 16px!important; color: #F1403C;">
+              <span class="el-dropdown-link">
+            热榜<i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+            <el-dropdown-menu>
+              <el-dropdown-item @click.native="chooseZone(2,3)" style="font-size: 16px!important; color: #A42B28;">3日内
+              </el-dropdown-item>
+              <el-dropdown-item @click.native="chooseZone(2,7)" style="font-size: 16px!important; color: #F1403C;">7日内
+              </el-dropdown-item>
+              <el-dropdown-item @click.native="chooseZone(2,15)" style="font-size: 16px!important; color: #FF763F;">
+                15日内
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </a>
+        <a class="navbar-item" @click="chooseZone(3,4)">表白墙</a>
+        <a class="navbar-item" @click="chooseZone(3,3)">二手市场</a>
 
         <a class="navbar-item">
           <el-dropdown trigger="click" style="font-size: 16px!important;">
@@ -17,7 +32,8 @@
             全部分区<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item v-for="item in this.zoneinfo" :key="item.zoneId" style="font-size: 16px!important;">
+              <el-dropdown-item v-for="item in this.zoneinfo" :key="item.zoneId" style="font-size: 16px!important;"
+                                @click.native="chooseZone(3, item.zoneId)">
                 {{ item.zoneName }}
               </el-dropdown-item>
             </el-dropdown-menu>
@@ -150,18 +166,28 @@ import {userLogin} from "@/api";
 import {getAllZone} from "@/api/zoneApi";
 
 export default {
+  props: {
+    zoneInfo1: Number,
+    zoneInfo2: Number,
+  },
+  // watch: {
+  //   zoneInfo1(newVal) {
+  //     this.zoneInfo1 = newVal
+  //   }// 监控父组件中值的变化
+  // },
   data() {
     return {
+      childZoneInfo1: this.zoneInfo1,
+      childZoneInfo2: this.zoneInfo2,
       email: "",
       password: "",
       zoneinfo: [],
     };
   },
   created() {
-    // 预先获取所有分区信息
+    // 预先获取所有分区信息 展示在下拉菜单中
     getAllZone().then(
         res => {
-          console.log(res.data)
           for (var i in res.data) {
             this.zoneinfo.push(res.data[i])
           }
@@ -171,6 +197,9 @@ export default {
   },
 
   methods: {
+    chooseZone: function (param1, param2) {
+      this.$emit('chooseZone', param1, param2)
+    },
     logout() {
       this.$store.commit("logout");
     },

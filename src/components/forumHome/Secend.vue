@@ -1,40 +1,151 @@
 <template>
-  <section class="hero is-white">
-    <div class="hero-body">
-      <div class="container">
-        <h1 class="title">重工论坛</h1>
-        <h2 class="subtitle is-italic">
-          <nav class="breadcrumb has-bullet-separator" aria-label="breadcrumbs">
-            <ul>
-              <li>
-                <a href="#">尽责</a>
-              </li>
-              <li>
-                <a href="#">守信</a>
-              </li>
-              <li>
-                <a href="#">求精</a>
-              </li>
-              <li>
-                <a href="#" aria-current="page">创新</a>
-              </li>
-            </ul>
-          </nav>
-        </h2>
-      </div>
+  <div class="postList">
+    <div v-for="post in this.postInfo" :key="post.postId" class="postItem">
+      <transition name="el-zoom-in-center">
+        <el-card shadow="hover" v-show="postShow">
+          <div class="clearfix" style="text-align: left">
+            <span class="postNum">{{ post.postId }}</span>
+            <el-divider direction="vertical"></el-divider>
+            <span style="margin-left: 15px">{{ post.postTitle }}</span>
+
+            <el-button style="float: right; padding: 0px 5px 0 5px; margin: 0" type="text" @click="likePost">
+              <img src="../../assets/report.png" style="width: 24px"/>
+            </el-button>
+            <el-button style="float: right; padding: 0px 5px 0 5px; margin: 0 " type="text" @click="likePost">
+              <img src="../../assets/beforeCollect.png" style="width: 24px"/>
+            </el-button>
+            <el-button style="float: right; padding: 0px 5px 5px 5px; width: 50px" type="text" @click="likePost">
+              <img src="../../assets/beforeLike.png" style="width: 24px"/>
+              <span class="likeNum">{{ post.likeNum }}</span>
+            </el-button>
+          </div>
+        </el-card>
+      </transition>
     </div>
-    <progress class="progress is-whrite is-small" value="100%" max="30">30%</progress>
-  </section>
+  </div>
 </template>
 <script>
-export default {};
+import {getRankByDay, getRecommandByUserId, getPostByZoneId} from "@/api/zoneApi";
+
+export default {
+  props: {
+    zoneInfo1: Number, // 表示分区的类型
+    zoneInfo2: Number,
+  },
+  computed: {
+    // eslint-disable-next-line vue/return-in-computed-property
+    computedInfo1() {
+      // if(this.zoneInfo1) {
+      //   return this.zoneInfo1
+      // }
+      return this.zoneInfo1
+    },
+    computedInfo2() {
+      return this.zoneInfo2
+    }
+  },
+  watch: {
+    zoneInfo1() {
+      this.changePostData();
+    },
+    zoneInfo2() {
+      this.changePostData();
+    }
+  },
+  data() {
+    return {
+      postInfo: [],
+      postShow: true,
+    };
+  },
+  created() {
+    // 默认加载热榜3天的帖子列表
+    getRankByDay(3).then(
+        res => {
+          for (var i in res.data) {
+            this.postInfo.push(res.data[i])
+          }
+        }
+    )
+    console.log(this.computedInfo1)
+    console.log(this.computedInfo2)
+  },
+  methods: {
+    likePost() {
+      console.log("like")
+      console.log(this.postShow)
+    },
+    showpost(){
+      this.postShow = true;
+    },
+    async changePostData() {
+      this.postShow = false
+
+      if (this.computedInfo1 == 1) {
+        console.log("推荐")
+        let userid = 2 // 这里暂时使用默认值1
+        await getRecommandByUserId(userid).then(
+            res => {
+              console.log(res.data)
+              this.postInfo = []
+              for (var i in res.data) {
+                this.postInfo.push(res.data[i])
+              }
+            }
+        )
+      } else if (this.computedInfo1 == 2) {
+        console.log("热榜")
+        await getRankByDay(this.computedInfo2).then(
+            res => {
+              this.postInfo = []
+              for (var i in res.data) {
+                this.postInfo.push(res.data[i])
+              }
+            }
+        )
+      }else {
+        await getPostByZoneId(this.computedInfo2).then(
+            res => {
+              this.postInfo = []
+              for (var i in res.data) {
+                this.postInfo.push(res.data[i])
+              }
+            }
+        )
+      }
+
+
+      this.showpost()
+    },
+  },
+};
+
 </script>
 
 <style scoped>
 .title {
   text-align: left;
 }
+
 .subtitle {
   text-align: right;
 }
+
+.postItem {
+  padding-top: 10px;
+}
+
+.postNum {
+  float: left;
+  width: 60px;
+  margin-inline: 10px;
+  font-size: 1.2em;
+  font-family: 'Arial Black', arial-black, 'Helvetica Black', helvetica-black, Sans-serif;
+  opacity: 0.7;
+}
+
+.likeNum {
+  color: #CE5A5A;
+}
+
 </style>

@@ -5,7 +5,7 @@
         <p class="subtitle">热门板块</p>
 
         <b-carousel>
-          <b-carousel-item v-for="(content, index) in contents" :key="index">
+          <b-carousel-item v-for="(content, index) in this.contents" :key="index">
             <section>
               <div class="hero-body has-text-centered">
                 <div class="card">
@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import { getHotArticleType } from "@/api";
+// import { getHotArticleType } from "@/api";
 // import { getPageMain } from "@/api";
 import Pageination from "../forumHome/Pageination.vue";
 export default {
@@ -134,22 +134,29 @@ export default {
       //     }
       //   }
       // ],
-      contents: {
+      contents: [{
         typeId: 0,
-        typeName: "",
+        typeName: "sdfs",
         typeCreateTime: "",
-        typeDesc: "",
+        typeDesc: "fasdfsd",
+        articleNum: 0
+      },{
+        typeId: 0,
+        typeName: "sdfs",
+        typeCreateTime: "",
+        typeDesc: "fasdfsd",
         articleNum: 0
       }
+      ]
     };
   },
   mounted() {
-    getHotArticleType()
-      .then(res => {
-        const { data } = res;
-        this.contents = data.content;
-      })
-      .catch(() => {});
+    // getHotArticleType()
+    //     .then(res => {
+    //       const { data } = res;
+    //       this.contents = data.content;
+    //     })
+    //     .catch(() => {});
 
     this.$store.dispatch("getpagemain");
     //bug，应该用action异步处理，再提交commit状态，明日更新（已解决）
