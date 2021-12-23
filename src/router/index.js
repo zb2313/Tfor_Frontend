@@ -51,12 +51,10 @@ const routes = [
     path: "/allarticlehome",
     component: () => import("../components/articlehome/Allarticlehome")
   },
-
   {
     path: "/registerhome",
     component: () => import("../components/register/RegisterHome")
   },
-
   {
     path: "*", component: NotFoundComponent
   },
@@ -69,6 +67,11 @@ const routes = [
     path: "/postarticle",
     name: "PostArticle",
     component: () => import("../components/articlehome/PostArticle")
+  },
+  {
+    path:"/Register",
+    name:"Register",
+    component:()=>import("../components/Register")
   }
 ];
 

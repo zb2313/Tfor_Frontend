@@ -70,5 +70,17 @@ router.beforeEach((to, from, next) => {
     next()
   }
 })
-
+axios.interceptors.request.use(function (config) {
+  // Do something before request is sent
+  let token = localStorage.getItem("token");
+  if (token) {
+    config.headers.authorization = `Bearer ${token}`;    //将token放到请求头发送给服务器
+    return config;
+  }
+  else {
+    return config;
+  }
+}, function (error) {
+  return Promise.reject(error);
+});
 
