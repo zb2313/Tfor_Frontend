@@ -1,8 +1,9 @@
 <template>
   <nav class="navbar is-light" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand" style="margin-left: 40px; padding: 10px 0">
+    <div class="navbar-brand" style="margin-left: 40px; padding: 5px 0">
       <img src="../../assets/logo/TFOR.png" style=" width: 112px; height: 56px; "/>
     </div>
+
 
     <div id="navbarBasicExample" class="navbar-menu" style="margin-left: 5%">
       <div class="navbar-start">
@@ -41,15 +42,14 @@
         </a>
 
         <div class="level-left">
-          <el-input placeholder="请输入查找关键字" v-model="input" class="searchClass">
-            <el-button slot="append" icon="el-icon-search"></el-button>
+          <el-input placeholder="请输入查找关键字" v-model="inputSearchInfo" class="searchClass">
+            <el-button slot="append" icon="el-icon-search" @click="passSearchInfoToFather"></el-button>
           </el-input>
         </div>
-
       </div>
 
-      <div class="navbar-end" v-if="!$store.state.isLogin">
-        <div class="navbar-item">
+      <div class="navbar-end">
+        <div class="navbar-item" v-if="$store.state.isLogin">
           <div class="buttons">
             <b-button type="is-info" outlined @click="register">注册</b-button>
             <div class="navbar-menu">
@@ -88,13 +88,20 @@
             </div>
           </div>
         </div>
-      </div>
-      <div v-else-if="$store.state.isLogin">
-        <div>
-          <i class="far fa-address-card">{{ $store.state.user.userName }}</i>
+
+        <div v-else-if="!$store.state.isLogin" style="padding: 5px 5px 0px 0px;">
+          <el-avatar   :src="require('@/assets/user6.jpg')" :size="50" fit="fill"></el-avatar>
         </div>
-        <div @click="logout">
-          <i class="fas fa-sign-out-alt">登出</i>
+        <div class="navbar-item" v-else-if="!$store.state.isLogin">
+          <div>
+            <el-avatar  style="margin: auto;size: auto" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+          </div>
+          <div>
+            <i class="far fa-address-card">{{ $store.state.user.userName }}</i>
+          </div>
+          <div @click="logout">
+            <i class="fas fa-sign-out-alt">登出</i>
+          </div>
         </div>
       </div>
     </div>
@@ -159,6 +166,50 @@
   color: #409eff;
   font-size: 16px;
 }
+
+.el-avatar:hover{
+  background-color: #D5E3E837;
+}
+.el-avatar{
+  position: relative;
+  display: block;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  line-height: 63px;
+  background: #333;
+  border-radius: 50%;
+  font-size: 30px;
+  color: #666;
+  transition: .5s;
+}
+
+.el-avatar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #22DC80;
+  transition: .5s;
+  transform: scale(.9);
+  z-index: -1;
+}
+
+.el-avatar:hover::before {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px #22DC80;
+}
+
+.el-avatar:hover {
+  color: #22DC80;
+  box-shadow: 0 0 5px #22DC80;
+  text-shadow: 0 0 5px #22DC80;
+}
+
+
 </style>
 
 <script>
@@ -169,6 +220,7 @@ export default {
   props: {
     zoneInfo1: Number,
     zoneInfo2: Number,
+    searchInfo: String,
   },
   // watch: {
   //   zoneInfo1(newVal) {
@@ -179,13 +231,16 @@ export default {
     return {
       childZoneInfo1: this.zoneInfo1,
       childZoneInfo2: this.zoneInfo2,
+      childSearchInfo: this.searchInfo,
       email: "",
       password: "",
       zoneinfo: [],
+      inputSearchInfo:'',
     };
   },
   created() {
     // 预先获取所有分区信息 展示在下拉菜单中
+    console.log(this.childSearchInfo)
     getAllZone().then(
         res => {
           for (var i in res.data) {
@@ -197,8 +252,13 @@ export default {
   },
 
   methods: {
+    // 将选择分区的信息传递给father
     chooseZone: function (param1, param2) {
       this.$emit('chooseZone', param1, param2)
+    },
+    // 将输入的查找信息传递给father
+    passSearchInfoToFather: function () {
+      this.$emit('passSearchInfo', this.inputSearchInfo)
     },
     logout() {
       this.$store.commit("logout");

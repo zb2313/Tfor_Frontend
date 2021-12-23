@@ -25,12 +25,13 @@
   </div>
 </template>
 <script>
-import {getRankByDay, getRecommandByUserId, getPostByZoneId} from "@/api/zoneApi";
+import {getRankByDay, getRecommandByUserId, getPostByZoneId, getPostBySearch} from "@/api/zoneApi";
 
 export default {
   props: {
     zoneInfo1: Number, // 表示分区的类型
     zoneInfo2: Number,
+    searchInfo: String,
   },
   computed: {
     // eslint-disable-next-line vue/return-in-computed-property
@@ -40,9 +41,15 @@ export default {
       // }
       return this.zoneInfo1
     },
+    // 不能直接使用this.zoneInfo2, 需要使用计算属性
     computedInfo2() {
       return this.zoneInfo2
+    },
+    computedSearchInfo() {
+      return this.searchInfo
     }
+
+
   },
   watch: {
     zoneInfo1() {
@@ -50,6 +57,9 @@ export default {
     },
     zoneInfo2() {
       this.changePostData();
+    },
+    searchInfo() {
+      this.searchInfoChanged();
     }
   },
   data() {
@@ -73,10 +83,24 @@ export default {
   methods: {
     likePost() {
       console.log("like")
-      console.log(this.postShow)
+      console.log(this.computedSearchInfo)
     },
-    showpost(){
+    showpost() {
       this.postShow = true;
+    },
+    async searchInfoChanged() {
+      // console.log(this.computedSearchInfo)
+      this.postShow = false
+      await getPostBySearch(this.computedSearchInfo).then(
+          res => {
+            this.postInfo = []
+            for (var i in res.data) {
+              this.postInfo.push(res.data[i])
+            }
+          }
+      )
+
+      this.postShow = true
     },
     async changePostData() {
       this.postShow = false
@@ -103,7 +127,7 @@ export default {
               }
             }
         )
-      }else {
+      } else {
         await getPostByZoneId(this.computedInfo2).then(
             res => {
               this.postInfo = []

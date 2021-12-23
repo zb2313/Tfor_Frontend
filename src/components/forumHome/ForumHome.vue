@@ -1,9 +1,10 @@
 <template>
   <div id="forumhome">
-    <Top v-bind:zoneInfo2="zoneInfo2" v-bind:zoneInfo1="zoneInfo1" @chooseZone="chooseZone"/>
+    <Top v-bind:zoneInfo2="zoneInfo2" v-bind:zoneInfo1="zoneInfo1" v-bind:searchInfo="searchInfo"
+         @chooseZone="chooseZone" @passSearchInfo="passSearchInfo"/>
     <el-button @click="debug">debug buttun</el-button>
     <Secend
-        v-bind:zoneInfo2="zoneInfo2" v-bind:zoneInfo1="zoneInfo1"
+        v-bind:zoneInfo2="zoneInfo2" v-bind:zoneInfo1="zoneInfo1" v-bind:searchInfo="searchInfo"
         style="margin: 10px 150px 20px 150px;"/>
     <Tiles/>
 
@@ -31,6 +32,7 @@ export default {
     return {
       zoneInfo1: 99, //需要传递的值
       zoneInfo2: 99,
+      searchInfo: "nullsearchINfo",
     }
   },
   components: {
@@ -46,8 +48,11 @@ export default {
       this.zoneInfo1 = param1
       this.zoneInfo2 = param2
     },
+    passSearchInfo(searchInfo) {
+      this.searchInfo = searchInfo
+    },
     debug() {
-      console.log(this.zoneInfo1, this.zoneInfo2)
+      console.log(this.zoneInfo1, this.zoneInfo2, this.searchInfo)
     }
   }
 };
