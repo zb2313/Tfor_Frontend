@@ -80,12 +80,6 @@
               style="width: 128px"
           >验证码登录</el-button
           >
-          <el-button
-              type="text"
-              @click="hotelRegister()"
-              style="width: 70px; text-align: right"
-          >商家入驻</el-button
-          >
         </el-form>
       </div>
     </div>
@@ -247,6 +241,7 @@ export default {
   width: 350px;
   display: flex;
   align-items: center;
+  margin: 0 auto;
 }
 .ms-login {
   width: 350px;
