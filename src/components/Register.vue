@@ -113,7 +113,7 @@ export default {
         'userFollowingNum':0,
         'userFollowedNum':0,
         'userGender':this.form.Gender,
-        'userImage':"",
+        'userImage':" ",
         'userName':this.form.user_NAME,
         'userPwd':this.form.Password,
         'userTel':this.form.tele_NUMBER

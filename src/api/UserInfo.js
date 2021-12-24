@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseurl = "http://139.196.202.57:8081/api/user"
+const baseurl = "http://121.5.137.205:8081/api/user"
 export const changeEmail = (data) => {
     let url = baseurl + "/chageEmail"
     console.log(url)

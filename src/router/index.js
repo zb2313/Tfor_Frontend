@@ -72,6 +72,11 @@ const routes = [
     path:"/Register",
     name:"Register",
     component:()=>import("../components/Register")
+  },
+  {
+    path:'/PostDetails',
+    name:"PostDetails",
+    component:()=>import("../components/postHome/PostDetails")
   }
 ];
 
