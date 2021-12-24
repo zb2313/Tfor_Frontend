@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseurl = "http://139.196.202.57:8081/api/"
+const baseurl = "http://121.5.137.205:8081/api/"
 export const getAllZone = () => {
     var url = baseurl + "view/getAllZone"
     console.log(url)
@@ -24,6 +24,20 @@ export const getRankByDay = (day) => {
 
 export const getRecommandByUserId = (userId) => {
     var url = baseurl + "view/getRecommend/" + userId
+    return axios.get(
+        `${url}`
+    )
+};
+
+export const getPostByZoneId = (zoneId) => {
+    var url = baseurl + "view/getPostList/" + zoneId
+    return axios.get(
+        `${url}`
+    )
+};
+
+export const getPostBySearch = (keyWord) => {
+    var url = baseurl + "view/search/" + keyWord
     return axios.get(
         `${url}`
     )
