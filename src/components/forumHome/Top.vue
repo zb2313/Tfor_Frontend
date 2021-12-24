@@ -89,12 +89,13 @@
           </div>
         </div>
 
-        <div v-else-if="!$store.state.isLogin" style="padding: 5px 5px 0px 0px;">
-          <el-avatar   :src="require('@/assets/user6.jpg')" :size="50" fit="fill"></el-avatar>
+        <div v-else-if="!$store.state.isLogin" style="padding: 5px 5px 0px 0px;" @click="userInfo">
+          <el-avatar  :src="require('@/assets/user6.jpg')" :size="50" fit="fill"></el-avatar>
         </div>
         <div class="navbar-item" v-else-if="!$store.state.isLogin">
           <div>
-            <el-avatar  style="margin: auto;size: auto" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+            <el-avatar style="margin: auto;size: auto"
+                       src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
           </div>
           <div>
             <i class="far fa-address-card">{{ $store.state.user.userName }}</i>
@@ -167,10 +168,11 @@
   font-size: 16px;
 }
 
-.el-avatar:hover{
+.el-avatar:hover {
   background-color: #D5E3E837;
 }
-.el-avatar{
+
+.el-avatar {
   position: relative;
   display: block;
   width: 60px;
@@ -235,7 +237,7 @@ export default {
       email: "",
       password: "",
       zoneinfo: [],
-      inputSearchInfo:'',
+      inputSearchInfo: '',
     };
   },
   created() {
@@ -289,6 +291,9 @@ export default {
     },
     register() {
       this.$router.push("/registerhome");
+    },
+    userInfo() {
+      this.$router.push("/userhome");
     }
   }
 };

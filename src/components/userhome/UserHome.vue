@@ -160,14 +160,14 @@ export default {
           artId: 0,
           artComNum: 0,
           artCommentId: 0,
-          artContent: "",
-          artCreTime: "",
-          artHotNum: "",
-          artLikeNum: "",
-          artTitle: "",
+          artContent: "cc",
+          artCreTime: "ccc",
+          artHotNum: "ccc",
+          artLikeNum: "cc",
+          artTitle: "cc",
           artTypeId: 0,
-          artUserId: "",
-          artView: ""
+          artUserId: "ccc",
+          artView: "ccc"
         }
       ]
     };

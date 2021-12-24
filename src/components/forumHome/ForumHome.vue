@@ -8,7 +8,7 @@
         style="margin: 10px 150px 20px 150px;"/>
     <Tiles/>
 
-    <SecendTiles/>
+<!--    <SecendTiles/>-->
     <Footer/>
 
   </div>
@@ -24,7 +24,7 @@ import Top from "../forumHome/Top";
 import Secend from "../forumHome/Secend";
 import Tiles from "../forumHome/Tiles";
 import Footer from "../forumHome/Footer";
-import SecendTiles from "../forumHome/SecendTiles";
+// import SecendTiles from "../forumHome/SecendTiles";
 
 
 export default {
@@ -40,7 +40,7 @@ export default {
     Secend,
     Tiles,
     Footer,
-    SecendTiles,
+    // SecendTiles,
   },
   methods: {
     // 用来给子组件传递参数到父组件的函数
