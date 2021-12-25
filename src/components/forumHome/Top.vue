@@ -90,7 +90,7 @@
         </div>
 
         <div v-else-if="!$store.state.isLogin" style="padding: 5px 5px 0px 0px;" @click="userInfo">
-          <el-avatar  :src="require('@/assets/user6.jpg')" :size="50" fit="fill"></el-avatar>
+          <el-avatar  :src="userImg" :size="50" fit="fill"></el-avatar>
         </div>
         <div class="navbar-item" v-else-if="!$store.state.isLogin">
           <div>
@@ -216,7 +216,8 @@
 
 <script>
 import {userLogin} from "@/api";
-import {getAllZone} from "@/api/zoneApi";
+import {getAllZone} from "@/api/zoneApi"
+import {getUserImg} from "@/api/UserInfo"
 
 export default {
   props: {
@@ -238,6 +239,9 @@ export default {
       password: "",
       zoneinfo: [],
       inputSearchInfo: '',
+      userImg: require('@/assets/user6.jpg'),
+      // userImg: "https://tfor.obs.cn-east-3.myhuaweicloud.com/test/test4.jpg?AccessKeyId=JDOPVQVKTYEJUXZXODLK&Expires=1640431507&Signature=/S44qAvSJrrdZEtAPiIfuxoiYzw%3D"
+
     };
   },
   created() {
@@ -245,12 +249,24 @@ export default {
     console.log(this.childSearchInfo)
     getAllZone().then(
         res => {
-          for (var i in res.data) {
-            this.zoneinfo.push(res.data[i])
+
+          for (var i in res.data.data) {
+            this.zoneinfo.push(res.data.data[i])
           }
           console.log(this.zoneinfo)
         }
     )
+
+    getUserImg(2).then(
+        res => {
+          console.log(res.data.data)
+          this.userImg = "https://tfor.obs.cn-east-3.myhuaweicloud.com/profile/2?AccessKeyId=JDOPVQVKTYEJUXZXODLK&Expires=1640487882&Signature=PbRFpQULBBx0WZnsRa21BdGhYLI%3D"
+          // this.userImg = res.data.data
+        }
+    )
+
+
+
   },
 
   methods: {

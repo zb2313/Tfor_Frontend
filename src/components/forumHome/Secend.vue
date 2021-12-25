@@ -86,8 +86,8 @@ export default {
     // 默认加载热榜3天的帖子列表
     await getRankByDay(3).then(
         res => {
-          this.postInfo = res.data
-          for (var i in res.data) {
+          this.postInfo = res.data.data
+          for (var i in res.data.data) {
             this.likeindex[i] = true
             this.collectindex[i] = true
           }
@@ -116,14 +116,13 @@ export default {
       await getPostBySearch(this.computedSearchInfo).then(
           res => {
             this.postInfo = []
-            for (var i in res.data) {
-              this.postInfo.push(res.data[i])
+            for (var i in res.data.data) {
+              this.postInfo.push(res.data.data[i])
               this.likeindex[i] = true
               this.collectindex[i] = true
             }
           }
       )
-
       this.postShow = true
     },
     async changePostData() {
@@ -136,8 +135,8 @@ export default {
             res => {
               console.log(res.data)
               this.postInfo = []
-              for (var i in res.data) {
-                this.postInfo.push(res.data[i])
+              for (var i in res.data.data) {
+                this.postInfo.push(res.data.data[i])
                 this.likeindex[i] = true
                 this.collectindex[i] = true
               }
@@ -148,8 +147,8 @@ export default {
         await getRankByDay(this.computedInfo2).then(
             res => {
               this.postInfo = []
-              for (var i in res.data) {
-                this.postInfo.push(res.data[i])
+              for (var i in res.data.data) {
+                this.postInfo.push(res.data.data[i])
                 this.likeindex[i] = true
                 this.collectindex[i] = true
               }
@@ -159,6 +158,7 @@ export default {
         await getPostByZoneId(this.computedInfo2).then(
             res => {
               this.postInfo = []
+              console.log(res.data)
               for (var i in res.data) {
                 this.postInfo.push(res.data[i])
                 this.likeindex[i] = true

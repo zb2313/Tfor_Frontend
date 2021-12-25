@@ -63,4 +63,9 @@ export const userRegister = (data) => {
         `${url}`,data
     )
 };
-
+export const getUserImg = (userId) => {
+    let url = "http://121.5.137.205:8081/api/obs/getProfileURL?uid=" + userId
+    return axios.get(
+        `${url}`
+    )
+}
