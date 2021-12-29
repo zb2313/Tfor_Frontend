@@ -86,7 +86,7 @@
     <el-dialog title="验证码登录" :visible="mailVisible" width="640px">
       <el-form ref="login" label-width="80px" class="ms-content">
         <el-form-item label="邮箱/手机">
-          <el-input style="width: 340px" v-model="param.userid"> </el-input>
+          <el-input style="width: 340px" v-model="param.sendVerify"> </el-input>
           <el-button
               type="primary"
               style="float: right"
@@ -148,7 +148,10 @@
 
 <script>
 import axios from "axios";
-
+import {
+  loginTel,loginEmial,loginPwd,
+    getVerifyCodeT,getVerifyCodeE
+} from "../api/UserInfo";
 export default {
   data() {
     return {
@@ -166,6 +169,7 @@ export default {
         password: "000001",
         userid: "0000000001",
         checkPassword: "",
+        sendVerify:" "
       },
       rules: {
         username: [
@@ -184,15 +188,24 @@ export default {
       this.$router.push("/hotelRegister");
     },
     submitForm() {
-
+      let dt={
+        uid:this.param.userid,
+        pwd:this.param.password
+      }
+      loginPwd(dt);
     },
     Login() {
+
     },
     sendVerifyCodeFind() {
 
     },
     sendVerifyCodeLogin() {
-
+      if (this.loginType == "1") {
+        getVerifyCodeE(this.param.sendVerify);
+      } else {
+        getVerifyCodeT(this.param.sendVerify);
+      }
     },
     goRegister() {
       this.$router.push("/Register");
@@ -202,6 +215,15 @@ export default {
     },
     mailLogin() {
       this.mailVisible = true;
+      let dt={
+        email:this.param.sendVerify,
+        verifyCode:this.verifycode
+      }
+      if (this.loginType == "1") {
+        loginEmial(dt);
+      } else {
+        loginTel(dt);
+      }
     },
     resetPassword() {
       if (this.param.password != this.param.checkPassword) {

@@ -82,8 +82,12 @@ export default {
       likeNum:20,
       browserNum:"",
       userImage:"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F835b18517ae5b7a2aeea97b1ea9d25938914b5fc.jpg&refer=http%3A%2F%2Fi0.hdslb.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642906832&t=a2046029eaae51ec5bc6173b8e883bab",
-      postTime:""
+      postTime:"",
+      postID:37
     }
+  },
+  created() {
+
   }
 }
 </script>
