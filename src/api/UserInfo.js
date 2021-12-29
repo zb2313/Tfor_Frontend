@@ -90,3 +90,27 @@ export const getRelationInfo = (userId) => {
     )
 }
 
+export const getFollowingList = (userId) => {
+    let url = baseurl + "/getFollowingList/" + userId
+    return axios.get(
+        `${url}`
+    )
+}
+export const getCollectionList = (userId) => {
+    let url = baseurl + "/getCollectionList/" + userId
+    return axios.get(
+        `${url}`
+    )
+}
+export const getFollowingZoneList = (userId) => {
+    let url = baseurl + "/getFollowingZoneList/" + userId
+    return axios.get(
+        `${url}`
+    )
+}
+export const getPostList = (userId) => {
+    let url = baseurl + "/getPostList/" + userId
+    return axios.get(
+        `${url}`
+    )
+}

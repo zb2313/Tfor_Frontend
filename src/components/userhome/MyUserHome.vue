@@ -19,7 +19,6 @@
             <div slot="header" class="clearfix">
               <span>{{ userForm.userName }}</span>
               <el-button style="float: right; padding: 3px 0" type="text" @click="editUserInfo">编辑信息</el-button>
-
             </div>
             <div class="text item">
               <span>关注数：</span>
@@ -46,19 +45,23 @@
             <span slot="label"><i class="el-icon-user-solid"></i> 我的关注</span>
             <div class="postList">
               <el-scrollbar> <!-- 滚动条 -->
-                <div v-for="(post) in 5" :key="post.postId" class="postItem">
+                <div v-for="(person) in this.followingList" :key="person.userId" class="postItem">
                   <transition name="el-zoom-in-center">
-                    <el-card shadow="hover" style="margin-top: 15px">
+                    <el-card shadow="hover" style="margin-top: 15px" >
                       <div class="clearfix" style="text-align: left;">
                         <el-row>
-                          <el-col :span="1">
-                            <span class="postNum">{{ post }}</span>
+                          <el-col :span="3">
+                            <span class="postNum">{{ person.userId }}</span>
                           </el-col>
                           <el-col :span="2">
-                            <el-avatar :src="userImg" :size="40" fit="cover"></el-avatar>
+                            <el-avatar :src="person.userImage" :size="40" fit="cover" ></el-avatar>
+                          </el-col>
+                          <el-col :span="1">
+                            <i class="el-icon-male" v-if="person.userGender == 1"></i>
+                            <i class="el-icon-female" v-else=""></i>
                           </el-col>
                           <el-col :span="3" :offset="-3">
-                            <span style="margin-left: 15px">用户名</span>
+                            <span style="margin-left: 15px">{{person.userName}}</span>
                           </el-col>
                         </el-row>
                       </div>
@@ -72,13 +75,13 @@
             <span slot="label"><i class="el-icon-star-on"></i> 我的收藏</span>
             <div class="postList">
               <el-scrollbar> <!-- 滚动条 -->
-                <div v-for="(post) in 20" :key="post.postId" class="postItem">
+                <div v-for="(post) in this.collectionList" :key="post.contentId" class="postItem">
                   <transition name="el-zoom-in-center">
-                    <el-card shadow="hover">
+                    <el-card shadow="hover" style="margin-top: 5px">
                       <div class="clearfix" style="text-align: left">
-                        <span class="postNum">{{ post }}</span>
+                        <span class="postNum">{{ post.contentId }}</span>
                         <el-divider direction="vertical"></el-divider>
-                        <span style="margin-left: 15px">{{ post }}</span>
+                        <span style="margin-left: 15px">{{ post.postTitle }}</span>
                       </div>
                     </el-card>
                   </transition>
@@ -90,13 +93,17 @@
             <span slot="label"><i class="el-icon-zoom-in"></i> 关注的分区</span>
             <div class="postList">
               <el-scrollbar> <!-- 滚动条 -->
-                <div v-for="(post) in 20" :key="post.postId" class="postItem">
+                <div v-for="(zone) in this.zoneList" :key="zone.zoneId" class="postItem">
                   <transition name="el-zoom-in-center">
-                    <el-card shadow="hover">
-                      <div class="clearfix" style="text-align: left">
-                        <span class="postNum">{{ post }}</span>
-                        <el-divider direction="vertical"></el-divider>
-                        <span style="margin-left: 15px">{{ post }}</span>
+                    <el-card class="box-card" style="text-align: left; width:60%; margin-inline: 10%;margin-top: 20px;padding: 0px 15px">
+                      <div slot="header" class="clearfix">
+                        <span>{{zone.zoneName}}</span>
+                      </div>
+                      <div class="text item">
+                        帖子数量：{{zone.postNum}}
+                      </div>
+                      <div class="text item">
+                        关注人数：{{zone.postNum}}
                       </div>
                     </el-card>
                   </transition>
@@ -108,13 +115,13 @@
             <span slot="label"><i class="el-icon-s-promotion"></i> 我的发帖</span>
             <div class="postList">
               <el-scrollbar> <!-- 滚动条 -->
-                <div v-for="(post) in 20" :key="post.postId" class="postItem">
+                <div v-for="(post) in this.writePostList" :key="post.contentId" class="postItem">
                   <transition name="el-zoom-in-center">
-                    <el-card shadow="hover">
+                    <el-card shadow="hover" style="margin-top: 5px">
                       <div class="clearfix" style="text-align: left">
-                        <span class="postNum">{{ post }}</span>
+                        <span class="postNum">{{ post.contentId }}</span>
                         <el-divider direction="vertical"></el-divider>
-                        <span style="margin-left: 15px">{{ post }}</span>
+                        <span style="margin-left: 15px">{{ post.postTitle }}</span>
                       </div>
                     </el-card>
                   </transition>
@@ -231,7 +238,7 @@
     </el-dialog>
 
     <el-dialog
-        title="提示"
+        title="上传头像"
         :visible.sync="uploadVisble"
         width="40%">
       <div>
@@ -261,7 +268,7 @@
         </form>
       </div>
       <span slot="footer" class="dialog-footer">
-    <el-button @click="uploadVisble = false">取 消</el-button>
+    <el-button @click="uploadVisble = false">关 闭</el-button>
   </span>
     </el-dialog>
 
@@ -281,6 +288,10 @@ import {
   getVerifyCodeT,
   changePhoneNbr,
   changeEmail,
+  getFollowingList,
+  getCollectionList,
+  getFollowingZoneList,
+  getPostList,
 } from "@/api/UserInfo"
 import {getUploadAuth} from "@/api/obsApi"
 
@@ -301,6 +312,7 @@ export default {
       verifycode2: "",
       newTel: "",
 
+      // 用户信息表
       userForm: {
         userId: 2,
         userName: "xzb",
@@ -318,6 +330,7 @@ export default {
         {value: "0", label: "女"},
       ],
       uploadVisble: false,
+      // 上传相关信息
       uploadForm: {
         filePath: "",
         accessKey: "",
@@ -325,52 +338,91 @@ export default {
         requestURL: "",
         policy: "",
       },
-
-      
+      followingList:[
+        {userid:"", userName:"dddf",userGender: ""}
+      ],
+      collectionList:[],
+      zoneList:[],
+      writePostList:[],
     }
   },
   created() {
-
-    getUserImg(this.userForm.userId).then(
-        res => {
-          // console.log(res.data.data)
-          // this.userImg = "https://tfor.obs.cn-east-3.myhuaweicloud.com/profile/2?AccessKeyId=JDOPVQVKTYEJUXZXODLK&Expires=1640859251&Signature=bP5opbdkunPkuLQIFukrb0GG/UU%3D"
-          this.userImg = res.data.data
-        }
-    )
-    getUserInfo(this.userForm.userId).then(
-        res => {
-          // console.log(res);
-          res
-        }
-    )
-
-    // 获取用户基本信息
-    getInfoNeedAuth(this.userForm.userId).then(
-        res => {
-          let userdata = res.data.data
-          this.userForm.userName = userdata.userName
-          if (userdata.userGender === 1) {
-            this.userForm.user_gender = "男"
-          } else this.userForm.user_gender = "女"
-          this.userForm.userEmail = userdata.userEmail
-          this.userForm.userTel = userdata.userTel
-        }
-    )
-    // 获取用户的点赞被关注信息
-    getRelationInfo(this.userForm.userId).then(
-        res => {
-          let userdata = res.data.data
-          // console.log(userdata)
-          this.userForm.followingNum = userdata.followingNum
-          this.userForm.followedNum = userdata.followedNum
-          this.userForm.likeNum = userdata.likeNum
-          this.userForm.postNum = userdata.postNum
-        }
-    )
-
+    this.getData()
   },
   methods: {
+    async getData(){
+      await getUserImg(this.userForm.userId).then(
+          res => {
+            // console.log(res.data.data)
+            // this.userImg = "https://tfor.obs.cn-east-3.myhuaweicloud.com/profile/undefined?AccessKeyId=JDOPVQVKTYEJUXZXODLK&Expires=1640872026&Signature=4yUk7AsiBEBwkQ8ovtqJVJdFooQ%3D"
+            // res
+            this.userImg = res.data.data
+          }
+      )
+      await getUserInfo(this.userForm.userId).then(
+          res => {
+            // console.log(res);
+            res
+          }
+      )
+
+      // 获取用户基本信息
+      await getInfoNeedAuth(this.userForm.userId).then(
+          res => {
+            let userdata = res.data.data
+            this.userForm.userName = userdata.userName
+            if (userdata.userGender === 1) {
+              this.userForm.user_gender = "男"
+            } else this.userForm.user_gender = "女"
+            this.userForm.userEmail = userdata.userEmail
+            this.userForm.userTel = userdata.userTel
+          }
+      )
+      // 获取用户的点赞被关注信息
+      await getRelationInfo(this.userForm.userId).then(
+          res => {
+            let userdata = res.data.data
+            // console.log(userdata)
+            this.userForm.followingNum = userdata.followingNum
+            this.userForm.followedNum = userdata.followedNum
+            this.userForm.likeNum = userdata.likeNum
+            this.userForm.postNum = userdata.postNum
+          }
+      )
+
+      // 用户关注列表的信息
+      await getFollowingList(this.userForm.userId).then(
+          res => {
+            this.followingList = res.data.data
+
+          }
+      )
+
+      for(var i in this.followingList) {
+        await getUserImg(this.followingList[i].userId).then(
+            res => {
+              this.followingList[i].userImage = res.data.data
+            }
+        )
+      }
+
+      await getCollectionList(this.userForm.userId).then(
+          res => {
+            this.collectionList = res.data.data
+          }
+      )
+      await getFollowingZoneList(this.userForm.userId).then(
+          res => {
+            this.zoneList = res.data.data
+          }
+      )
+      await getPostList(this.userForm.userId).then(
+          res => {
+            this.writePostList = res.data.data
+            console.log(this.writePostList)
+          }
+      )
+    },
     goHome() {
       this.$router.push("/");
     },
@@ -517,6 +569,11 @@ export default {
         }, 2000);
       })
     },
+    debug(data){
+      console.log(data)
+      console.log(123)
+    }
+
   },
 }
 </script>
