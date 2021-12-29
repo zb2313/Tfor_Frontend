@@ -187,7 +187,7 @@ export default {
   text-align: right;
 }
 .postList{
-  height: 800px;
+  /*height: 800px;*/
 }
 .postItem {
   padding-top: 10px;

@@ -1,14 +1,14 @@
 import axios from "axios";
 const baseurl = "http://121.5.137.205:8081/api/user"
 export const changeEmail = (data) => {
-    let url = baseurl + "/chageEmail"
+    let url = baseurl + "/changeEmail"
     console.log(url)
     return axios.put(
         `${url}`,data
     )
 };
 export const changePhoneNbr = (data) => {
-    let url = baseurl + "/chagePhoneNbr"
+    let url = baseurl + "/changePhoneNbr"
     console.log(url)
     return axios.put(
         `${url}`,data
