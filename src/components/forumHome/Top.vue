@@ -90,13 +90,9 @@
         </div>
 
         <div v-else-if="!$store.state.isLogin" style="padding: 5px 5px 0px 0px;" @click="userInfo">
-          <el-avatar  :src="userImg" :size="50" fit="fill"></el-avatar>
+          <el-avatar  :src="userImg" :size="50" fit="cover"></el-avatar>
         </div>
         <div class="navbar-item" v-else-if="!$store.state.isLogin">
-          <div>
-            <el-avatar style="margin: auto;size: auto"
-                       src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-          </div>
           <div>
             <i class="far fa-address-card">{{ $store.state.user.userName }}</i>
           </div>
@@ -239,7 +235,7 @@ export default {
       password: "",
       zoneinfo: [],
       inputSearchInfo: '',
-      userImg: require('@/assets/user6.jpg'),
+      userImg: "",
       // userImg: "https://tfor.obs.cn-east-3.myhuaweicloud.com/test/test4.jpg?AccessKeyId=JDOPVQVKTYEJUXZXODLK&Expires=1640431507&Signature=/S44qAvSJrrdZEtAPiIfuxoiYzw%3D"
 
     };
@@ -257,11 +253,11 @@ export default {
         }
     )
 
-    getUserImg(2).then(
+    getUserImg(1950072).then(
         res => {
           console.log(res.data.data)
-          this.userImg = "https://tfor.obs.cn-east-3.myhuaweicloud.com/profile/2?AccessKeyId=JDOPVQVKTYEJUXZXODLK&Expires=1640487882&Signature=PbRFpQULBBx0WZnsRa21BdGhYLI%3D"
-          // this.userImg = res.data.data
+          // this.userImg = "https://tfor.obs.cn-east-3.myhuaweicloud.com/profile/2?AccessKeyId=JDOPVQVKTYEJUXZXODLK&Expires=1640487882&Signature=PbRFpQULBBx0WZnsRa21BdGhYLI%3D"
+          this.userImg = res.data.data
         }
     )
 

@@ -49,11 +49,11 @@ export const loginTel = (data) => {
         `${url}`,data
     )
 };
+
 export const modifyUserInfo = (data) => {
     let url = baseurl + "/modify"
-    console.log(url)
     return axios.put(
-        `${url}`,data
+        `${url}`,data,
     )
 };
 export const userRegister = (data) => {
@@ -69,3 +69,24 @@ export const getUserImg = (userId) => {
         `${url}`
     )
 }
+export const getUserInfo = (userId) => {
+    let url = baseurl + "/getInfo/" + userId
+    return axios.get(
+        `${url}`
+    )
+}
+
+export const getInfoNeedAuth = (userId) => {
+    let url = baseurl + "/getInfoNeedAuth/" + userId
+    return axios.get(
+        `${url}`
+    )
+}
+
+export const getRelationInfo = (userId) => {
+    let url = baseurl + "/getRelationInfo/" + userId
+    return axios.get(
+        `${url}`
+    )
+}
+

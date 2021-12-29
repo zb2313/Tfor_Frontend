@@ -1,34 +1,38 @@
 <template>
   <div class="postList">
-    <div v-for="(post,index) in this.postInfo" :key="post.postId" class="postItem">
-      <transition name="el-zoom-in-center">
-        <el-card shadow="hover" v-show="postShow">
-          <div class="clearfix" style="text-align: left">
-            <span class="postNum">{{ post.postId }}</span>
-            <el-divider direction="vertical"></el-divider>
-            <span style="margin-left: 15px">{{ post.postTitle }}</span>
+    <el-scrollbar style="height: 700px">
+      <div v-for="(post,index) in this.postInfo" :key="post.postId" class="postItem">
+        <transition name="el-zoom-in-center">
+          <el-card shadow="hover" v-show="postShow">
+            <div class="clearfix" style="text-align: left">
+              <span class="postNum">{{ post.postId }}</span>
+              <el-divider direction="vertical"></el-divider>
+              <span style="margin-left: 15px">{{ post.postTitle }}</span>
 
-            <el-button style="float: right; padding: 0px 5px 0 5px; margin: 0" type="text" @click="likePost" >
-              <img :src="reportSrc" style="width: 24px"/>
-            </el-button>
-            <el-button style="float: right; padding: 0px 5px 0 5px; margin: 0 " type="text" @click="collectPost(index)" v-show="collectindex[index]">
-              <img :src="collectSrc1" style="width: 24px"/>
-            </el-button>
-            <el-button style="float: right; padding: 0px 5px 0 5px; margin: 0 " type="text" @click="collectPost(index)" v-show="!collectindex[index]">
-              <img :src="collectSrc2" style="width: 24px"/>
-            </el-button>
-            <el-button style="float: right; padding: 0px 5px 5px 5px; width: 50px" type="text" @click="likePost(index)" v-show="likeindex[index]">
-              <img :src="likeSrc1" style="width: 24px"/>
-              <span class="likeNum">{{ post.likeNum }}</span>
-            </el-button>
-            <el-button style="float: right; padding: 0px 5px 5px 5px; width: 50px" type="text" @click="likePost(index)" v-show="!likeindex[index]">
-              <img :src="likeSrc2" style="width: 24px"/>
-              <span class="likeNum">{{ post.likeNum }}</span>
-            </el-button>
-          </div>
-        </el-card>
-      </transition>
-    </div>
+              <el-button style="float: right; padding: 0px 5px 0 5px; margin: 0" type="text" @click="likePost" >
+                <img :src="reportSrc" style="width: 24px"/>
+              </el-button>
+              <el-button style="float: right; padding: 0px 5px 0 5px; margin: 0 " type="text" @click="collectPost(index)" v-show="collectindex[index]">
+                <img :src="collectSrc1" style="width: 24px"/>
+              </el-button>
+              <el-button style="float: right; padding: 0px 5px 0 5px; margin: 0 " type="text" @click="collectPost(index)" v-show="!collectindex[index]">
+                <img :src="collectSrc2" style="width: 24px"/>
+              </el-button>
+              <el-button style="float: right; padding: 0px 5px 5px 5px; width: 50px" type="text" @click="likePost(index)" v-show="likeindex[index]">
+                <img :src="likeSrc1" style="width: 24px"/>
+                <span class="likeNum">{{ post.likeNum }}</span>
+              </el-button>
+              <el-button style="float: right; padding: 0px 5px 5px 5px; width: 50px" type="text" @click="likePost(index)" v-show="!likeindex[index]">
+                <img :src="likeSrc2" style="width: 24px"/>
+                <span class="likeNum">{{ post.likeNum }}</span>
+              </el-button>
+            </div>
+          </el-card>
+        </transition>
+      </div>
+    </el-scrollbar>
+
+
   </div>
 </template>
 <script>
@@ -182,7 +186,9 @@ export default {
 .subtitle {
   text-align: right;
 }
-
+.postList{
+  height: 800px;
+}
 .postItem {
   padding-top: 10px;
 }
@@ -198,6 +204,9 @@ export default {
 
 .likeNum {
   color: #CE5A5A;
+}
+/deep/ .el-scrollbar__wrap {
+  overflow-x: hidden;
 }
 
 </style>

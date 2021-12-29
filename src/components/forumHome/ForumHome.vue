@@ -2,20 +2,26 @@
   <div id="forumhome">
     <Top v-bind:zoneInfo2="zoneInfo2" v-bind:zoneInfo1="zoneInfo1" v-bind:searchInfo="searchInfo"
          @chooseZone="chooseZone" @passSearchInfo="passSearchInfo"/>
-    <el-button @click="debug">debug buttun</el-button>
     <Secend
         v-bind:zoneInfo2="zoneInfo2" v-bind:zoneInfo1="zoneInfo1" v-bind:searchInfo="searchInfo"
         style="margin: 10px 150px 20px 150px;"/>
     <Tiles/>
 
-<!--    <SecendTiles/>-->
+    <!--    <SecendTiles/>-->
     <Footer/>
 
   </div>
 </template>
 
-<style>
+<style scoped>
+Secend {
 
+}
+Footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0
+}
 </style>
 
 
