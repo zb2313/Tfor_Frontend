@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="Top">
+    <div>
       <div class="content">
         <div style="padding-top: 6px;">
           <table cellpadding="0" cellspacing="0" border="0" width="100%">

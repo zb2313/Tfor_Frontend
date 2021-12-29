@@ -3,10 +3,6 @@
     <b-navbar>
       <template slot="brand">
         <b-navbar-item tag="router-link" :to="{ path: '/' }">
-          <img
-            src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
-            alt="Lightweight UI components for Vue.js based on Bulma"
-          />
         </b-navbar-item>
       </template>
       <template slot="start">
@@ -357,7 +353,6 @@ export default {
 textarea {
   -webkit-writing-mode: horizontal-tb !important;
   text-rendering: auto;
-  color: -internal-light-dark-color(black, white);
   letter-spacing: normal;
   word-spacing: normal;
   text-transform: none;
@@ -366,10 +361,8 @@ textarea {
   display: inline-block;
   text-align: start;
   -webkit-appearance: textarea;
-  background-color: -internal-light-dark-color(white, black);
   -webkit-rtl-ordering: logical;
   flex-direction: column;
-  resize: auto;
   cursor: text;
   white-space: pre-wrap;
   overflow-wrap: break-word;
