@@ -219,10 +219,34 @@ export default {
         email:this.param.sendVerify,
         verifyCode:this.verifycode
       }
-      if (this.loginType == "1") {
-        loginEmial(dt);
+      if (this.loginType == "2") {
+        loginEmial(dt).then(
+            response=>{
+              if (response.status == "204") {
+                alert("用户id或验证码输入有误");
+                return;
+              } else {
+                localStorage.setItem("token", response.data);
+                localStorage.setItem("username", this.param.userid);
+                this.$message.success("登录成功");
+                this.$router.push('/');
+              }
+            }
+        );
       } else {
-        loginTel(dt);
+        loginTel(dt).then(
+            response=>{
+              if (response.status == "204") {
+                alert("用户id或验证码输入有误");
+                return;
+              } else {
+                localStorage.setItem("token", response.data);
+                localStorage.setItem("username", this.param.userid);
+                this.$message.success("登录成功");
+                this.$router.push('/');
+              }
+            }
+        );
       }
     },
     resetPassword() {

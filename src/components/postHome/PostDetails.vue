@@ -81,8 +81,9 @@
 </template>
 
 <script>
-import {getbyPostId, getRankByDay} from "../../api/zoneApi";
+import {getbyPostId, getRankByDay,getCommentPost} from "../../api/zoneApi";
 import {likePost,collectPost,reportPost} from "../../api/actionapi";
+import {getPostImgs} from "../../api/obsApi";
 export default {
   name: "PostDetails",
   data(){
@@ -100,6 +101,9 @@ export default {
 
       reportList:[],
 
+      imgs:[],
+
+      comments:[],
       postInfo:{},
       hotPosts:{}
     }
@@ -133,6 +137,18 @@ export default {
           console.log(this.postInfo)
         }
     );
+    getPostImgs(this.postID).then(
+        res=>{
+          this.imgs=res.data.data
+          console.log('帖子图片',this.imgs)
+        }
+    )
+    getCommentPost(this.postID).then(
+        res=>{
+          this.comments=res.data.data
+          console.log('评论',res.data)
+        }
+    )
     getRankByDay(10).then(
         res=>{
           this.hotPosts=res.data

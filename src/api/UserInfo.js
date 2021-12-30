@@ -22,7 +22,7 @@ export const getVerifyCodeE = (param) => {
     )
 };
 export const getVerifyCodeT = (param) => {
-    let url = baseurl + "/getverifycode/tel/"+param;
+    let url = baseurl + "/getverifycode/tel/86"+param;
     console.log(url)
     return axios.get(
         `${url}`

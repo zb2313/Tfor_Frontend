@@ -8,3 +8,10 @@ export const getUploadAuth = () => {
         `${url}`
     )
 };
+export const getPostImgs = (id) => {
+    let url = baseurl + "getPostImageUrls?contentId="+id;
+    console.log(url)
+    return axios.get(
+        `${url}`
+    )
+};

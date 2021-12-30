@@ -80,6 +80,11 @@ const routes = [
     path:'/PostDetails',
     name:"PostDetails",
     component:()=>import("../components/postHome/PostDetails")
+  },
+  {
+    path:'/PublishPost',
+    name:"PublishPost",
+    component:()=>import('../components/Publish')
   }
 ];
 

@@ -42,4 +42,9 @@ export const getPostBySearch = (keyWord) => {
         `${url}`
     )
 };
-
+export const getCommentPost = (keyWord) => {
+    let url = baseurl + "view/getCommentOfPost/?contentId=" + keyWord;
+    return axios.get(
+        `${url}`
+    )
+};
