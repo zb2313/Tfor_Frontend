@@ -190,6 +190,7 @@ export default {
     submitForm() {
       if(this.role=='administrator'){
         this.$router.push('/admin');
+        localStorage.setItem("username", "adm");
         return;
       }
       let dt={

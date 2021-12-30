@@ -10,7 +10,8 @@
              <el-divider direction="vertical"></el-divider>
              <span class="postTag" style="margin-left: 15px">审核状态:{{ post.reviewState }}</span>
         </div>
-        <el-button type="primary" @click="check" size="medium" style="float:right;margin-right:10px">check</el-button>
+        <el-button type="primary" @click="check(post.contentId)" size="medium" style="float:right;margin-right:10px">check</el-button>
+       <el-button type="primary" @click="setnormal(post.contentId)" size="medium" style="float:right;margin-right: 10px">setNormal</el-button>
     </el-card>
 </div>
 </template>
@@ -23,22 +24,19 @@ export default {
         }
     },
     methods:{
-        check(){
+        check(contentId){
+          this.$axios
+          .put()
             //进入具体的帖子页面
-            
-        },
-        // 设置帖子是不是normal，得到所有状态是review 的帖子
-        getifnormal(){
-            this.$axios
-            .get('http://121.5.137.205:8081/api/admin/getReviewedPostList')
-            .then((res)=>{
-                this.reviewPostlist=res.data.data
-            })
+          this.$router.push({
+            path: `/PostDetails`,
+            query: {contentId: contentId},
+          })
         },
         //设置帖子标签
-        setifnormal(){
+        setnormal(contentId){
             this.$axios
-            .put('http://121.5.137.205:8081/api/admin/setPostLabel')//记得加上label和contentid参数,label为数字1、2
+            .put('http://121.5.137.205:8081/api/admin/setPostLabel?contentId='+contentId+'&label='+1)//记得加上label和contentid参数,label为数字1、2
         },
         getdata(){
             this.$axios
@@ -46,6 +44,7 @@ export default {
             .then((res)=>{
                 this.contentlist=res.data.data
             })
+
         }
     },
     created(){
@@ -55,10 +54,10 @@ export default {
 </script>
 <style scoped>
 .contentCard{
-    width:800px;
+    width:1000px;
     height:60px;
     display: flex;
-    margin-left: 20%;
+    margin-left: 16%;
     margin-top:5px;
     flex-direction: column;
 }

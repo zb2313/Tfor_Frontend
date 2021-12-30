@@ -3,7 +3,7 @@
     backgroundImage: 'url(' +
     bcimg
     + ')',
-    backgroundSize: '50% 200%'
+    backgroundSize: 'contain'
   }"
   >
 <el-row>
