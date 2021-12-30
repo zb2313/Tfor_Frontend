@@ -166,8 +166,8 @@ export default {
       imgList: [],
       coverImgUrl: require("../assets/imgs/login-bg.jpg"),
       param: {
-        password: "000001",
-        userid: "0000000001",
+        password: "111",
+        userid: "1950077",
         checkPassword: "",
         sendVerify:" "
       },
@@ -198,8 +198,8 @@ export default {
               alert("用户id或验证码输入有误");
               return;
             } else {
-              localStorage.setItem("token", response.data);
-              localStorage.setItem("username", this.param.userid);
+              localStorage.setItem("token", response.data.data.token);
+              //localStorage.setItem("username", this.param.userid);
               this.$message.success("登录成功");
               this.$router.push('/');
             }
@@ -238,7 +238,7 @@ export default {
                 alert("用户id或验证码输入有误");
                 return;
               } else {
-                localStorage.setItem("token", response.data);
+                localStorage.setItem("token", response.data.data.token);
                 localStorage.setItem("username", this.param.userid);
                 this.$message.success("登录成功");
                 this.$router.push('/');
@@ -252,7 +252,7 @@ export default {
                 alert("用户id或验证码输入有误");
                 return;
               } else {
-                localStorage.setItem("token", response.data);
+                localStorage.setItem("token", response.data.data.token);
                 localStorage.setItem("username", this.param.userid);
                 this.$message.success("登录成功");
                 this.$router.push('/');
