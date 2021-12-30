@@ -72,9 +72,9 @@
         <span style="font-size: 15px">发表评论</span>
         <el-divider></el-divider>
         <v-comment
-        :father-id.sync="postID"
-        :user-id.sync="postInfo.userId"
-        :fathertype=1></v-comment>
+        v-bind:fatherId="postID"
+        v-bind:userId="postInfo.userId"
+        v-bind:fathertype=1></v-comment>
       </el-card>
     </el-card>
   </div>
@@ -170,6 +170,7 @@ export default {
 
       await getPostImgs(this.postID).then(
           res=>{
+            localStorage.setItem('fatherid',this.postID)
             this.imgs=res.data.data
             console.log('帖子图片',this.imgs)
           }

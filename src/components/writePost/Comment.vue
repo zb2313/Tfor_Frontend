@@ -18,10 +18,26 @@ export default {
   props:{
     fatherId:[String,Number],
     userId:[String,Number],
-    fathertype:[String,Number]
+    fathertype:[Number]
+  },
+
+  watch:{
+    fatherId:{
+      handler(newValue,oldValue){
+        if(newValue!=oldValue){
+          this.fatherIdD=this.fatherId
+          this.userId=this.userIdD
+          this.fathertype=this.fathertypeD
+        }
+      }
+    }
   },
   data() {
     return {
+      fatherIdD:this.props.fatherId,
+      userIdD:this.props.userId,
+      fathertypeD:this.fathertype,
+
       editor: null,
       editorContent: '',
       day:"",
@@ -46,26 +62,29 @@ export default {
     },
     PublishButton() {
       this.editorContent=this.editor.txt.text()
-      //let date = new Date();
-      //let timestamp3 = date.getTime();
+      let date = new Date();
+      let timestamp3 = date.getTime();
       let uid=localStorage.getItem("username");
       if(uid==''){
         this.$message.warning('请先登录！！！');
         return
       }
+      this.fatherIdD=localStorage.getItem('fatherid')
+      this.fathertypeD=1
       let dt={
         commentNum: 0,
-        contentId: 12,
-        fatherContentId: 14,
-        fatherType: 1,
+        contentId: timestamp3,
+        fatherContentId: this.fatherIdD,
+        fatherType: this.fathertypeD,
         label: "",
         likeNum: 0,
         picture: "",
         reportNum: 0,
         reviewState: "",
         text: this.editorContent,
-        userId: 5
+        userId: uid
       }
+      console.log(dt)
       postComment(dt).then(
           res=>{
             console.log(res.status)
