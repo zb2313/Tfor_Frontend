@@ -16,6 +16,7 @@
       <div style="text-align: left">
        <span style="margin-left: 0px;font-size:28px;font-weight: bolder">{{this.postInfo.postTitle}}</span>&nbsp;
         <span>{{this.postInfo.commentNum}}评论/ {{this.postInfo.likeNum}} 点赞/ 500浏览</span>
+        <el-button style="float: right" type="text" @click="followUser(this.postInfo.userId)">关注发帖人</el-button>
         <el-divider></el-divider>
       </div>
 
@@ -86,11 +87,19 @@
     <el-row>
        <el-card style="text-align: left">
          <span>广告招商</span>
+         <img src="https://img2.baidu.com/it/u=3349915226,4238223520&fm=26&fmt=auto">
        </el-card>
     </el-row><br>
     <el-row>
       <el-card style="text-align: left">
         <span>校园热搜热帖</span>
+        <ul>
+          <li v-for="dt in hotPosts.data" :key="dt">
+            uid:{{dt.userId}}<br>
+            {{dt.postTitle}}<br>
+            <el-divider></el-divider>
+          </li>
+        </ul>
       </el-card>
     </el-row>
   </div>
@@ -183,10 +192,10 @@ export default {
             console.log('评论',res.data)
           }
       )
-      await getRankByDay(10).then(
+      await getRankByDay(5).then(
           res=>{
             this.hotPosts=res.data
-            console.log(res.data.data)
+            console.log('热帖',res.data.data)
           }
       )
     }
