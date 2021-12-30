@@ -102,6 +102,7 @@ export default {
       contentId:'',
       count:1,
       picValue:'',
+      userId:'',
       // 图片列表
       filelist:[],
        options: [{
@@ -156,7 +157,7 @@ export default {
       let timestamp3 = date.getTime();
       this.contentId=timestamp3;
     },
-    PublishButton() {
+    async PublishButton() {
       this.editorContent=this.editor.txt.text()
       console.log("md",this.editorContent)
       console.log("time:",this.contentId)
@@ -167,7 +168,7 @@ export default {
           if(this.value!='')
           {
             //都有数据，正式发送
-            this.$axios
+            await this.$axios
             .post('http://121.5.137.205:8081/api/post/postContent',
             {
               contentId:this.contentId,
@@ -175,8 +176,16 @@ export default {
               postTitle: this.title,
               reportNum: 0,
               text: this.editorContent,
-              userId: 1950072,
-            }).then((res)=>{
+              userId: this.userId,
+            })
+            
+            await this.$axios
+                .post('http://121.5.137.205:8081/api/post/EnterZone',
+                    {
+                      contentId:this.contentId,
+                      zoneId:this.value,
+                    }
+                ).then((res)=>{
               if(res.status==200)
               {
                 this.$message({type:'success',message:"发布成功"})
@@ -186,14 +195,6 @@ export default {
                 this.$message({type:'error',message:"发布失败"})
               }
             })
-            
-            this.$axios
-                .post('http://121.5.137.205:8081/api/post/EnterZone',
-                    {
-                      contentId:this.contentId,
-                      zoneId:this.value,
-                    }
-                )
             this.editor.txt.clear()//最后清空输入框
           }
           else
@@ -214,6 +215,9 @@ export default {
     handleClick(tab, event) {
         console.log(tab, event);
       },
+  },
+  created() {
+    this.userId = window.localStorage.getItem('username')
   },
   mounted() {
     this.editor = new E(this.$refs.editorElem);
