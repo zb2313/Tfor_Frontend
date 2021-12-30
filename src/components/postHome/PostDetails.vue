@@ -190,11 +190,11 @@ export default {
     }
   },
   created() {
-    this.getData()
-
     console.log(this.$route.query.contentId)
     this.postID = this.$route.query.contentId
     console.log(this.postID)
+    this.getData()
+
 
   }
 }

@@ -55,7 +55,7 @@
               <template>
                 <p>请选择登录身份</p>
                 <el-radio v-model="role" label="user">用户</el-radio>
-                <el-radio v-model="role" label="hotel">商家</el-radio>
+<!--                <el-radio v-model="role" label="hotel">商家</el-radio>-->
                 <el-radio v-model="role" label="administrator">管理员</el-radio>
               </template>
             </el-card>
@@ -188,6 +188,10 @@ export default {
       this.$router.push("/hotelRegister");
     },
     submitForm() {
+      if(this.role=='administrator'){
+        this.$router.push('/admin');
+        return;
+      }
       let dt={
         uid:this.param.userid,
         pwd:this.param.password
