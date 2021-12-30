@@ -61,6 +61,7 @@
         <span style="font-size: 15px">全部评论</span>
         <el-divider></el-divider>
         <ul>
+          {{comments}}
           <li v-for="dt in comments" :key="dt">
             uid:{{dt.userId}}<br>
             {{dt.text}}<br>
