@@ -1,10 +1,8 @@
 <template xmlns:el-col="http://www.w3.org/1999/html">
   <div>
-
     <nav class="navbar is-light" role="navigation" aria-label="main navigation">
       <el-button class="el-icon-back" style="position:absolute; left: 10px; top: 5px" circle type="info"
                  @click="goHome">
-
       </el-button>
     </nav>
     <div style="margin: 20px auto 20px auto; width: 1000px;">
@@ -365,6 +363,9 @@ export default {
   },
   methods: {
     async getData() {
+
+      this.userForm.userId = window.localStorage.getItem('username')
+
       await getUserImg(this.userForm.userId).then(
           res => {
             // console.log(res.data.data)

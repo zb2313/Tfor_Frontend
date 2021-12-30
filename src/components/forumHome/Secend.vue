@@ -1,42 +1,43 @@
 <template>
-  <div class="postList">
-    <el-scrollbar style="height: 600px">
-      <div v-for="(post,index) in this.postInfo" :key="post.postId" class="postItem">
-        <transition name="el-zoom-in-center">
-          <el-card shadow="hover" v-show="postShow">
-            <div class="clearfix" style="text-align: left">
-              <span class="postNum">{{ post.userId}}</span>
-              <el-divider direction="vertical"></el-divider>
-              <span style="margin-left: 15px">{{ post.postTitle }}</span>
+  <div>
+    <div class="postList">
+      <el-scrollbar style="height: 600px">
+        <div v-for="(post,index) in this.postInfo" :key="post.postId" class="postItem">
+          <transition name="el-zoom-in-center">
+            <el-card shadow="hover" v-show="postShow">
+              <div class="clearfix" style="text-align: left">
+                <span class="postNum">{{ post.userId }}</span>
+                <el-divider direction="vertical"></el-divider>
+                <span style="margin-left: 15px">{{ post.postTitle }}</span>
 
-              <el-button style="float: right; padding: 0px 5px 0 5px; margin: 0" type="text" @click="reportPost(index)">
-                <img :src="reportSrc" style="width: 24px"/>
-              </el-button>
-              <el-button style="float: right; padding: 0px 5px 0 5px; margin: 0 " type="text"
-                         @click="collectPost(index)" v-show="collectindex[index]">
-                <img :src="collectSrc1" style="width: 24px"/>
-              </el-button>
-              <el-button style="float: right; padding: 0px 5px 0 5px; margin: 0 " type="text"
-                         @click="collectPost(index)" v-show="!collectindex[index]">
-                <img :src="collectSrc2" style="width: 24px"/>
-              </el-button>
-              <el-button style="float: right; padding: 0px 5px 5px 5px; width: 50px" type="text"
-                         @click="likePost(index)" v-show="likeindex[index]">
-                <img :src="likeSrc1" style="width: 24px"/>
-                <span class="likeNum">{{ post.likeNum }}</span>
-              </el-button>
-              <el-button style="float: right; padding: 0px 5px 5px 5px; width: 50px" type="text"
-                         @click="likePost(index)" v-show="!likeindex[index]">
-                <img :src="likeSrc2" style="width: 24px"/>
-                <span class="likeNum">{{ post.likeNum }}</span>
-              </el-button>
-            </div>
-          </el-card>
-        </transition>
-      </div>
-    </el-scrollbar>
-
-
+                <el-button style="float: right; padding: 0px 5px 0 5px; margin: 0" type="text"
+                           @click="reportPost(index)">
+                  <img :src="reportSrc" style="width: 24px"/>
+                </el-button>
+                <el-button style="float: right; padding: 0px 5px 0 5px; margin: 0 " type="text"
+                           @click="collectPost(index)" v-show="collectindex[index]">
+                  <img :src="collectSrc1" style="width: 24px"/>
+                </el-button>
+                <el-button style="float: right; padding: 0px 5px 0 5px; margin: 0 " type="text"
+                           @click="collectPost(index)" v-show="!collectindex[index]">
+                  <img :src="collectSrc2" style="width: 24px"/>
+                </el-button>
+                <el-button style="float: right; padding: 0px 5px 5px 5px; width: 50px" type="text"
+                           @click="likePost(index)" v-show="likeindex[index]">
+                  <img :src="likeSrc1" style="width: 24px"/>
+                  <span class="likeNum">{{ post.likeNum }}</span>
+                </el-button>
+                <el-button style="float: right; padding: 0px 5px 5px 5px; width: 50px" type="text"
+                           @click="likePost(index)" v-show="!likeindex[index]">
+                  <img :src="likeSrc2" style="width: 24px"/>
+                  <span class="likeNum">{{ post.likeNum }}</span>
+                </el-button>
+              </div>
+            </el-card>
+          </transition>
+        </div>
+      </el-scrollbar>
+    </div>
   </div>
 </template>
 <script>
@@ -90,11 +91,14 @@ export default {
       reportSrc: require("@/assets/report.png"),
       likeindex: [],
       collectindex: [],
-      userId: "2"
+      userId: ""
     };
   },
   async created() {
     // 默认加载热榜3天的帖子列表
+
+    this.userId = window.localStorage.getItem('username')
+
     await getRankByDay(3).then(
         res => {
           this.postInfo = res.data.data
@@ -196,8 +200,7 @@ export default {
       this.likeindex.splice(0)
       if (this.computedInfo1 == 1) {
         console.log("推荐")
-        let userid = 2 // 这里暂时使用默认值1
-        await getRecommandByUserId(userid).then(
+        await getRecommandByUserId(this.userId).then(
             res => {
               console.log(res.data)
               this.postInfo = []

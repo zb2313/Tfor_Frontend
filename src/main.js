@@ -58,18 +58,27 @@ new Vue({
 //   password: 1245
 // }))
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(m => m.meta.requireAuth)) {
-
-    // 对路由进行验证
-    if (store.state.isLogin) { // 已经登陆
-      next() // 正常跳转到你设置好的页面
-    } else {
-      // 未登录则跳转到登陆界面
-      next({ path: '/login' })
+  // if (to.matched.some(m => m.meta.requireAuth)) {
+  //
+  //   // 对路由进行验证
+  //   if (store.state.isLogin) { // 已经登陆
+  //     next() // 正常跳转到你设置好的页面
+  //   } else {
+  //     // 未登录则跳转到登陆界面
+  //     next({ path: '/login' })
+  //   }
+  // } else {
+  //   next()
+  // }
+  let userId = window.localStorage.getItem('username')
+  if (to.path === '/userhome' || to.path === '/writePost' || to.path === '/PostDetails'|| to.path === '/Comment')
+  {
+    if (!userId){
+      return next('/login')
     }
-  } else {
     next()
   }
+  next()
 })
 axios.interceptors.request.use(function (config) {
   // Do something before request is sent

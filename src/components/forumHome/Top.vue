@@ -88,28 +88,28 @@
             </div>
           </div>
         </div>
-        <div v-show="!$store.state.isLogin" style="padding: 10px 10px">
+        <div v-show="!isLogin" style="padding: 10px 10px">
+          <el-button size="medium" @click="login">
+            登录
+          </el-button>
+        </div>
+        <div v-show="isLogin" style="padding: 10px 10px">
           <el-button icon="el-icon-edit" size="medium" @click="writePost">
             发布帖子
           </el-button>
         </div>
-        <div v-show="!$store.state.isLogin" style="padding: 5px 5px 0px 0px;" @click="userInfo">
+        <div v-show="isLogin" style="padding: 5px 5px 0px 0px;" @click="userInfo">
             <el-dropdown>
               <el-avatar :src="userImg" :size="50" fit="cover"></el-avatar>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item icon="el-icon-right" >登出</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-right">
+                  <el-button @click="logout">
+                    登出
+                  </el-button>
+                </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
         </div>
-        <div class="navbar-item" v-show="$store.state.isLogin">
-          <div>
-            <i class="far fa-address-card">{{ $store.state.user.userName }}</i>
-          </div>
-          <div @click="logout">
-            <i class="fas fa-sign-out-alt">登出</i>
-          </div>
-        </div>
-
       </div>
     </div>
   </nav>
@@ -221,7 +221,6 @@
 </style>
 
 <script>
-import {userLogin} from "@/api";
 import {getAllZone} from "@/api/zoneApi"
 import {getUserImg} from "@/api/UserInfo"
 
@@ -247,11 +246,16 @@ export default {
       inputSearchInfo: '',
       userImg: "",
       userId: "2",
-      // userImg: "https://tfor.obs.cn-east-3.myhuaweicloud.com/test/test4.jpg?AccessKeyId=JDOPVQVKTYEJUXZXODLK&Expires=1640431507&Signature=/S44qAvSJrrdZEtAPiIfuxoiYzw%3D"
-
+      isLogin:false,
     };
   },
   created() {
+    this.userId = window.localStorage.getItem('username')
+
+    if (this.userId){
+      this.isLogin = true
+    }
+
     // 预先获取所有分区信息 展示在下拉菜单中
     console.log(this.childSearchInfo)
     getAllZone().then(
@@ -284,37 +288,21 @@ export default {
       this.$emit('passSearchInfo', this.inputSearchInfo)
     },
     logout() {
-      this.$store.commit("logout");
-    },
-    userhome() {
-      this.$router.push("/userhome");
+      window.localStorage.clear()
+      this.$router.push("/login");
     },
     login() {
-      userLogin(this.email, this.password)
-          .then(res => {
-            const {data} = res;
-            this.user = data;
-            console.log(data);
-            if (data != null) {
-              this.$store.dispatch("aLogin", {
-                user: data,
-                message: "牛逼",
-                success: () => {
-                  console.log("欢迎您");
-                }
-              });
-            } else {
-              alert("该用户不存在");
-            }
-          })
-          .catch(() => {
-          });
+      this.$router.push("/login");
     },
     register() {
       this.$router.push("/registerhome");
     },
     userInfo() {
-      this.$router.push("/userhome");
+      // this.$router.push("/userhome");
+      this.$router.push({
+        path: `/userhome`,
+        query:{id:43},
+      })
     },
     writePost() {
       this.$router.push("/writePost")
