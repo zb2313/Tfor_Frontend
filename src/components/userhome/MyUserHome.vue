@@ -470,7 +470,7 @@ export default {
     },
     async modifyEmail() {
       this.dialogVisible = false
-      let userEmail = this.userForm.userEmail.replace(/%40/g, '&')
+      let userEmail = this.userForm.userEmail.replace(/@/g, '%40')
       await getVerifyCodeE(userEmail).then(
           res => {
             console.log(res.data)
@@ -555,6 +555,7 @@ export default {
       this.dialogTelVisible = false
     },
     async uploadImg() {
+      console.log(this.$route.query.id)
       await getUploadAuth().then(
           res => {
             this.uploadForm.filePath = "profile/" + this.userForm.userId
@@ -563,7 +564,6 @@ export default {
             this.uploadForm.policy = res.data.data.policy
           }
       )
-      console.log(this.uploadForm)
       this.uploadVisble = true;
     },
     async cancelFollow(followId) {

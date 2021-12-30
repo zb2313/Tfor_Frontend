@@ -21,7 +21,7 @@
                 v-for="item in group.options"
                 :key="item.value"
                 :label="item.label"
-                :value="item.label">
+                :value="item.value">
               </el-option>
             </el-option-group>
           </el-select>
@@ -107,19 +107,19 @@ export default {
        options: [{
           label: '热门分区',
           options: [{
-            value: '考研专区',
+            value: 1,
             label: '考研专区'
           }, {
-            value: '二手市场',
+            value: 2,
             label: '二手市场'
           }]
         }, {
           label: '分区目录',
           options: [{
-            value: '吃喝玩乐',
+            value: 3,
             label: '吃喝玩乐'
           }, {
-            value: '表白墙',
+            value: 4,
             label: '表白墙'
           }]
         }],
@@ -186,6 +186,14 @@ export default {
                 this.$message({type:'error',message:"发布失败"})
               }
             })
+            
+            this.$axios
+                .post('http://121.5.137.205:8081/api/post/EnterZone',
+                    {
+                      contentId:this.contentId,
+                      zoneId:this.value,
+                    }
+                )
             this.editor.txt.clear()//最后清空输入框
           }
           else
