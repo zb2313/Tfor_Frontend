@@ -29,8 +29,13 @@
           </div><br><br><br><br>
          <p style="text-align: left">
            {{this.postInfo.text}}
+
          </p>
-        <img src="https://img2.baidu.com/it/u=2244323656,2206897366&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=326">
+        <ul>
+          <li v-for="dt in imgs" :key="dt">
+            <img :src="dt" height="200" width="200">
+          </li>
+        </ul>
         <div style="float: bottom">
           <el-button style="font-size: 16px" type="text" class="el-icon-s-opportunity" @click="likePostI">点赞</el-button>({{this.postInfo.likeNum}})
           <el-button style="font-size: 16px" type="text" class="el-icon-tickets">评论</el-button>({{this.postInfo.commentNum}})
@@ -61,8 +66,8 @@
         <span style="font-size: 15px">全部评论</span>
         <el-divider></el-divider>
         <ul>
-          {{comments}}
           <li v-for="dt in comments" :key="dt">
+            <el-avatar :src="dt.img"></el-avatar>
             uid:{{dt.userId}}<br>
             {{dt.text}}<br>
             {{dt.lastEditTime}}<br>
@@ -142,7 +147,7 @@ export default {
       reportList:[],
 
       imgs:[],
-
+      commentData:[],
       comments:[],
       postInfo:{},
       hotPosts:{}
@@ -174,6 +179,21 @@ export default {
       reportPost(this.postID);
       this.reFresh()
     },
+    getCommentImgs(){
+      for(let i=0;i<this.comments.length;i++){
+        let id=this.comments[i].userId
+        getUserImg(id).then(
+            res=>{
+              this.$set(this.comments[i],'img',res.data.data)
+              console.log('co',this.comments[i])
+            }
+        )
+
+      }
+    },
+    getCommentName(){
+
+    },
     async getData(){
       localStorage.setItem('fatherid',this.postID)
       await getbyPostId(this.postID).then(
@@ -200,8 +220,10 @@ export default {
           res=>{
             this.comments=res.data.data
             console.log('评论',res.data)
+            this.getCommentImgs()
           }
       )
+
       getRankByDay(5).then(
           res=>{
             this.hotPosts=res.data

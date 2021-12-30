@@ -88,6 +88,7 @@ export default {
       postComment(dt).then(
           res=>{
             console.log(res.status)
+            this.$message.success('发布成功')
           }
       );
       console.log("md",this.editorContent)

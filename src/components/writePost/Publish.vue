@@ -2,7 +2,7 @@
   <div>
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="发帖子" name="first">
-        <el-card class="box-card" style="margin: 0 auto;height: 630px">
+        <el-card class="box-card" style="margin: 0 auto;height: 930px">
           <el-input class="tltleinput"
             placeholder="请输入标题（20字以内）"
             v-model="title"
@@ -44,10 +44,6 @@
           </el-card>
           <el-button type="primary" style="float: right;margin-top:30px;margin-right:145px" @click="PublishButton">确定发布</el-button>
         </el-card>
-
-      <span>{{editorContent}}</span>
-      <span>{{title}}</span>
-      <span>{{value}}</span>
    </el-tab-pane>
       <el-tab-pane label="发视频" name="second">
         <!-- 发布视频功能 -->
@@ -178,7 +174,7 @@ export default {
               text: this.editorContent,
               userId: this.userId,
             })
-            
+
             await this.$axios
                 .post('http://121.5.137.205:8081/api/post/EnterZone',
                     {
