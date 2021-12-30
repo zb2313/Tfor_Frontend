@@ -201,7 +201,7 @@ export default {
 
     },
     sendVerifyCodeLogin() {
-      if (this.loginType == "1") {
+      if (this.loginType == "2") {
         getVerifyCodeE(this.param.sendVerify);
       } else {
         getVerifyCodeT(this.param.sendVerify);
