@@ -8,7 +8,7 @@
 
 
 <script>
-import ScrollTop from "@/components/ScrollTop.vue";
+// import ScrollTop from "@/components/ScrollTop.vue";
 export default {
   provide(){
     return{
@@ -21,7 +21,7 @@ export default {
     }
   },
   components: {
-    "scroll-top": ScrollTop
+    // "scroll-top": ScrollTop
   },
   methods:{
     reload(){

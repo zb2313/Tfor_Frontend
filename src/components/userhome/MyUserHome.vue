@@ -380,7 +380,6 @@ export default {
             res
           }
       )
-
       // 获取用户基本信息
       await getInfoNeedAuth(this.userForm.userId).then(
           res => {

@@ -4,7 +4,7 @@
       <el-scrollbar style="height: 600px">
         <div v-for="(post,index) in this.postInfo" :key="post.postId" class="postItem">
           <transition name="el-zoom-in-center">
-            <el-card shadow="hover" v-show="postShow">
+            <el-card shadow="hover" v-show="postShow" @click.native="showPost">
               <div class="clearfix" style="text-align: left">
                 <span class="postNum">{{ post.userId }}</span>
                 <el-divider direction="vertical"></el-divider>
@@ -32,6 +32,7 @@
                   <img :src="likeSrc2" style="width: 24px"/>
                   <span class="likeNum">{{ post.likeNum }}</span>
                 </el-button>
+                <span style="float: right;" v-if="post.label != 'Normal'">{{post.label}} </span>
               </div>
             </el-card>
           </transition>
@@ -65,8 +66,6 @@ export default {
     computedSearchInfo() {
       return this.searchInfo
     }
-
-
   },
   watch: {
     zoneInfo1() {
@@ -274,6 +273,10 @@ export default {
             }
           }
       )
+    },
+    showPost(){
+      console.log("ffff")
+
     }
   },
 
