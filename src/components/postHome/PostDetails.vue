@@ -68,7 +68,7 @@
         <ul>
           <li v-for="dt in comments" :key="dt">
             <el-avatar :src="dt.img"></el-avatar>
-            uid:{{dt.userId}}<br>
+            <span style="color: blue">{{dt.name}}</span><br>
             {{dt.text}}<br>
             {{dt.lastEditTime}}<br>
             <el-button style="font-size: 12px" type="text" class="el-icon-s-opportunity" @click="likePostI">点赞</el-button>
@@ -100,7 +100,7 @@
     </el-row><br>
     <el-row>
       <el-card style="text-align: left">
-        <span>校园热搜热帖</span>
+        <span style="color: red">校园热搜热帖</span>
         <ul>
           <li v-for="dt in hotPosts.data" :key="dt">
             uid:{{dt.userId}}<br>
@@ -122,7 +122,7 @@ import vComment from "../writePost/Comment";
 import {getbyPostId, getRankByDay,getCommentPost} from "../../api/zoneApi";
 import {likePost,collectPost,reportPost} from "../../api/actionapi";
 import {getPostImgs} from "../../api/obsApi";
-import {getUserImg} from "../../api/UserInfo";
+import {getUserImg,getUserInfo} from "../../api/UserInfo";
 import {followUser} from "../../api/actionapi";
 export default {
   name: "PostDetails",
@@ -188,12 +188,15 @@ export default {
               console.log('co',this.comments[i])
             }
         )
-
+        getUserInfo(id).then(
+            res=>{
+              this.$set(this.comments[i],'name',res.data.data.userName)
+              console.log('co',this.comments[i])
+            }
+        )
       }
     },
-    getCommentName(){
 
-    },
     async getData(){
       localStorage.setItem('fatherid',this.postID)
       await getbyPostId(this.postID).then(
