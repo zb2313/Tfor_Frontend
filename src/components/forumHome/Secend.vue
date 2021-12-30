@@ -4,11 +4,14 @@
       <el-scrollbar style="height: 600px">
         <div v-for="(post,index) in this.postInfo" :key="post.postId" class="postItem">
           <transition name="el-zoom-in-center">
-            <el-card shadow="hover" v-show="postShow" @click.native="showPost(post.postId)">
+            <el-card shadow="hover" v-show="postShow">
               <div class="clearfix" style="text-align: left">
                 <span class="postNum">{{ post.userId }}</span>
                 <el-divider direction="vertical"></el-divider>
-                <span style="margin-left: 15px">{{ post.postTitle }}</span>
+<!--                <span style="margin-left: 15px">{{ post.postTitle }}</span>-->
+                <el-button @click="showPost(post.postId) " type="text" style="padding:0px;font-size: 18px;color: #606266">
+                  {{post.postTitle}}
+                </el-button>
 
                 <el-button style="float: right; padding: 0px 5px 0 5px; margin: 0" type="text"
                            @click="reportPost(index)">

@@ -174,6 +174,7 @@ export default {
       this.reFresh()
     },
     async getData(){
+      localStorage.setItem('fatherid',this.postID)
       await getbyPostId(this.postID).then(
           res=>{
             this.postInfo=res.data.data;
@@ -189,7 +190,7 @@ export default {
 
       getPostImgs(this.postID).then(
           res=>{
-            localStorage.setItem('fatherid',this.postID)
+
             this.imgs=res.data.data
             console.log('帖子图片',this.imgs)
           }
@@ -206,6 +207,7 @@ export default {
             console.log('热帖',res.data.data)
           }
       )
+
     }
   },
   created() {
