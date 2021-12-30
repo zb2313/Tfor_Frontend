@@ -1,5 +1,9 @@
 <template>
-  <div id="forumhome">
+  <div id="forumhome" :style="{
+      backgroundImage: 'url(' + bgTop + ')',
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+    }">
     <Top v-bind:zoneInfo2="zoneInfo2" v-bind:zoneInfo1="zoneInfo1" v-bind:searchInfo="searchInfo"
          @chooseZone="chooseZone" @passSearchInfo="passSearchInfo"/>
     <Secend
@@ -40,6 +44,7 @@ export default {
       zoneInfo1: 99, //需要传递的值
       zoneInfo2: 99,
       searchInfo: "nullsearchINfo",
+      bgTop:require("@/assets/bgTop2.jpg"),
     }
   },
   components: {
