@@ -12,9 +12,9 @@ export const likePost = (contentId) => {
 
 
 export const reportPost = (contentId) => {
-    let url = baseurl + "reportPost?contentId=" + contentId
+    let url = "http://121.5.137.205:8081/api/view/reportPost/" + contentId
     console.log(url)
-    return axios.put(
+    return axios.get(
         `${url}`
     )
 };
