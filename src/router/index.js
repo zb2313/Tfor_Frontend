@@ -47,11 +47,11 @@ const routes = [
     name:'Comment',
     component:()=>import('../components/writePost/Comment')
   },
-  {
-    path:'/admin',
-    name:'admin',
-    component:()=>import('../components/admin/admin')
-  }
+  // {
+  //   path:'/admin',
+  //   name:'admin',
+  //   component:()=>import('../components/admin/admin')
+  // }
 ];
 
 const router = new VueRouter({

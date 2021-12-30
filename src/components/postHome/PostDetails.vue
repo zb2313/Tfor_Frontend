@@ -23,8 +23,8 @@
 <!--          <img :src="this.userImage" height="70" width="70" style="float: left">-->
           <el-avatar :src="this.userImage" :size="40" fit="cover" style="float: left"></el-avatar>
           <div style="float: left">
-            <span style="font-size:20px;color: #2d8cf0">{{this.posterName}} &nbsp;</span>
-            <span style="font-size: 18px">2001-01-21</span>
+            <span style="font-size:20px;color: #2d8cf0">{{this.postInfo.userId}} &nbsp;</span>
+            <span style="font-size: 14px">{{this.postInfo.lastEditTime}}</span>
           </div><br><br><br><br>
          <p style="text-align: left">
            {{this.postInfo.text}}
@@ -51,17 +51,19 @@
         <el-button @click="reportPostI">提交举报</el-button>
       </el-dialog>
 
-      <el-card style="text-align: left">
-         <span style="font-size: 15px">高赞评论</span>
-        <el-divider></el-divider>
-      </el-card><br>
+<!--      <el-card style="text-align: left">-->
+<!--         <span style="font-size: 15px">高赞评论</span>-->
+<!--        <el-divider></el-divider>-->
+<!--      </el-card><br>-->
 
       <el-card style="text-align: left">
         <span style="font-size: 15px">全部评论</span>
         <el-divider></el-divider>
         <ul>
           <li v-for="dt in comments" :key="dt">
-            {{dt}}
+            uid:{{dt.userId}}<br>
+            {{dt.text}}<br>
+            {{dt.lastEditTime}}
             <el-divider></el-divider>
           </li>
 
@@ -118,7 +120,7 @@ export default {
       posterName:"XZB",
       likeNum:20,
       browserNum:"",
-      userImage:"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F835b18517ae5b7a2aeea97b1ea9d25938914b5fc.jpg&refer=http%3A%2F%2Fi0.hdslb.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642906832&t=a2046029eaae51ec5bc6173b8e883bab",
+      userImage:"" ,
       postTime:"",
       postID:"",
 
