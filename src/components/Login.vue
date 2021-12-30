@@ -253,6 +253,7 @@ export default {
                 return;
               } else {
                 localStorage.setItem("token", response.data.data.token);
+
                 localStorage.setItem("username", this.param.userid);
                 this.$message.success("登录成功");
                 this.$router.push('/');
