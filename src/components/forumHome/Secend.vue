@@ -1,28 +1,32 @@
 <template>
   <div class="postList">
-    <el-scrollbar style="height: 700px">
+    <el-scrollbar style="height: 600px">
       <div v-for="(post,index) in this.postInfo" :key="post.postId" class="postItem">
         <transition name="el-zoom-in-center">
           <el-card shadow="hover" v-show="postShow">
             <div class="clearfix" style="text-align: left">
-              <span class="postNum">{{ post.postId }}</span>
+              <span class="postNum">{{ post.userId}}</span>
               <el-divider direction="vertical"></el-divider>
               <span style="margin-left: 15px">{{ post.postTitle }}</span>
 
-              <el-button style="float: right; padding: 0px 5px 0 5px; margin: 0" type="text" @click="likePost" >
+              <el-button style="float: right; padding: 0px 5px 0 5px; margin: 0" type="text" @click="reportPost(index)">
                 <img :src="reportSrc" style="width: 24px"/>
               </el-button>
-              <el-button style="float: right; padding: 0px 5px 0 5px; margin: 0 " type="text" @click="collectPost(index)" v-show="collectindex[index]">
+              <el-button style="float: right; padding: 0px 5px 0 5px; margin: 0 " type="text"
+                         @click="collectPost(index)" v-show="collectindex[index]">
                 <img :src="collectSrc1" style="width: 24px"/>
               </el-button>
-              <el-button style="float: right; padding: 0px 5px 0 5px; margin: 0 " type="text" @click="collectPost(index)" v-show="!collectindex[index]">
+              <el-button style="float: right; padding: 0px 5px 0 5px; margin: 0 " type="text"
+                         @click="collectPost(index)" v-show="!collectindex[index]">
                 <img :src="collectSrc2" style="width: 24px"/>
               </el-button>
-              <el-button style="float: right; padding: 0px 5px 5px 5px; width: 50px" type="text" @click="likePost(index)" v-show="likeindex[index]">
+              <el-button style="float: right; padding: 0px 5px 5px 5px; width: 50px" type="text"
+                         @click="likePost(index)" v-show="likeindex[index]">
                 <img :src="likeSrc1" style="width: 24px"/>
                 <span class="likeNum">{{ post.likeNum }}</span>
               </el-button>
-              <el-button style="float: right; padding: 0px 5px 5px 5px; width: 50px" type="text" @click="likePost(index)" v-show="!likeindex[index]">
+              <el-button style="float: right; padding: 0px 5px 5px 5px; width: 50px" type="text"
+                         @click="likePost(index)" v-show="!likeindex[index]">
                 <img :src="likeSrc2" style="width: 24px"/>
                 <span class="likeNum">{{ post.likeNum }}</span>
               </el-button>
@@ -37,6 +41,7 @@
 </template>
 <script>
 import {getRankByDay, getRecommandByUserId, getPostByZoneId, getPostBySearch} from "@/api/zoneApi";
+import {likePost, collectPost, cancelCollectPost, reportPost, followZone} from "@/api/actionapi";
 
 export default {
   props: {
@@ -68,6 +73,7 @@ export default {
     },
     zoneInfo2() {
       this.changePostData();
+      this.followZoneNoti();
     },
     searchInfo() {
       this.searchInfoChanged();
@@ -84,6 +90,7 @@ export default {
       reportSrc: require("@/assets/report.png"),
       likeindex: [],
       collectindex: [],
+      userId: "2"
     };
   },
   async created() {
@@ -97,18 +104,73 @@ export default {
           }
         }
     )
-    console.log(this.computedInfo1)
-    console.log(this.computedInfo2)
+    // console.log(this.computedInfo1)
+    // console.log(this.computedInfo2)
   },
   methods: {
-    likePost(index) {
-      this.$set(this.likeindex, index, !this.likeindex[index])
+    async likePost(index) {
+      if (this.likeindex[index] == true) {
+        this.$set(this.likeindex, index, !this.likeindex[index])
+        await likePost(this.postInfo[index].postId).then(
+            res => {
+              if (res.data.code == 200) {
+                this.$notify({
+                  title: '点赞成功',
+                  message: '感谢您的支持',
+                  position: 'top-left',
+                  type: 'success'
+                });
+              }
+            }
+        )
+        this.postInfo[index].likeNum++
+      }
     },
-    collectPost(index) {
-      this.$set(this.collectindex, index, !this.collectindex[index])
+    async collectPost(index) {
+      if (this.collectindex[index] == true) {
+        this.$set(this.collectindex, index, !this.collectindex[index])
+        let data = {
+          contentId: this.postInfo[index].postId,
+          userId: this.userId,
+        }
+        await collectPost(data).then(
+            res => {
+              if (res.data.code == 200) {
+                this.$notify({
+                  title: '收藏成功',
+                  position: 'top-left',
+                  type: 'success'
+                });
+              }
+            }
+        )
+      } else {
+        this.$set(this.collectindex, index, !this.collectindex[index])
+        await cancelCollectPost(this.userId, this.postInfo[index].postId).then(
+            res => {
+              if (res.data.code == 200) {
+                this.$notify({
+                  title: '取消收藏',
+                  position: 'top-left',
+                  type: 'info'
+                });
+              }
+            }
+        )
+      }
     },
-    reportPost() {
-
+    async reportPost(index) {
+      await reportPost(this.postInfo[index].postId).then(
+          res => {
+            if (res.data.code == 200) {
+              this.$notify({
+                title: '举报成功',
+                position: 'top-left',
+                type: 'warning'
+              });
+            }
+          }
+      )
     },
     showpost() {
       this.postShow = true;
@@ -173,7 +235,45 @@ export default {
       }
       this.showpost()
     },
+    followZoneNoti() {
+      if (this.computedInfo1 == 3) {
+        const h = this.$createElement
+        this.$notify({
+          title: '      ',
+          message: h('p', null, [
+            h('el-button', {
+              on: {click: this.followZone},
+              style: {float: "right"},
+              attrs: {
+                size: "medium",
+                type: "primary"
+              },
+            }, '关注该分区'),
+          ]),
+          offset: 100,
+          button: this.showpost(),
+        });
+      }
+    },
+    async followZone() {
+      let data = {
+        userId: this.userId,
+        zoneId: this.computedInfo2,
+      }
+      await followZone(data).then(
+          res => {
+            if (res.data.code == 200) {
+              this.$message({
+                message: '关注成功',
+                type: 'success',
+                duration: 1000,
+              });
+            }
+          }
+      )
+    }
   },
+
 };
 
 </script>
@@ -186,16 +286,18 @@ export default {
 .subtitle {
   text-align: right;
 }
-.postList{
+
+.postList {
   /*height: 800px;*/
 }
+
 .postItem {
   padding-top: 10px;
 }
 
 .postNum {
   float: left;
-  width: 60px;
+  min-width: 80px;
   margin-inline: 10px;
   font-size: 1.2em;
   font-family: 'Arial Black', arial-black, 'Helvetica Black', helvetica-black, Sans-serif;
@@ -205,6 +307,7 @@ export default {
 .likeNum {
   color: #CE5A5A;
 }
+
 /deep/ .el-scrollbar__wrap {
   overflow-x: hidden;
 }

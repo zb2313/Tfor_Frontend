@@ -20,7 +20,6 @@ const routes = [
     name: "loginbackstage",
     component: () => import("../components/backstagehome/LoginBackStage.vue")
   },
-
   {
     path: "/backstagehome",
     component: () => import("../components/backstagehome/BackStageHome.vue"),
@@ -46,6 +45,10 @@ const routes = [
     path: "/userhome",
     // meta: { requireAuth: true },
     component: () => import("../components/userhome/MyUserHome")
+  },
+  {
+    path: "/writePost",
+    component: () => import("../components/writePost/Publish")
   },
   {
     path: "/allarticlehome",

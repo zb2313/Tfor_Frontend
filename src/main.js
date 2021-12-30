@@ -21,6 +21,7 @@ Vue.use(Buefy);
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
 Vue.use(VueAxios, axios);
+Vue.prototype.$axios = axios;
 
 new Vue({
   router,

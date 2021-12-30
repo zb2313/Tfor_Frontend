@@ -47,22 +47,25 @@
               <el-scrollbar> <!-- 滚动条 -->
                 <div v-for="(person) in this.followingList" :key="person.userId" class="postItem">
                   <transition name="el-zoom-in-center">
-                    <el-card shadow="hover" style="margin-top: 15px" >
+                    <el-card shadow="hover" style="margin-top: 15px">
                       <div class="clearfix" style="text-align: left;">
                         <el-row>
                           <el-col :span="3">
                             <span class="postNum">{{ person.userId }}</span>
                           </el-col>
                           <el-col :span="2">
-                            <el-avatar :src="person.userImage" :size="40" fit="cover" ></el-avatar>
+                            <el-avatar :src="person.userImage" :size="40" fit="cover"></el-avatar>
                           </el-col>
                           <el-col :span="1">
                             <i class="el-icon-male" v-if="person.userGender == 1"></i>
                             <i class="el-icon-female" v-else=""></i>
                           </el-col>
                           <el-col :span="3" :offset="-3">
-                            <span style="margin-left: 15px">{{person.userName}}</span>
+                            <span style="margin-left: 15px">{{ person.userName }}</span>
                           </el-col>
+                          <el-button style="float: right" @click="cancelFollow(person.userId)">
+                            取消关注
+                          </el-button>
                         </el-row>
                       </div>
                     </el-card>
@@ -82,6 +85,9 @@
                         <span class="postNum">{{ post.contentId }}</span>
                         <el-divider direction="vertical"></el-divider>
                         <span style="margin-left: 15px">{{ post.postTitle }}</span>
+                        <el-button style="float: right;padding-top: 5px;padding-bottom: 5px" size="small"
+                                   icon="el-icon-delete" @click="cancelCollect(post.contentId)">
+                        </el-button>
                       </div>
                     </el-card>
                   </transition>
@@ -95,15 +101,19 @@
               <el-scrollbar> <!-- 滚动条 -->
                 <div v-for="(zone) in this.zoneList" :key="zone.zoneId" class="postItem">
                   <transition name="el-zoom-in-center">
-                    <el-card class="box-card" style="text-align: left; width:60%; margin-inline: 10%;margin-top: 20px;padding: 0px 15px">
+                    <el-card class="box-card"
+                             style="text-align: left; width:60%; margin-inline: 10%;margin-top: 20px;padding: 0px 15px">
                       <div slot="header" class="clearfix">
-                        <span>{{zone.zoneName}}</span>
+                        <span>{{ zone.zoneName }}</span>
+                        <el-button style="float: right; padding: 3px 0" type="text" @click="cancelFollowZ(zone.zoneId)">
+                          取消关注
+                        </el-button>
                       </div>
                       <div class="text item">
-                        帖子数量：{{zone.postNum}}
+                        帖子数量：{{ zone.postNum }}
                       </div>
                       <div class="text item">
-                        关注人数：{{zone.postNum}}
+                        关注人数：{{ zone.postNum }}
                       </div>
                     </el-card>
                   </transition>
@@ -122,6 +132,9 @@
                         <span class="postNum">{{ post.contentId }}</span>
                         <el-divider direction="vertical"></el-divider>
                         <span style="margin-left: 15px">{{ post.postTitle }}</span>
+                        <el-button style="float: right;padding-top: 5px;padding-bottom: 5px" size="small"
+                                   icon="el-icon-delete" @click="delePost(post.contentId)">
+                        </el-button>
                       </div>
                     </el-card>
                   </transition>
@@ -129,24 +142,24 @@
               </el-scrollbar><!-- /滚动条 -->
             </div>
           </el-tab-pane>
-          <el-tab-pane>
-            <span slot="label"><i class="el-icon-edit"></i> 我的评论</span>
-            <div class="postList">
-              <el-scrollbar> <!-- 滚动条 -->
-                <div v-for="(post) in 20" :key="post.postId" class="postItem">
-                  <transition name="el-zoom-in-center">
-                    <el-card shadow="hover">
-                      <div class="clearfix" style="text-align: left">
-                        <span class="postNum">{{ post }}</span>
-                        <el-divider direction="vertical"></el-divider>
-                        <span style="margin-left: 15px">{{ post }}</span>
-                      </div>
-                    </el-card>
-                  </transition>
-                </div>
-              </el-scrollbar><!-- /滚动条 -->
-            </div>
-          </el-tab-pane>
+<!--          <el-tab-pane>-->
+<!--            <span slot="label"><i class="el-icon-edit"></i> 我的评论</span>-->
+<!--            <div class="postList">-->
+<!--              <el-scrollbar> &lt;!&ndash; 滚动条 &ndash;&gt;-->
+<!--                <div v-for="(post) in 20" :key="post.postId" class="postItem">-->
+<!--                  <transition name="el-zoom-in-center">-->
+<!--                    <el-card shadow="hover">-->
+<!--                      <div class="clearfix" style="text-align: left">-->
+<!--                        <span class="postNum">{{ post }}</span>-->
+<!--                        <el-divider direction="vertical"></el-divider>-->
+<!--                        <span style="margin-left: 15px">{{ post }}</span>-->
+<!--                      </div>-->
+<!--                    </el-card>-->
+<!--                  </transition>-->
+<!--                </div>-->
+<!--              </el-scrollbar>&lt;!&ndash; /滚动条 &ndash;&gt;-->
+<!--            </div>-->
+<!--          </el-tab-pane>-->
         </el-tabs>
       </div>
     </div>
@@ -193,8 +206,6 @@
     <el-button type="primary" @click="modifyUser">确认修改</el-button>
   </span>
     </el-dialog>
-
-
     <el-dialog
         title="编辑邮箱"
         :visible.sync="dialogEmailVisible"
@@ -294,6 +305,9 @@ import {
   getPostList,
 } from "@/api/UserInfo"
 import {getUploadAuth} from "@/api/obsApi"
+// eslint-disable-next-line no-unused-vars
+import {cancelFollowUser, cancelCollectPost, cancelFollowZone} from "@/api/actionapi"
+import {deleteContent} from "@/api/postApi"
 
 export default {
   name: "MyUserHome",
@@ -338,19 +352,19 @@ export default {
         requestURL: "",
         policy: "",
       },
-      followingList:[
-        {userid:"", userName:"dddf",userGender: ""}
+      followingList: [
+        {userid: "", userName: "dddf", userGender: ""}
       ],
-      collectionList:[],
-      zoneList:[],
-      writePostList:[],
+      collectionList: [],
+      zoneList: [],
+      writePostList: [],
     }
   },
   created() {
     this.getData()
   },
   methods: {
-    async getData(){
+    async getData() {
       await getUserImg(this.userForm.userId).then(
           res => {
             // console.log(res.data.data)
@@ -398,7 +412,7 @@ export default {
           }
       )
 
-      for(var i in this.followingList) {
+      for (var i in this.followingList) {
         await getUserImg(this.followingList[i].userId).then(
             res => {
               this.followingList[i].userImage = res.data.data
@@ -552,6 +566,55 @@ export default {
       console.log(this.uploadForm)
       this.uploadVisble = true;
     },
+    async cancelFollow(followId) {
+      await cancelFollowUser(this.userForm.userId, followId).then(
+          res => {
+            if (res.data.code == 200) {
+              this.$message({
+                message: '取关成功',
+                type: 'info'
+              });
+            }
+          }
+      )
+    },
+    async cancelCollect(postId) {
+      await cancelCollectPost(this.userForm.userId, postId).then(
+          res => {
+
+            if (res.data.code == 200) {
+              this.$message({
+                message: '取消收藏成功',
+                type: 'info'
+              });
+            }
+          }
+      )
+    },
+    async cancelFollowZ(zoneId) {
+      await cancelFollowZone(this.userForm.userId, zoneId).then(
+          res => {
+            if (res.data.code == 200) {
+              this.$message({
+                message: '取消关注成功',
+                type: 'info'
+              });
+            }
+          }
+      )
+    },
+    async delePost(contentId) {
+      await deleteContent(contentId).then(
+          res => {
+            if (res.data.code == 200) {
+              this.$message({
+                message: '删除成功',
+                type: 'info'
+              });
+            }
+          }
+      )
+    },
     handleClose(done) {
       this.$confirm('确认关闭？')
           // eslint-disable-next-line no-unused-vars
@@ -569,11 +632,12 @@ export default {
         }, 2000);
       })
     },
-    debug(data){
-      console.log(data)
-      console.log(123)
+    debug() {
+      this.$message({
+        message: '恭喜你，这是一条成功消息',
+        type: 'success'
+      });
     }
-
   },
 }
 </script>

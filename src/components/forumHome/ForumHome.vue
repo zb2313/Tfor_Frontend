@@ -4,7 +4,7 @@
          @chooseZone="chooseZone" @passSearchInfo="passSearchInfo"/>
     <Secend
         v-bind:zoneInfo2="zoneInfo2" v-bind:zoneInfo1="zoneInfo1" v-bind:searchInfo="searchInfo"
-        style="margin: 10px 150px 20px 150px;"/>
+        style="margin: 10px 20% 20px 20%;"/>
     <Tiles/>
 
     <!--    <SecendTiles/>-->
@@ -20,7 +20,8 @@ Secend {
 Footer {
   width: 100%;
   position: absolute;
-  bottom: 0
+  bottom: 0;
+  padding: 10px;
 }
 </style>
 

@@ -88,11 +88,20 @@
             </div>
           </div>
         </div>
-
-        <div v-else-if="!$store.state.isLogin" style="padding: 5px 5px 0px 0px;" @click="userInfo">
-          <el-avatar  :src="userImg" :size="50" fit="cover"></el-avatar>
+        <div v-show="!$store.state.isLogin" style="padding: 10px 10px">
+          <el-button icon="el-icon-edit" size="medium" @click="writePost">
+            发布帖子
+          </el-button>
         </div>
-        <div class="navbar-item" v-else-if="!$store.state.isLogin">
+        <div v-show="!$store.state.isLogin" style="padding: 5px 5px 0px 0px;" @click="userInfo">
+            <el-dropdown>
+              <el-avatar :src="userImg" :size="50" fit="cover"></el-avatar>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item icon="el-icon-right" >登出</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+        </div>
+        <div class="navbar-item" v-show="$store.state.isLogin">
           <div>
             <i class="far fa-address-card">{{ $store.state.user.userName }}</i>
           </div>
@@ -100,6 +109,7 @@
             <i class="fas fa-sign-out-alt">登出</i>
           </div>
         </div>
+
       </div>
     </div>
   </nav>
@@ -236,6 +246,7 @@ export default {
       zoneinfo: [],
       inputSearchInfo: '',
       userImg: "",
+      userId: "2",
       // userImg: "https://tfor.obs.cn-east-3.myhuaweicloud.com/test/test4.jpg?AccessKeyId=JDOPVQVKTYEJUXZXODLK&Expires=1640431507&Signature=/S44qAvSJrrdZEtAPiIfuxoiYzw%3D"
 
     };
@@ -245,22 +256,20 @@ export default {
     console.log(this.childSearchInfo)
     getAllZone().then(
         res => {
-
           for (var i in res.data.data) {
             this.zoneinfo.push(res.data.data[i])
           }
-          console.log(this.zoneinfo)
+          // console.log(this.zoneinfo)
         }
     )
 
-    getUserImg(1950072).then(
+    getUserImg(this.userId).then(
         res => {
           console.log(res.data.data)
           // this.userImg = "https://tfor.obs.cn-east-3.myhuaweicloud.com/profile/2?AccessKeyId=JDOPVQVKTYEJUXZXODLK&Expires=1640487882&Signature=PbRFpQULBBx0WZnsRa21BdGhYLI%3D"
           this.userImg = res.data.data
         }
     )
-
 
 
   },
@@ -306,6 +315,9 @@ export default {
     },
     userInfo() {
       this.$router.push("/userhome");
+    },
+    writePost() {
+      this.$router.push("/writePost")
     }
   }
 };

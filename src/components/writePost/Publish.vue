@@ -76,6 +76,7 @@
 import axios from "axios";
 import E from "wangeditor";
 axios.defaults.baseURL = "";
+import {getUploadAuth} from "@/api/obsApi"
 export default {
   name: "pulishNav",
   props: ['catchData'], // 接收父组件的方法
@@ -137,7 +138,7 @@ export default {
       this.$axios
       .get('http://121.5.137.205:8081/api/obs/getPostImageUrls?contentId='+this.contentId)
       .then((res)=>{
-        for(let i=0;i<res.data.data.length;i++)
+        for(var i in res.data.data)
         {
           this.filelist[i]=res.data.data[i]
         }
@@ -168,20 +169,12 @@ export default {
             this.$axios
             .post('http://121.5.137.205:8081/api/post/postContent',
             {
-              "contentId":this.contentId,
-              "lastEditTime": {
-                "date":this.day,
-                "hours": this.hours,
-                "minutes": this.minutes,
-                "month": this.month,
-                "seconds": this.seconds,
-                "year": this.year
-              },
-              "likeNum": 0,
-              "postTitle": this.title,
-              "reportNum": 0,
-              "text": this.editorContent,
-              "userId": 1950072,
+              contentId:this.contentId,
+              likeNum: 0,
+              postTitle: this.title,
+              reportNum: 0,
+              text: this.editorContent,
+              userId: 1950072,
             }).then((res)=>{
               if(res.status==200)
               {
@@ -244,15 +237,23 @@ export default {
         'lineHeight',
     ]
     this.editor.create(); // 创建富文本实例
-    this.$axios
-    .get('http://121.5.137.205:8081/api/obs/getUploadAuth')
-    .then((res)=>{
-      console.log("rs:",res.data)
-      this.AccessKeyId=res.data.data.accessKey
-      this.policy=res.data.data.policy
-      this.signature=res.data.data.signature
-      console.log("A:",this.AccessKeyId)
-    })
+    // this.$axios
+    // .get('http://121.5.137.205:8081/api/obs/getUploadAuth')
+    // .then((res)=>{
+    //   console.log("rs:",res.data)
+    //   this.AccessKeyId=res.data.data.accessKey
+    //   this.policy=res.data.data.policy
+    //   this.signature=res.data.data.signature
+    //   console.log("A:",this.AccessKeyId)
+    // })
+    getUploadAuth().then(
+        res => {
+          console.log(res.data)
+          this.AccessKeyId = res.data.data.accessKey
+          this.signature = res.data.data.signature
+          this.policy = res.data.data.policy
+        }
+    )
     this.gettime()
   },
 }
