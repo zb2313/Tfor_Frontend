@@ -64,7 +64,9 @@
           <li v-for="dt in comments" :key="dt">
             uid:{{dt.userId}}<br>
             {{dt.text}}<br>
-            {{dt.lastEditTime}}
+            {{dt.lastEditTime}}<br>
+            <el-button style="font-size: 12px" type="text" class="el-icon-s-opportunity" @click="likePostI">点赞</el-button>
+            <el-button style="font-size: 12px" type="text" class="el-icon-tickets">评论</el-button>
             <el-divider></el-divider>
           </li>
 
@@ -185,20 +187,20 @@ export default {
           }
       );
 
-      await getPostImgs(this.postID).then(
+      getPostImgs(this.postID).then(
           res=>{
             localStorage.setItem('fatherid',this.postID)
             this.imgs=res.data.data
             console.log('帖子图片',this.imgs)
           }
       )
-      await getCommentPost(this.postID).then(
+      getCommentPost(this.postID).then(
           res=>{
             this.comments=res.data.data
             console.log('评论',res.data)
           }
       )
-      await getRankByDay(5).then(
+      getRankByDay(5).then(
           res=>{
             this.hotPosts=res.data
             console.log('热帖',res.data.data)
