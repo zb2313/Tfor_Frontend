@@ -40,7 +40,7 @@
               <input name="submit" style="display:flex" value="Upload" type="submit" class="input_s" @click="confirmed" />
           </el-form>
           <el-card v-for="(item,index) in filelist" :key="index" class="picard" >
-              <img :src="filelist[index]" style="width:50px;height:50px;display:float;flex-direction:row;">
+              <img :src="filelist[index]" style="width:50px;height:50px;display:flex;flex-direction:row;">
           </el-card>
         </el-card>
       <el-button type="primary" style="float: right;margin-top:30px;margin-right:145px" @click="PublishButton">确定发布</el-button>
@@ -76,7 +76,6 @@
 import axios from "axios";
 import E from "wangeditor";
 axios.defaults.baseURL = "";
-import VueMarkdown from 'vue-markdown'
 export default {
   name: "pulishNav",
   props: ['catchData'], // 接收父组件的方法
@@ -125,7 +124,7 @@ export default {
     };
   },
   components:{
-    VueMarkdown,
+
   },
   methods:{
     confirmed(){
@@ -186,11 +185,11 @@ export default {
             }).then((res)=>{
               if(res.status==200)
               {
-                this.$message({type:success,message:"发布成功"})
+                this.$message({type:'success',message:"发布成功"})
               }
               else
               {
-                this.$message({type:error,message:"发布失败"})
+                this.$message({type:'error',message:"发布失败"})
               }
             })
             this.editor.txt.clear()//最后清空输入框
