@@ -46,21 +46,25 @@ export default {
     },
     PublishButton() {
       this.editorContent=this.editor.txt.text()
-      let date = new Date();
-      let timestamp3 = date.getTime();
+      //let date = new Date();
+      //let timestamp3 = date.getTime();
       let uid=localStorage.getItem("username");
+      if(uid==''){
+        this.$message.warning('请先登录！！！');
+        return
+      }
       let dt={
         commentNum: 0,
-        contentId: timestamp3,
-        fatherContentId: this.fatherId,
-        fatherType: this.fatherType,
+        contentId: 12,
+        fatherContentId: 14,
+        fatherType: 1,
         label: "",
         likeNum: 0,
         picture: "",
         reportNum: 0,
         reviewState: "",
         text: this.editorContent,
-        userId: uid
+        userId: 5
       }
       postComment(dt).then(
           res=>{

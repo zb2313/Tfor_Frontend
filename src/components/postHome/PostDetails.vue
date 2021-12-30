@@ -59,6 +59,13 @@
       <el-card style="text-align: left">
         <span style="font-size: 15px">全部评论</span>
         <el-divider></el-divider>
+        <ul>
+          <li v-for="dt in comments" :key="dt">
+            {{dt}}
+            <el-divider></el-divider>
+          </li>
+
+        </ul>
       </el-card><br>
 
       <el-card style="text-align: left">
