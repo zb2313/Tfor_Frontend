@@ -111,13 +111,13 @@ export default {
             value: 1,
             label: '考研专区'
           }, {
-            value: 2,
+            value: 3,
             label: '二手市场'
           }]
         }, {
           label: '分区目录',
           options: [{
-            value: 3,
+            value: 2,
             label: '吃喝玩乐'
           }, {
             value: 4,
