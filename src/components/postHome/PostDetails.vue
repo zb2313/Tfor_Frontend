@@ -16,7 +16,7 @@
       <div style="text-align: left">
        <span style="margin-left: 0px;font-size:28px;font-weight: bolder">{{this.postInfo.postTitle}}</span>&nbsp;
         <span>{{this.postInfo.commentNum}}评论/ {{this.postInfo.likeNum}} 点赞/ 500浏览</span>
-        <el-button style="float: right" type="text" @click="followUser(this.postInfo.userId)">关注发帖人</el-button>
+        <el-button style="float: right" type="text" @click="follow">关注发帖人</el-button>
         <el-divider></el-divider>
       </div>
 
@@ -115,6 +115,7 @@ import {getbyPostId, getRankByDay,getCommentPost} from "../../api/zoneApi";
 import {likePost,collectPost,reportPost} from "../../api/actionapi";
 import {getPostImgs} from "../../api/obsApi";
 import {getUserImg} from "../../api/UserInfo";
+import {followUser} from "../../api/actionapi";
 export default {
   name: "PostDetails",
   components:{
@@ -145,6 +146,11 @@ export default {
     }
   },
   methods:{
+    follow()
+    {
+      followUser(this.postInfo.userId,localStorage.getItem('username'));
+      this.$message.success('关注成功')
+    },
     reFresh(){
       getbyPostId(this.postID).then(
           res=>{
