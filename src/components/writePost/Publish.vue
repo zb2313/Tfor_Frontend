@@ -2,7 +2,7 @@
   <div>
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="发帖子" name="first">
-        <el-card class="box-card">
+        <el-card class="box-card" style="margin: 0 auto;height: 630px">
           <el-input class="tltleinput"
             placeholder="请输入标题（20字以内）"
             v-model="title"
@@ -42,8 +42,9 @@
           <el-card v-for="(item,index) in filelist" :key="index" class="picard" >
               <img :src="filelist[index]" style="width:50px;height:50px;display:flex;flex-direction:row;">
           </el-card>
+          <el-button type="primary" style="float: right;margin-top:30px;margin-right:145px" @click="PublishButton">确定发布</el-button>
         </el-card>
-      <el-button type="primary" style="float: right;margin-top:30px;margin-right:145px" @click="PublishButton">确定发布</el-button>
+
       <span>{{editorContent}}</span>
       <span>{{title}}</span>
       <span>{{value}}</span>
@@ -151,7 +152,7 @@ export default {
       this.day = date.getDate();
       this.hours=date.getHours();
       this.minutes=date.getHours();
-      this.seconds=date.getSeconds(); 
+      this.seconds=date.getSeconds();
       let timestamp3 = date.getTime();
       this.contentId=timestamp3;
     },
