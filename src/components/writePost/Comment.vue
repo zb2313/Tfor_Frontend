@@ -17,7 +17,8 @@ export default {
   name: "Nav",
   props:{
     fatherId:[String,Number],
-    userId:[String,Number]
+    userId:[String,Number],
+    fathertype:[String,Number]
   },
   data() {
     return {
@@ -47,20 +48,25 @@ export default {
       this.editorContent=this.editor.txt.text()
       let date = new Date();
       let timestamp3 = date.getTime();
+      let uid=localStorage.getItem("username");
       let dt={
         commentNum: 0,
         contentId: timestamp3,
         fatherContentId: this.fatherId,
-        fatherType: "post",
+        fatherType: this.fatherType,
         label: "",
         likeNum: 0,
         picture: "",
         reportNum: 0,
         reviewState: "",
         text: this.editorContent,
-        userId: 0
+        userId: uid
       }
-      postComment(dt);
+      postComment(dt).then(
+          res=>{
+            console.log(res.status)
+          }
+      );
       console.log("md",this.editorContent)
       },
   },

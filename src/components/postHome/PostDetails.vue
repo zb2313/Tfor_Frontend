@@ -66,7 +66,8 @@
         <el-divider></el-divider>
         <v-comment
         :father-id.sync="postID"
-        :user-id.sync="postInfo.userId"></v-comment>
+        :user-id.sync="postInfo.userId"
+        :fathertype=1></v-comment>
       </el-card>
     </el-card>
   </div>
