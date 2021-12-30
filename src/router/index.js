@@ -85,6 +85,11 @@ const routes = [
     path:'/PublishPost',
     name:"PublishPost",
     component:()=>import('../components/writePost/Publish')
+  },
+  {
+    path:'/Comment',
+    name:'Comment',
+    component:()=>import('../components/writePost/Comment')
   }
 ];
 

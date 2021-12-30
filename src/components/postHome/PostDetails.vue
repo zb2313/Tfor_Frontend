@@ -1,5 +1,11 @@
 <template>
-  <div>
+  <div :style="{
+    backgroundImage: 'url(' +
+    bcimg
+    + ')',
+    backgroundSize: '50% 200%'
+  }"
+  >
 <el-row>
 <el-col :span="24"><div class="grid-content bg-purple-dark"></div></el-col>
 </el-row>
@@ -8,15 +14,16 @@
   <div class="grid-content bg-purple" >
     <el-card>
       <div style="text-align: left">
-       <span style="margin-left: 0px;font-size:28px;font-weight: bolder">{{this.title}}</span>&nbsp;
-        <span>50评论/ 50点赞/ 500浏览</span>
+       <span style="margin-left: 0px;font-size:28px;font-weight: bolder">{{this.postInfo.postTitle}}</span>&nbsp;
+        <span>{{this.postInfo.commentNum}}评论/ {{this.postInfo.likeNum}} 点赞/ 500浏览</span>
         <el-divider></el-divider>
       </div>
 
       <el-card style="background: #e2e2e2">
-          <img :src="this.userImage" height="70" width="70" style="float: left">
+<!--          <img :src="this.userImage" height="70" width="70" style="float: left">-->
+          <el-avatar :src="this.userImage" :size="40" fit="cover" style="float: left"></el-avatar>
           <div style="float: left">
-            <span style="font-size:24px;color: #2d8cf0">{{this.posterName}} &nbsp;</span>
+            <span style="font-size:20px;color: #2d8cf0">{{this.posterName}} &nbsp;</span>
             <span style="font-size: 18px">2001-01-21</span>
           </div><br><br><br><br>
          <p style="text-align: left">
@@ -57,6 +64,9 @@
       <el-card style="text-align: left">
         <span style="font-size: 15px">发表评论</span>
         <el-divider></el-divider>
+        <v-comment
+        :father-id.sync="postID"
+        :user-id.sync="postInfo.userId"></v-comment>
       </el-card>
     </el-card>
   </div>
@@ -81,13 +91,20 @@
 </template>
 
 <script>
+import vComment from "../writePost/Comment";
 import {getbyPostId, getRankByDay,getCommentPost} from "../../api/zoneApi";
 import {likePost,collectPost,reportPost} from "../../api/actionapi";
 import {getPostImgs} from "../../api/obsApi";
+import {getUserImg} from "../../api/UserInfo";
 export default {
   name: "PostDetails",
+  components:{
+    vComment
+  },
   data(){
     return{
+      bcimg: require("@/assets/scene.jpg"),
+
       title:"标题",
       commentNum:60,
       posterName:"XZB",
@@ -128,33 +145,43 @@ export default {
     reportPostI() {
       reportPost(this.postID);
       this.reFresh()
+    },
+    async getData(){
+      await getbyPostId(this.postID).then(
+          res=>{
+            this.postInfo=res.data.data;
+            console.log(this.postInfo)
+            getUserImg(this.postInfo.userId).then(
+            res=>{
+              this.userImage=res.data.data
+             // console.log('帖子用户头像',res.data)
+            }
+            )
+          }
+      );
+
+      await getPostImgs(this.postID).then(
+          res=>{
+            this.imgs=res.data.data
+            console.log('帖子图片',this.imgs)
+          }
+      )
+      await getCommentPost(this.postID).then(
+          res=>{
+            this.comments=res.data.data
+            console.log('评论',res.data)
+          }
+      )
+      await getRankByDay(10).then(
+          res=>{
+            this.hotPosts=res.data
+            console.log(res.data.data)
+          }
+      )
     }
   },
   created() {
-    getbyPostId(this.postID).then(
-        res=>{
-          this.postInfo=res.data.data;
-          console.log(this.postInfo)
-        }
-    );
-    getPostImgs(this.postID).then(
-        res=>{
-          this.imgs=res.data.data
-          console.log('帖子图片',this.imgs)
-        }
-    )
-    getCommentPost(this.postID).then(
-        res=>{
-          this.comments=res.data.data
-          console.log('评论',res.data)
-        }
-    )
-    getRankByDay(10).then(
-        res=>{
-          this.hotPosts=res.data
-          console.log(res.data.data)
-        }
-    )
+    this.getData()
   }
 }
 </script>

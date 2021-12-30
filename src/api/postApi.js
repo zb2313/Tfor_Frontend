@@ -8,3 +8,10 @@ export const deleteContent = (contentId) => {
         `${url}`
     )
 };
+export const postComment = (data) => {
+    let url = baseurl + "postComment";
+    console.log(url)
+    return axios.post(
+        `${url}`,data
+    )
+};

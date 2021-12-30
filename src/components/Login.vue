@@ -32,7 +32,7 @@
             class="ms-content"
         >
           <el-form-item prop="username">
-            <el-input v-model="param.userid" placeholder="username">
+            <el-input v-model="param.userid" placeholder="userid">
               <template #prepend>
                 <el-button icon="el-icon-user"></el-button>
               </template>
@@ -192,7 +192,19 @@ export default {
         uid:this.param.userid,
         pwd:this.param.password
       }
-      loginPwd(dt);
+      loginPwd(dt).then(
+          response=>{
+            if (response.status == "204") {
+              alert("用户id或验证码输入有误");
+              return;
+            } else {
+              localStorage.setItem("token", response.data);
+              localStorage.setItem("username", this.param.userid);
+              this.$message.success("登录成功");
+              this.$router.push('/');
+            }
+          }
+      );
     },
     Login() {
 

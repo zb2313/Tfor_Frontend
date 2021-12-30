@@ -1,9 +1,9 @@
 <template>
   <div>
     <div id="wangeditor">
-        <div ref="editorElem" style="text-align:left;"></div>
+        <div ref="editorElem" style="text-align:left;width: 660px;height: 320px"></div>
     </div>
-    <el-button type="primary" style="float: right;margin-top:30px;margin-right:145px" @click="PublishButton">确定发布</el-button>
+    <el-button type="primary" style="float: bottom;margin-top:30px;margin-right:145px" @click="PublishButton">确定发布</el-button>
 </div>
 </template>
 
@@ -11,11 +11,14 @@
 // Local Registration
 import axios from "axios";
 import E from "wangeditor";
+import {postComment} from "../../api/postApi";
 axios.defaults.baseURL = "";
-import VDistpicker from 'v-distpicker'
-import VueMarkdown from 'vue-markdown'
 export default {
   name: "Nav",
+  props:{
+    fatherId:[String,Number],
+    userId:[String,Number]
+  },
   data() {
     return {
       editor: null,
@@ -25,25 +28,39 @@ export default {
       year:"",
       seconds:"",
       minutes:"",
-      hours:"",
+      hours:""
     };
   },
   components:{
-    VueMarkdown,
-    VDistpicker
   },
   methods:{
     gettime() {
       let date = new Date();
       this.year = date.getFullYear();
       this.month = date.getMonth() + 1;
-      this,day = date.getDate();
+      this.day = date.getDate();
       this.hours=date.getHours();
       this.minutes=date.getHours();
-      this.seconds=date.getSeconds(); 
+      this.seconds=date.getSeconds();
     },
     PublishButton() {
       this.editorContent=this.editor.txt.text()
+      let date = new Date();
+      let timestamp3 = date.getTime();
+      let dt={
+        commentNum: 0,
+        contentId: timestamp3,
+        fatherContentId: this.fatherId,
+        fatherType: "post",
+        label: "",
+        likeNum: 0,
+        picture: "",
+        reportNum: 0,
+        reviewState: "",
+        text: this.editorContent,
+        userId: 0
+      }
+      postComment(dt);
       console.log("md",this.editorContent)
       },
   },
