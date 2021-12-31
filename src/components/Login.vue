@@ -236,6 +236,11 @@ export default {
         email:this.param.sendVerify,
         verifyCode:this.verifycode
       }
+      let dt2={
+        tel:this.param.sendVerify,
+        verifyCode:this.verifycode
+      }
+
       if (this.loginType == "2") {
         loginEmial(dt).then(
             response=>{
@@ -243,6 +248,7 @@ export default {
                 alert("用户id或验证码输入有误");
                 return;
               } else {
+
                 localStorage.setItem("token", response.data.data.token);
                 localStorage.setItem("username", this.param.userid);
                 this.$message.success("登录成功");
@@ -251,12 +257,14 @@ export default {
             }
         );
       } else {
-        loginTel(dt).then(
+        loginTel(dt2).then(
             response=>{
               if (response.status == "204") {
                 alert("用户id或验证码输入有误");
                 return;
               } else {
+                console.log(response.data)
+                console.log(dt2)
                 localStorage.setItem("token", response.data.data.token);
 
                 localStorage.setItem("username", this.param.userid);
