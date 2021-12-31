@@ -46,6 +46,10 @@
         </el-form>
       </div>
     </div>
+    <el-dialog :visible="dialogVisible" title="注意" style="margin:0 auto;width: 600px">
+      <el-button type="text" @click="dialogVisible=false">关闭</el-button>
+      <p>您的用户ID为：{{userId}} 请小心保存</p>
+    </el-dialog>
   </div>
 </template>
 
@@ -86,6 +90,10 @@ export default {
       mailVerifyStatus: false,
       phoneVerifyStatus: false,
       registerType: "1",
+
+      dialogVisible:false,
+
+      userId:''
     };
   },
   methods: {
@@ -118,7 +126,13 @@ export default {
         'userPwd':this.form.Password,
         'userTel':this.form.tele_NUMBER
       }
-      userRegister(data);
+      userRegister(data).then(
+          res=>{
+            console.log(res.data.data)
+            this.userId=res.data.data
+            this.dialogVisible=true
+          }
+      );
     },
     onCancel() {
       this.$message({
