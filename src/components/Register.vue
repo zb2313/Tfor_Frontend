@@ -127,12 +127,18 @@ export default {
         'userTel':this.form.tele_NUMBER
       }
       userRegister(data).then(
-          res=>{
-            console.log(res.data.data)
-            this.userId=res.data.data
-            this.dialogVisible=true
+          res => {
+            console.log(res)
+            if (res.data.code == 200) {
+              this.$message({
+                message: '注册成功，您的账号Id为' + res.data.data,
+                type: 'success',
+                duration: 0,
+                showClose: true,
+              });
+            }
           }
-      );
+      )
     },
     onCancel() {
       this.$message({

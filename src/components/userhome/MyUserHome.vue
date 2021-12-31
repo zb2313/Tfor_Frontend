@@ -107,12 +107,12 @@
                           取消关注
                         </el-button>
                       </div>
-                      <div class="text item">
-                        帖子数量：{{ zone.postNum }}
-                      </div>
-                      <div class="text item">
-                        关注人数：{{ zone.postNum }}
-                      </div>
+<!--                      <div class="text item">-->
+<!--                        帖子数量：{{ zone.postNum }}-->
+<!--                      </div>-->
+<!--                      <div class="text item">-->
+<!--                        关注人数：{{ zone.postNum }}-->
+<!--                      </div>-->
                     </el-card>
                   </transition>
                 </div>
@@ -327,10 +327,10 @@ export default {
       // 用户信息表
       userForm: {
         userId: 2,
-        userName: "xzb",
+        userName: "null",
         user_gender: "",
-        userEmail: "333@qq.com",
-        userTel: "42343255",
+        userEmail: "null.com",
+        userTel: "000000",
         userPwd: "",
         followingNum: "0",
         followedNum: "0",
@@ -351,7 +351,7 @@ export default {
         policy: "",
       },
       followingList: [
-        {userid: "", userName: "dddf", userGender: ""}
+        {userid: "", userName: "default", userGender: ""}
       ],
       collectionList: [],
       zoneList: [],

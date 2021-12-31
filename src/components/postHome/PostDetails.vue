@@ -156,7 +156,12 @@ export default {
   methods:{
     follow()
     {
-      followUser(this.postInfo.userId,localStorage.getItem('username'));
+      console.log(localStorage.getItem('username'),this.postInfo.userId)
+      let data ={
+        userFollowingId:localStorage.getItem('username'),
+        userFollowedId:this.postInfo.userId,
+      }
+      followUser(data)
       this.$message.success('关注成功')
     },
     reFresh(){
