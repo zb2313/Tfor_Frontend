@@ -31,12 +31,14 @@
 
             <el-card style="background: #e2e2e2">
               <!--          <img :src="this.userImage" height="70" width="70" style="float: left">-->
-              <el-avatar
-                :src="this.userImage"
-                :size="40"
-                fit="cover"
-                style="float: left"
-              ></el-avatar>
+              <div @click="showDetailInfo(0)">
+                <el-avatar
+                    :src="this.userImage"
+                    :size="40"
+                    fit="cover"
+                    style="float: left"
+                ></el-avatar>
+              </div>
               <div style="float: left">
                 <span style="font-size:20px;color: #2d8cf0"
                   >{{ this.postInfo.userId }} &nbsp;</span
@@ -120,7 +122,9 @@
               <el-divider></el-divider>
               <ul>
                 <li v-for="dt in comments" :key="dt">
-                  <el-avatar :src="dt.img"></el-avatar>
+                  <div @click="showDetailInfo(dt.userId)">
+                    <el-avatar :src="dt.img"></el-avatar>
+                  </div>
                   <span style="color: blue">{{ dt.name }}</span
                   ><br />
                   {{ dt.text }}<br />
@@ -286,7 +290,17 @@ export default {
         this.hotPosts = res.data;
         console.log("热帖", res.data.data);
       });
-    }
+    },
+    showDetailInfo(userId){
+      if (userId == 0){
+        userId = this.postInfo.userId
+      }
+      this.$router.push({
+        path: `/userhome`,
+        query: { userId: userId }
+      });
+      // this.$router.go(0);
+    },
   },
   created() {
     console.log(this.$route.query.contentId);

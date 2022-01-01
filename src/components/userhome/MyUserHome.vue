@@ -15,7 +15,7 @@
         <el-avatar :src="userImg" :size="300" fit="cover" @error="true">
           <img :src="defaultUserImg"/>
         </el-avatar>
-        <el-button size="mini" round @click="uploadImg">
+        <el-button size="mini" round @click="uploadImg" v-show="privateMode">
           上传头像
         </el-button>
         <div style="margin-top: 20px; text-align: left;">
@@ -30,6 +30,7 @@
                 style="float: right; padding: 3px 0"
                 type="text"
                 @click="editUserInfo"
+                v-show="privateMode"
                 >编辑信息</el-button
               >
             </div>
@@ -53,10 +54,10 @@
         </div>
       </div>
       <div class="right">
-        <el-tabs type="border-card">
+        <el-tabs type="border-card" ref="tabs">
           <el-tab-pane>
             <span slot="label"
-              ><i class="el-icon-user-solid"></i> 我的关注</span
+              ><i class="el-icon-user-solid"></i> {{this.followingTile}}</span
             >
             <div class="postList">
               <el-scrollbar>
@@ -74,12 +75,14 @@
                             <span class="postNum">{{ person.userId }}</span>
                           </el-col>
                           <el-col :span="2">
-                            <el-avatar
-                              :src="person.userImage"
-                              :size="40"
-                              fit="cover"
-                              @error="true"
-                            ><img :src="defaultUserImg"/></el-avatar>
+                            <div @click="showDetialInfo(person.userId)">
+                              <el-avatar
+                                  :src="person.userImage"
+                                  :size="40"
+                                  fit="cover"
+                                  @error="true"
+                              ><img :src="defaultUserImg"/></el-avatar>
+                            </div>
                           </el-col>
                           <el-col :span="1">
                             <i
@@ -96,6 +99,7 @@
                           <el-button
                             style="float: right"
                             @click="cancelFollow(person.userId)"
+                            v-show="privateMode"
                           >
                             取消关注
                           </el-button>
@@ -178,7 +182,7 @@
           </el-tab-pane>
           <el-tab-pane>
             <span slot="label"
-              ><i class="el-icon-s-promotion"></i> 我的发帖</span
+              ><i class="el-icon-s-promotion"></i>{{this.postTile}}</span
             >
             <div class="postList">
               <el-scrollbar>
@@ -201,6 +205,7 @@
                           size="small"
                           icon="el-icon-delete"
                           @click="delePost(post.contentId)"
+                          v-show="privateMode"
                         >
                         </el-button>
                       </div>
@@ -359,7 +364,7 @@
           <el-card shadow="never">
             <input name="file" type="file" />
           </el-card>
-          <el-input name="submit" value="Upload" type="submit" @click.native="uploadBtn"/>
+          <el-input name="submit" value="Upload" type="submit" @click.native="uploadBtn" style="margin-top: 20px;"/>
         </form>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -396,8 +401,27 @@ import { deleteContent } from "@/api/postApi";
 
 export default {
   name: "MyUserHome",
+  computed:{
+    followingTile(){
+      if(this.privateMode == true) {
+        return " 我的关注"
+      }
+      else {
+        return (this.userForm.user_gender == "女"? " 她": " 他") + "的关注"
+      }
+    },
+    postTile(){
+      if(this.privateMode == true) {
+        return " 我的发帖"
+      }
+      else {
+        return (this.userForm.user_gender == "女"? " 她": " 他") + "的发帖"
+      }
+    }
+  },
   data() {
     return {
+      privateMode: false,
       userImg: "",
       defaultUserImg: require("@/assets/defaultImg.jpg"),
       dialogVisible: false,
@@ -447,14 +471,29 @@ export default {
   created() {
     this.getData();
   },
+  mounted() {
+    // 需要使用这种方法来控制标签页的隐藏
+    this.$nextTick(() => {
+      if(this.privateMode == false){
+        this.$refs.tabs.$children[0].$refs.tabs[1].style.display = 'none';
+        this.$refs.tabs.$children[0].$refs.tabs[2].style.display = 'none';
+      }
+    });
+  },
   methods: {
     async getData() {
-      this.userForm.userId = window.localStorage.getItem("username");
+      // 判断访问的页面的userid是否和登录的userid是否一致
+      if (this.$route.query.userId == window.localStorage.getItem("username")){
+        this.privateMode = true // 访问的是自己的页面
+        this.userForm.userId = window.localStorage.getItem("username");
+      }
+      else {
+        this.privateMode = false // 访问的是别人的页面
+        this.userForm.userId = this.$route.query.userId
+      }
+
 
       await getUserImg(this.userForm.userId).then(res => {
-        // console.log(res.data.data)
-        // this.userImg = "https://tfor.obs.cn-east-3.myhuaweicloud.com/profile/undefined?AccessKeyId=JDOPVQVKTYEJUXZXODLK&Expires=1640872026&Signature=4yUk7AsiBEBwkQ8ovtqJVJdFooQ%3D"
-        // res
         this.userImg = res.data.data;
       });
       await getUserInfo(this.userForm.userId).then(res => {
@@ -500,7 +539,6 @@ export default {
       });
       await getPostList(this.userForm.userId).then(res => {
         this.writePostList = res.data.data;
-        console.log(this.writePostList);
       });
     },
     goHome() {
@@ -663,6 +701,13 @@ export default {
         }
       });
     },
+    showDetialInfo(userId){
+      this.$router.push({
+        path: `/userhome`,
+        query: { userId: userId }
+      });
+      this.$router.go(0);
+    },
     handleClose(done) {
       this.$confirm("确认关闭？")
         // eslint-disable-next-line no-unused-vars
@@ -733,14 +778,8 @@ el-tabs {
   padding: 10px;
 }
 
-/deep/ .el-input__inner{
-  display:table;margin:0 auto;
-  margin-top: 20px;
-}
 /deep/ input#file-load-button{
   background: #0d0d0d;
 }
-/*.el-scrollbar {*/
-/*  margin-right: 10px;*/
-/*}*/
+
 </style>
