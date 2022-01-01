@@ -340,8 +340,7 @@ export default {
     userInfo() {
       // this.$router.push("/userhome");
       this.$router.push({
-        path: `/userhome`,
-        query: { id: 43 }
+        path: `/userhome`
       });
     },
     writePost() {

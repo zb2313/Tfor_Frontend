@@ -606,7 +606,6 @@ export default {
       this.dialogTelVisible = false;
     },
     async uploadImg() {
-      console.log(this.$route.query.id);
       await getUploadAuth().then(res => {
         this.uploadForm.filePath = "profile/" + this.userForm.userId;
         this.uploadForm.accessKey = res.data.data.accessKey;
