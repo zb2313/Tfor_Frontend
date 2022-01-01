@@ -1,20 +1,20 @@
 <template>
   <div
-      class="login-wrap"
-      :style="{
+    class="login-wrap"
+    :style="{
       backgroundImage: 'url(' + coverImgUrl + ')',
       backgroundSize: '100% 100%',
-      backgroundRepeat: 'no-repeat',
+      backgroundRepeat: 'no-repeat'
     }"
   >
     <iframe
-        id="geoPage"
-        width="0"
-        height="0"
-        frameborder="0"
-        style="display: none"
-        scrolling="no"
-        src="https://apis.map.qq.com/tools/geolocation?key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp"
+      id="geoPage"
+      width="0"
+      height="0"
+      frameborder="0"
+      style="display: none"
+      scrolling="no"
+      src="https://apis.map.qq.com/tools/geolocation?key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp"
     >
     </iframe>
 
@@ -25,11 +25,11 @@
           <div style="height: 40px; line-height: 40px">同济论坛</div>
         </div>
         <el-form
-            :model="param"
-            :rules="rules"
-            ref="login"
-            label-width="0px"
-            class="ms-content"
+          :model="param"
+          :rules="rules"
+          ref="login"
+          label-width="0px"
+          class="ms-content"
         >
           <el-form-item prop="username">
             <el-input v-model="param.userid" placeholder="userid">
@@ -40,10 +40,10 @@
           </el-form-item>
           <el-form-item prop="password">
             <el-input
-                type="password"
-                placeholder="password"
-                v-model="param.password"
-                show-password
+              type="password"
+              placeholder="password"
+              v-model="param.password"
+              show-password
             >
               <template #prepend>
                 <el-button icon="el-icon-lock"></el-button>
@@ -55,30 +55,30 @@
               <template>
                 <p>请选择登录身份</p>
                 <el-radio v-model="role" label="user">用户</el-radio>
-<!--                <el-radio v-model="role" label="hotel">商家</el-radio>-->
+                <!--                <el-radio v-model="role" label="hotel">商家</el-radio>-->
                 <el-radio v-model="role" label="administrator">管理员</el-radio>
               </template>
             </el-card>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm()" style="width: 140px"
-            >登录</el-button
+              >登录</el-button
             >
             <el-button type="primary" @click="goRegister()" style="width: 140px"
-            >注册</el-button
+              >注册</el-button
             >
           </el-form-item>
           <el-button
-              type="text"
-              @click="forgetPassword()"
-              style="width: 70px; text-align: left"
-          >忘记密码</el-button
+            type="text"
+            @click="forgetPassword()"
+            style="width: 70px; text-align: left"
+            >忘记密码</el-button
           >
           <el-button
-              type="text"
-              @click="mailVisible = true"
-              style="width: 128px"
-          >验证码登录</el-button
+            type="text"
+            @click="mailVisible = true"
+            style="width: 128px"
+            >验证码登录</el-button
           >
         </el-form>
       </div>
@@ -88,10 +88,10 @@
         <el-form-item label="邮箱/手机">
           <el-input style="width: 340px" v-model="param.sendVerify"> </el-input>
           <el-button
-              type="primary"
-              style="float: right"
-              @click="sendVerifyCodeLogin"
-          >发送验证码</el-button
+            type="primary"
+            style="float: right"
+            @click="sendVerifyCodeLogin"
+            >发送验证码</el-button
           >
         </el-form-item>
         <el-form-item label="验证方式">
@@ -113,10 +113,10 @@
         <el-form-item label="邮箱/手机号">
           <el-input style="width: 450px" v-model="param.userid"> </el-input>
           <el-button
-              type="primary"
-              style="float: right"
-              @click="sendVerifyCodeFind"
-          >发送验证码</el-button
+            type="primary"
+            style="float: right"
+            @click="sendVerifyCodeFind"
+            >发送验证码</el-button
           >
         </el-form-item>
 
@@ -149,8 +149,11 @@
 <script>
 import axios from "axios";
 import {
-  loginTel,loginEmial,loginPwd,
-    getVerifyCodeT,getVerifyCodeE
+  loginTel,
+  loginEmial,
+  loginPwd,
+  getVerifyCodeT,
+  getVerifyCodeE
 } from "../api/UserInfo";
 export default {
   data() {
@@ -169,18 +172,18 @@ export default {
         password: "111",
         userid: "1950077",
         checkPassword: "",
-        sendVerify:" "
+        sendVerify: " "
       },
       rules: {
         username: [
           {
             required: true,
             message: "请输入注册邮箱/手机号",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
-        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
-      },
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }]
+      }
     };
   },
   methods: {
@@ -188,35 +191,29 @@ export default {
       this.$router.push("/hotelRegister");
     },
     submitForm() {
-      if(this.role=='administrator'){
-        this.$router.push('/admin');
+      if (this.role == "administrator") {
+        this.$router.push("/admin");
         localStorage.setItem("username", "adm");
         return;
       }
-      let dt={
-        uid:this.param.userid,
-        pwd:this.param.password
-      }
-      loginPwd(dt).then(
-          response=>{
-            if (response.status == "204") {
-              alert("用户id或验证码输入有误");
-              return;
-            } else {
-              localStorage.setItem("token", response.data.data.token);
-              localStorage.setItem("username", this.param.userid);
-              this.$message.success("登录成功");
-              this.$router.push('/');
-            }
-          }
-      );
+      let dt = {
+        uid: this.param.userid,
+        pwd: this.param.password
+      };
+      loginPwd(dt).then(response => {
+        if (response.status == "204") {
+          alert("用户id或验证码输入有误");
+          return;
+        } else {
+          localStorage.setItem("token", response.data.data.token);
+          localStorage.setItem("username", this.param.userid);
+          this.$message.success("登录成功");
+          this.$router.push("/");
+        }
+      });
     },
-    Login() {
-
-    },
-    sendVerifyCodeFind() {
-
-    },
+    Login() {},
+    sendVerifyCodeFind() {},
     sendVerifyCodeLogin() {
       if (this.loginType == "2") {
         getVerifyCodeE(this.param.sendVerify);
@@ -232,47 +229,42 @@ export default {
     },
     mailLogin() {
       this.mailVisible = true;
-      let dt={
-        email:this.param.sendVerify,
-        verifyCode:this.verifycode
-      }
-      let dt2={
-        tel:this.param.sendVerify,
-        verifyCode:this.verifycode
-      }
+      let dt = {
+        email: this.param.sendVerify,
+        verifyCode: this.verifycode
+      };
+      let dt2 = {
+        tel: this.param.sendVerify,
+        verifyCode: this.verifycode
+      };
 
       if (this.loginType == "2") {
-        loginEmial(dt).then(
-            response=>{
-              if (response.status == "204") {
-                alert("用户id或验证码输入有误");
-                return;
-              } else {
-
-                localStorage.setItem("token", response.data.data.token);
-                localStorage.setItem("username", this.param.userid);
-                this.$message.success("登录成功");
-                this.$router.push('/');
-              }
-            }
-        );
+        loginEmial(dt).then(response => {
+          if (response.status == "204") {
+            alert("用户id或验证码输入有误");
+            return;
+          } else {
+            localStorage.setItem("token", response.data.data.token);
+            localStorage.setItem("username", this.param.userid);
+            this.$message.success("登录成功");
+            this.$router.push("/");
+          }
+        });
       } else {
-        loginTel(dt2).then(
-            response=>{
-              if (response.status == "204") {
-                alert("用户id或验证码输入有误");
-                return;
-              } else {
-                console.log(response.data)
-                console.log(dt2)
-                localStorage.setItem("token", response.data.data.token);
+        loginTel(dt2).then(response => {
+          if (response.status == "204") {
+            alert("用户id或验证码输入有误");
+            return;
+          } else {
+            console.log(response.data);
+            console.log(dt2);
+            localStorage.setItem("token", response.data.data.token);
 
-                localStorage.setItem("username", this.param.userid);
-                this.$message.success("登录成功");
-                this.$router.push('/');
-              }
-            }
-        );
+            localStorage.setItem("username", this.param.userid);
+            this.$message.success("登录成功");
+            this.$router.push("/");
+          }
+        });
       }
     },
     resetPassword() {
@@ -281,16 +273,16 @@ export default {
         return;
       }
       axios.patch(
-          "http://49.234.18.247:8080/api/Users/" +
+        "http://49.234.18.247:8080/api/Users/" +
           this.param.userid +
           "&" +
           this.verifycode +
           "&" +
           this.param.password
       );
-    },
+    }
   },
-  created() {},
+  created() {}
 };
 </script>
 
