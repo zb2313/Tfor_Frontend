@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <router-view v-if="isRouterAlive"></router-view>
-    <scroll-top />
   </div>
 </template>
 

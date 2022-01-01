@@ -4,7 +4,7 @@
     :style="{
       backgroundImage: 'url(' + bgTop + ')',
       backgroundSize: 'cover',
-      backgroundRepeat: 'no-repeat'
+      backgroundRepeat: 'no-repeat',
     }"
   >
     <Top
@@ -26,12 +26,18 @@
 
 <style scoped>
 Secend {
+  height: 80%;
 }
 footer {
   width: 100%;
   position: absolute;
   bottom: 0;
   padding: 10px;
+}
+#forumhome {
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 </style>
 

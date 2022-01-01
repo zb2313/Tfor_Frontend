@@ -77,61 +77,6 @@
       </div>
 
       <div class="navbar-end">
-        <div class="navbar-item" v-if="$store.state.isLogin">
-          <div class="buttons">
-            <b-button type="is-info" outlined @click="register">注册</b-button>
-            <div class="navbar-menu">
-              <div class="navbar-end">
-                <b-dropdown
-                  position="is-bottom-left"
-                  aria-role="menu"
-                  trap-focus
-                >
-                  <a class="navbar-item" slot="trigger" role="button">
-                    <b-button type="is-info" outlined>登录</b-button>
-                  </a>
-
-                  <b-dropdown-item
-                    aria-role="menu-item"
-                    :focusable="false"
-                    custom
-                    paddingless
-                  >
-                    <div class="modal-card" style="width:300px;">
-                      <section class="modal-card-body">
-                        <b-field label="Email">
-                          <b-input
-                            type="email"
-                            v-model="email"
-                            placeholder="Your email"
-                            required
-                          ></b-input>
-                        </b-field>
-
-                        <b-field label="密码">
-                          <b-input
-                            type="password"
-                            password-reveal
-                            placeholder="Your password"
-                            required
-                            v-model="password"
-                          ></b-input>
-                        </b-field>
-
-                        <b-checkbox>记住我</b-checkbox>
-                      </section>
-                      <footer class="modal-card-foot">
-                        <button class="button is-primary" @click="login">
-                          登录
-                        </button>
-                      </footer>
-                    </div>
-                  </b-dropdown-item>
-                </b-dropdown>
-              </div>
-            </div>
-          </div>
-        </div>
         <div v-show="!isLogin" style="padding: 10px 10px">
           <el-button size="medium" @click="login">
             登录
@@ -148,7 +93,9 @@
           @click="userInfo"
         >
           <el-dropdown>
-            <el-avatar :src="userImg" :size="50" fit="cover"></el-avatar>
+            <el-avatar :src="userImg" :size="50" fit="cover" @error="true">
+              <img :src="defaultUserImg"/>
+            </el-avatar>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item icon="el-icon-right">
                 <el-button @click="logout">
@@ -291,6 +238,7 @@ export default {
       zoneinfo: [],
       inputSearchInfo: "",
       userImg: "",
+      defaultUserImg: require("@/assets/defaultImg.jpg"),
       userId: "2",
       isLogin: false
     };
@@ -312,8 +260,6 @@ export default {
     });
 
     getUserImg(this.userId).then(res => {
-      console.log(res.data.data);
-      // this.userImg = "https://tfor.obs.cn-east-3.myhuaweicloud.com/profile/2?AccessKeyId=JDOPVQVKTYEJUXZXODLK&Expires=1640487882&Signature=PbRFpQULBBx0WZnsRa21BdGhYLI%3D"
       this.userImg = res.data.data;
     });
   },
@@ -329,7 +275,7 @@ export default {
     },
     logout() {
       window.localStorage.clear();
-      this.$router.push("/login");
+      this.$router.go(0);
     },
     login() {
       this.$router.push("/login");

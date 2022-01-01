@@ -12,7 +12,9 @@
     </nav>
     <div style="margin: 20px auto 20px auto; width: 1000px;">
       <div class="left">
-        <el-avatar :src="userImg" :size="300" fit="cover"> </el-avatar>
+        <el-avatar :src="userImg" :size="300" fit="cover" @error="true">
+          <img :src="defaultUserImg"/>
+        </el-avatar>
         <el-button size="mini" round @click="uploadImg">
           上传头像
         </el-button>
@@ -76,7 +78,8 @@
                               :src="person.userImage"
                               :size="40"
                               fit="cover"
-                            ></el-avatar>
+                              @error="true"
+                            ><img :src="defaultUserImg"/></el-avatar>
                           </el-col>
                           <el-col :span="1">
                             <i
@@ -353,9 +356,10 @@
             name="signature"
             v-model="this.uploadForm.signature"
           />
-
-          <input name="file" type="file" />
-          <input name="submit" value="Upload" type="submit" />
+          <el-card shadow="never">
+            <input name="file" type="file" />
+          </el-card>
+          <el-input name="submit" value="Upload" type="submit" @click.native="uploadBtn"/>
         </form>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -395,6 +399,7 @@ export default {
   data() {
     return {
       userImg: "",
+      defaultUserImg: require("@/assets/defaultImg.jpg"),
       dialogVisible: false,
 
       emailTrigger: true,
@@ -614,6 +619,10 @@ export default {
       });
       this.uploadVisble = true;
     },
+    uploadBtn(){
+      this.uploadVisble = false;
+      this.$router.go(0)
+    },
     async cancelFollow(followId) {
       await cancelFollowUser(this.userForm.userId, followId).then(res => {
         if (res.data.code == 200) {
@@ -724,6 +733,13 @@ el-tabs {
   padding: 10px;
 }
 
+/deep/ .el-input__inner{
+  display:table;margin:0 auto;
+  margin-top: 20px;
+}
+/deep/ input#file-load-button{
+  background: #0d0d0d;
+}
 /*.el-scrollbar {*/
 /*  margin-right: 10px;*/
 /*}*/
