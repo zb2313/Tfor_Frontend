@@ -33,10 +33,10 @@
               <!--          <img :src="this.userImage" height="70" width="70" style="float: left">-->
               <div @click="showDetailInfo(0)">
                 <el-avatar
-                    :src="this.userImage"
-                    :size="40"
-                    fit="cover"
-                    style="float: left"
+                  :src="this.userImage"
+                  :size="40"
+                  fit="cover"
+                  style="float: left"
                 ></el-avatar>
               </div>
               <div style="float: left">
@@ -48,7 +48,7 @@
                 }}</span>
               </div>
               <br /><br /><br /><br />
-              <p style="text-align: left">
+              <p style="text-align: left" class="pre-text">
                 {{ this.postInfo.text }}
               </p>
               <ul>
@@ -291,16 +291,16 @@ export default {
         console.log("热帖", res.data.data);
       });
     },
-    showDetailInfo(userId){
-      if (userId == 0){
-        userId = this.postInfo.userId
+    showDetailInfo(userId) {
+      if (userId == 0) {
+        userId = this.postInfo.userId;
       }
       this.$router.push({
         path: `/userhome`,
         query: { userId: userId }
       });
       // this.$router.go(0);
-    },
+    }
   },
   created() {
     console.log(this.$route.query.contentId);
@@ -324,5 +324,10 @@ export default {
 .grid-content {
   border-radius: 4px;
   min-height: 36px;
+}
+.pre-text {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 </style>
