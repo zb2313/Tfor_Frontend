@@ -1,34 +1,31 @@
 <template>
   <div id="app">
     <router-view v-if="isRouterAlive"></router-view>
-    <scroll-top />
   </div>
 </template>
-
-
 
 <script>
 // import ScrollTop from "@/components/ScrollTop.vue";
 export default {
-  provide(){
-    return{
-      reload:this.reload
-    }
+  provide() {
+    return {
+      reload: this.reload
+    };
   },
-  data(){
-    return{
-      isRouterAlive:true
-    }
+  data() {
+    return {
+      isRouterAlive: true
+    };
   },
   components: {
     // "scroll-top": ScrollTop
   },
-  methods:{
-    reload(){
-      this.isRouterAlive=false;
-      this.$nextTick(function(){
-        this.isRouterAlive=true;
-      })
+  methods: {
+    reload() {
+      this.isRouterAlive = false;
+      this.$nextTick(function() {
+        this.isRouterAlive = true;
+      });
     }
   }
 };

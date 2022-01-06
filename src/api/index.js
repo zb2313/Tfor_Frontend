@@ -16,7 +16,6 @@ axios.defaults.baseURL = "http://localhost:9090";
 
 // axios.defaults.withCredentials = true //请求发送cookie //不注释掉的话会无法请求
 
-
 // axios.interceptors.response.use(res => {
 //     return res;
 // }, () => {
@@ -37,68 +36,84 @@ axios.defaults.baseURL = "http://localhost:9090";
 
 //post传数据用data，get传参数用params
 export const adminLogin = (username, password) => {
-    return axios.post("/loginbackstage", Qs.stringify({ username, password }));
+  return axios.post("/loginbackstage", Qs.stringify({ username, password }));
 };
 
 export const userLogin = (email, password) => {
-    return axios.post(
-        "http://localhost:9090/userlogin",
-        Qs.stringify({ email, password })
-    );
+  return axios.post(
+    "http://localhost:9090/userlogin",
+    Qs.stringify({ email, password })
+  );
 };
 
-export const getAllArticle = (page) => {
-    return axios.post("/pagearticle", Qs.stringify({ page }));
+export const getAllArticle = page => {
+  return axios.post("/pagearticle", Qs.stringify({ page }));
 };
 
 export const getAllArticleType = () => {
-    return axios.post("/getallarticletype");
+  return axios.post("/getallarticletype");
 };
 
 export const getArticleByTypeId = typeId => {
-    return axios.post("/getarticlebytypeid", Qs.stringify({ typeId }));
+  return axios.post("/getarticlebytypeid", Qs.stringify({ typeId }));
 };
 
 export const getHotArticleType = () => {
-    return axios.post("/gethotarticletype");
+  return axios.post("/gethotarticletype");
 };
 
 export const getPageMain = pageNum => {
-    return axios({
-        url: "/getpagearticle",
-        params: {
-            page: pageNum
-        }
-    })
+  return axios({
+    url: "/getpagearticle",
+    params: {
+      page: pageNum
+    }
+  });
 };
 export const getnew = () => {
-    return axios("/getnew")
+  return axios("/getnew");
 };
 
 export const gethotuser = () => {
-    return axios("/hotuser")
+  return axios("/hotuser");
 };
-export const register = (userName, userPassword, userShow, userEmail, userPhone, userSex) => {
-
-    return axios.post("/register", Qs.stringify({ userName, userPassword, userShow, userEmail, userPhone, userSex }))
-
+export const register = (
+  userName,
+  userPassword,
+  userShow,
+  userEmail,
+  userPhone,
+  userSex
+) => {
+  return axios.post(
+    "/register",
+    Qs.stringify({
+      userName,
+      userPassword,
+      userShow,
+      userEmail,
+      userPhone,
+      userSex
+    })
+  );
 };
-export const getcomment = (artId) => {
-    return axios.post("/getComment", Qs.stringify({ artId }))
+export const getcomment = artId => {
+  return axios.post("/getComment", Qs.stringify({ artId }));
 };
 export const newcomment = (comArtId, text, comUserId) => {
-    return axios.post("/postcomment", Qs.stringify({ comArtId, text, comUserId }))
+  return axios.post(
+    "/postcomment",
+    Qs.stringify({ comArtId, text, comUserId })
+  );
 };
 export const newpost = (userId, title, text, select) => {
-    return axios.post("/newpost", Qs.stringify({ userId, title, text, select }))
-}
+  return axios.post("/newpost", Qs.stringify({ userId, title, text, select }));
+};
 
-export const findartbyuserid = (userId) => {
-    return axios.post("/findartbyuserid", Qs.stringify({ userId }))
-}
+export const findartbyuserid = userId => {
+  return axios.post("/findartbyuserid", Qs.stringify({ userId }));
+};
 
 export const getuserlist = () => {
-    return axios.post("/getuserlist")
-}
-
-
+  return axios.post("/getuserlist");
+};

@@ -5,7 +5,11 @@
       src="../assets/5.jpg"
       @click="scrollToY(0, 1500, 'easeInOutQuint')"
   />-->
-  <div class="back_to_top" v-show="showTop" @click="scrollToY(0, 1500, 'easeInOutQuint')">
+  <div
+    class="back_to_top"
+    v-show="showTop"
+    @click="scrollToY(0, 1500, 'easeInOutQuint')"
+  >
     <i class="far fa-arrow-alt-circle-up"></i>
   </div>
 </template>
@@ -109,4 +113,3 @@ export default {
   overflow: hidden;
 }
 </style>
-

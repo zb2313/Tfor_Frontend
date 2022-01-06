@@ -1,10 +1,10 @@
 <template>
   <div
-      class="bgc"
-      :style="{
+    class="bgc"
+    :style="{
       backgroundImage: 'url(' + coverImgUrl + ')',
       backgroundSize: '100% 100%',
-      backgroundRepeat: 'no-repeat',
+      backgroundRepeat: 'no-repeat'
     }"
   >
     <div class="main">
@@ -20,13 +20,16 @@
           </el-form-item>
           <el-form-item label="确认密码">
             <el-input
-                type="password"
-                style="width: 380px"
-                v-model="form.checkPassword"
+              type="password"
+              style="width: 380px"
+              v-model="form.checkPassword"
             />
           </el-form-item>
           <el-form-item label="手机号">
-            <el-input style="width: 380px" v-model="form.tele_NUMBER"></el-input>
+            <el-input
+              style="width: 380px"
+              v-model="form.tele_NUMBER"
+            ></el-input>
           </el-form-item>
           <el-form-item label="邮箱">
             <el-input style="width: 380px" v-model="form.email"></el-input>
@@ -34,8 +37,8 @@
 
           <el-form-item label="性别">
             <el-radio-group v-model="form.Gender">
-              <el-radio label="1" >男</el-radio>
-              <el-radio label="2" >女</el-radio>
+              <el-radio label="1">男</el-radio>
+              <el-radio label="2">女</el-radio>
             </el-radio-group>
           </el-form-item>
 
@@ -46,9 +49,13 @@
         </el-form>
       </div>
     </div>
-    <el-dialog :visible="dialogVisible" title="注意" style="margin:0 auto;width: 600px">
-      <el-button type="text" @click="dialogVisible=false">关闭</el-button>
-      <p>您的用户ID为：{{userId}} 请小心保存</p>
+    <el-dialog
+      :visible="dialogVisible"
+      title="注意"
+      style="margin:0 auto;width: 600px"
+    >
+      <el-button type="text" @click="dialogVisible = false">关闭</el-button>
+      <p>您的用户ID为：{{ userId }} 请小心保存</p>
     </el-dialog>
   </div>
 </template>
@@ -56,9 +63,7 @@
 <script>
 //email 后加发送验证码按钮和输入框
 //
-import {
-  userRegister
-} from "../api/UserInfo";
+import { userRegister } from "../api/UserInfo";
 export default {
   name: "Register",
   userList: {},
@@ -77,7 +82,7 @@ export default {
         tele_NUMBER: "", //电话号码
         dState: true,
         verifycode: "",
-        checkPassword: "",
+        checkPassword: ""
       },
       coverImgUrl: require("../assets/imgs/login-bg.jpg"),
       testInfo: "",
@@ -91,9 +96,9 @@ export default {
       phoneVerifyStatus: false,
       registerType: "1",
 
-      dialogVisible:false,
+      dialogVisible: false,
 
-      userId:''
+      userId: ""
     };
   },
   methods: {
@@ -109,50 +114,46 @@ export default {
       }
       this.form.user_ID = ID;
     },
-    setMailBoxID() {
-
-    },
+    setMailBoxID() {},
     goBack() {
       this.$router.push("/Login");
     },
     onSubmit() {
-      let data={
-        'userEmail':this.form.email,
-        'userFollowingNum':0,
-        'userFollowedNum':0,
-        'userGender':this.form.Gender,
-        'userImage':" ",
-        'userName':this.form.user_NAME,
-        'userPwd':this.form.Password,
-        'userTel':this.form.tele_NUMBER
-      }
-      userRegister(data).then(
-          res => {
-            console.log(res)
-            if (res.data.code == 200) {
-              this.$message({
-                message: '注册成功，您的账号Id为' + res.data.data,
-                type: 'success',
-                duration: 0,
-                showClose: true,
-              });
-            }
-          }
-      )
+      let data = {
+        userEmail: this.form.email,
+        userFollowingNum: 0,
+        userFollowedNum: 0,
+        userGender: this.form.Gender,
+        userImage: " ",
+        userName: this.form.user_NAME,
+        userPwd: this.form.Password,
+        userTel: this.form.tele_NUMBER
+      };
+      userRegister(data).then(res => {
+        console.log(res);
+        if (res.data.code == 200) {
+          this.$message({
+            message: "注册成功，您的账号Id为" + res.data.data,
+            type: "success",
+            duration: 0,
+            showClose: true
+          });
+        }
+      });
     },
     onCancel() {
       this.$message({
         message: "cancel!",
-        type: "warning",
+        type: "warning"
       }),
-          this.$router.push("/Login");
-    },
+        this.$router.push("/Login");
+    }
   },
   created() {
     this.setUserID();
     this.setMailBoxID();
   },
-  mounted: function () {},
+  mounted: function() {}
 };
 </script>
 

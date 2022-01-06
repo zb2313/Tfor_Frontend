@@ -25,32 +25,33 @@ const routes = [
     component: () => import("../components/writePost/Publish")
   },
   {
-    path: "*", component: NotFoundComponent
+    path: "*",
+    component: NotFoundComponent
   },
   {
-    path:"/Register",
-    name:"Register",
-    component:()=>import("../components/Register")
+    path: "/Register",
+    name: "Register",
+    component: () => import("../components/Register")
   },
   {
-    path:'/PostDetails',
-    name:"PostDetails",
-    component:()=>import("../components/postHome/PostDetails")
+    path: "/PostDetails",
+    name: "PostDetails",
+    component: () => import("../components/postHome/PostDetails")
   },
   {
-    path:'/PublishPost',
-    name:"PublishPost",
-    component:()=>import('../components/writePost/Publish')
+    path: "/PublishPost",
+    name: "PublishPost",
+    component: () => import("../components/writePost/Publish")
   },
   {
-    path:'/Comment',
-    name:'Comment',
-    component:()=>import('../components/writePost/Comment')
+    path: "/Comment",
+    name: "Comment",
+    component: () => import("../components/writePost/Comment")
   },
   {
-    path:'/admin',
-    name:'admin',
-    component:()=>import('../components/admin/admin')
+    path: "/admin",
+    name: "admin",
+    component: () => import("../components/admin/admin")
   }
 ];
 
@@ -59,6 +60,5 @@ const router = new VueRouter({
   // base: process.env.BASE_URL,
   routes
 });
-
 
 export default router;
