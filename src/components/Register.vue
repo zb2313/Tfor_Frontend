@@ -16,7 +16,7 @@
             <el-input style="width: 380px" v-model="form.user_NAME" />
           </el-form-item>
           <el-form-item label="密码">
-            <el-input style="width: 380px" v-model="form.Password" />
+            <el-input type="password" style="width: 380px" v-model="form.Password" />
           </el-form-item>
           <el-form-item label="确认密码">
             <el-input

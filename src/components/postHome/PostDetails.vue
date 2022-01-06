@@ -15,7 +15,7 @@
     <el-card>
       <div style="text-align: left">
        <span style="margin-left: 0px;font-size:28px;font-weight: bolder">{{this.postInfo.postTitle}}</span>&nbsp;
-        <span>{{this.postInfo.commentNum}}评论/ {{this.postInfo.likeNum}} 点赞/ 500浏览</span>
+        <span>{{this.postInfo.commentNum}}评论/ {{this.postInfo.likeNum}} 点赞</span>
         <el-button style="float: right" type="text" @click="follow">关注发帖人</el-button>
         <el-divider></el-divider>
       </div>
@@ -38,7 +38,6 @@
         </ul>
         <div style="float: bottom">
           <el-button style="font-size: 16px" type="text" class="el-icon-s-opportunity" @click="likePostI">点赞</el-button>({{this.postInfo.likeNum}})
-          <el-button style="font-size: 16px" type="text" class="el-icon-tickets">评论</el-button>({{this.postInfo.commentNum}})
           <el-button style="font-size: 16px" type="text" class="el-icon-star-off" @click="collectPostI">收藏</el-button>
           <el-button style="font-size: 16px" type="text" class="el-icon-warning-outline" @click="reportDialogVisible=true">举报</el-button>({{this.postInfo.reportNum}})
         </div>
@@ -72,7 +71,6 @@
             {{dt.text}}<br>
             {{dt.lastEditTime}}<br>
             <el-button style="font-size: 12px" type="text" class="el-icon-s-opportunity" @click="likePostI">点赞</el-button>
-            <el-button style="font-size: 12px" type="text" class="el-icon-tickets">评论</el-button>
             <el-divider></el-divider>
           </li>
 
