@@ -67,7 +67,7 @@
 <script>
 //email 后加发送验证码按钮和输入框
 //
-import { userRegister } from "../api/UserInfo";
+import {checkVerifyCode, getVerifyCodeT, userRegister} from "../api/UserInfo";
 export default {
   name: "Register",
   userList: {},
@@ -116,6 +116,11 @@ export default {
   methods: {
     sendVerificode(){
        this.verifiVisible=true
+       getVerifyCodeT(this.form.tele_NUMBER).then(
+        res=>{
+          console.log(res.data)
+        }
+       )
     },
     returnToLogin() {
       this.$router.push("/Login");
@@ -134,6 +139,12 @@ export default {
       this.$router.push("/Login");
     },
     onSubmit() {
+      checkVerifyCode(this.form.verifycode).then(
+          res=>{
+            console.log('判断验证码',res.data)
+            if(res.data.code!='200'){return}
+          }
+      )
       let data = {
         userEmail: this.form.email,
         userFollowingNum: 0,
@@ -145,7 +156,7 @@ export default {
         userTel: this.form.tele_NUMBER
       };
       userRegister(data).then(res => {
-        console.log(res);
+        console.log(res.data);
         if (res.data.code == 200) {
           this.$message({
             message: "注册成功，您的账号Id为" + res.data.data,

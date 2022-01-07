@@ -54,12 +54,15 @@
         </el-option>
       </el-select>
     </el-card>
+    <el-input v-model="test" style="width: 400px"></el-input><el-button @click="aiTest">审核</el-button>
   </div>
 </template>
 <script>
+import {textReport} from "../../api/AI";
 export default {
   data() {
     return {
+      test:"",
       contentlist: [],
       reviewPostlist: [],
 
@@ -86,6 +89,18 @@ export default {
     };
   },
   methods: {
+    aiTest(){
+      let dt={
+        'name':this.test,
+        'age':this.test
+      }
+      console.log(dt)
+      textReport(dt).then(
+          res=>{
+            console.log(res.data)
+          }
+      )
+    },
     check(contentId) {
       this.$axios.put();
       //进入具体的帖子页面
