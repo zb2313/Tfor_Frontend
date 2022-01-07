@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName" @tab-click="handleClick" style="width:1000px;margin-left:150px">
       <el-tab-pane label="发帖子" name="first">
-        <el-card class="box-card" style="margin: 0 auto;height: 930px">
+        <el-card class="box-card" style="margin: 0 auto;height: 730px">
           <el-input
             class="tltleinput"
             placeholder="请输入标题（20字以内）"
@@ -14,6 +14,9 @@
           <div id="wangeditor">
             <div ref="editorElem" style="text-align:left;"></div>
           </div>
+          <!-- 分区信息使用dialog -->
+          <el-button type="text" @click="dialogFormVisible = true" style="display:left">{{label}}</el-button>
+          <el-dialog title="选择分区" :visible.sync="dialogFormVisible">
           <el-select
             v-model="value"
             filterable
@@ -36,6 +39,12 @@
               </el-option>
             </el-option-group>
           </el-select>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="zoneConfirmed">确 定</el-button>
+          </div>
+          </el-dialog>
+
           <el-form
             action="https://tfor.obs.cn-east-3.myhuaweicloud.com"
             method="post"
@@ -58,13 +67,13 @@
             <input name="picture" style="display:flex" type="file" />
             <input
               name="submit"
-              style="display:flex"
               value="Upload"
               type="submit"
               class="input_s"
               @click="confirmed"
             />
           </el-form>
+          <br><br>
           <el-card
             v-for="(item, index) in filelist"
             :key="index"
@@ -72,12 +81,12 @@
           >
             <img
               :src="filelist[index]"
-              style="width:50px;height:50px;display:flex;flex-direction:row;"
+              style="width:70px;height:70px;display:flex;flex-direction:row;"
             />
           </el-card>
           <el-button
             type="primary"
-            style="float: right;margin-top:30px;margin-right:145px"
+            style="float: right;margin-top:30px"
             @click="PublishButton"
             >确定发布</el-button
           >
@@ -85,7 +94,7 @@
       </el-tab-pane>
       <el-tab-pane label="发视频" name="second">
         <!-- 发布视频功能 -->
-        <el-card class="box-card">
+        <el-card class="box-card" style="margin: 0 auto;height: 730px">
           <el-form
             action="https://tfor.obs.cn-east-3.myhuaweicloud.com"
             method="post"
@@ -138,6 +147,7 @@ export default {
       policy: "",
       upload_video_url: "",
       value: "", //是否选择了专区
+      label:'请选择分区',//分区标签
       activeName: "first",
       editor: null,
       editorContent: "",
@@ -154,6 +164,8 @@ export default {
       userId: "",
       // 图片列表
       filelist: [],
+      // 分区选项
+      dialogFormVisible: false,
       options: [
         {
           label: "热门分区",
@@ -186,20 +198,27 @@ export default {
   },
   components: {},
   methods: {
+    zoneConfirmed(){
+      this.dialogFormVisible = false;
+      if(this.value!="")
+      this.label="更换分区"
+      else
+      this.label="请选择一个分区"
+    },
     confirmed() {
       this.count++;
       this.picValue = "comment/" + this.contentId + this.count.toString();
       console.log("p:", this.picValue);
       this.prewiew();
     },
-    prewiew() {
-      this.$axios
+    async prewiew() {
+      await this.$axios
         .get(
           "http://121.5.137.205:8081/api/obs/getPostImageUrls?contentId=" +
-            this.contentId
+          this.contentId
         )
         .then(res => {
-          for (var i in res.data.data) {
+          for (let i in res.data.data) {
             this.filelist[i] = res.data.data[i];
           }
         });
@@ -224,7 +243,7 @@ export default {
           if (this.value != "") {
             //都有数据，正式发送
             await this.$axios.post(
-              "http://121.5.137.205:8081/api/post/postContent",
+              "http://121.5.137.205:8084/api/post/postContent",
               {
                 contentId: this.contentId,
                 likeNum: 0,
@@ -234,9 +253,8 @@ export default {
                 userId: this.userId
               }
             );
-
             await this.$axios
-              .post("http://121.5.137.205:8081/api/post/EnterZone", {
+              .post("http://121.5.137.205:8084/api/post/EnterZone", {
                 contentId: this.contentId,
                 zoneId: this.value
               })
@@ -247,6 +265,7 @@ export default {
                   this.$message({ type: "error", message: "发布失败" });
                 }
               });
+            await this.$router.push("/");
             this.editor.txt.clear(); //最后清空输入框
           } else {
             this.$message({ type: "warning", message: "请选择一个分区" });
@@ -266,8 +285,12 @@ export default {
     this.userId = window.localStorage.getItem("username");
   },
   mounted() {
+    this.gettime();
+    console.log("id:",this.contentId)
     this.editor = new E(this.$refs.editorElem);
     this.editor.config.showMenuTooltips = true;
+    this.editor.config.zIndex = 1
+    this.editor.config.pasteFilterStyle = false;//不过滤粘贴文本样式
     this.editor.config.showFullScreen = false; //禁用全屏
     this.editor.config.menuTooltipPosition = "down";
     this.editor.config.lineHeights = ["1", "1.15", "1.6", "2", "2.5", "3"];
@@ -296,22 +319,12 @@ export default {
       "lineHeight"
     ];
     this.editor.create(); // 创建富文本实例
-    // this.$axios
-    // .get('http://121.5.137.205:8081/api/obs/getUploadAuth')
-    // .then((res)=>{
-    //   console.log("rs:",res.data)
-    //   this.AccessKeyId=res.data.data.accessKey
-    //   this.policy=res.data.data.policy
-    //   this.signature=res.data.data.signature
-    //   console.log("A:",this.AccessKeyId)
-    // })
     getUploadAuth().then(res => {
       console.log(res.data);
       this.AccessKeyId = res.data.data.accessKey;
       this.signature = res.data.data.signature;
       this.policy = res.data.data.policy;
     });
-    this.gettime();
   }
 };
 </script>
@@ -319,20 +332,21 @@ export default {
 #editor {
   margin: auto;
   width: 100%;
-  height: 480px;
+  height: 380px;
   /* min-height: 400px; */
 }
 .picard {
-  width: 90px;
-  height: 90px;
-  float: left;
+  width: 110px;
+  height: 110px;
+  float:left
 }
 .input_s {
   margin: 0 auto;
+  float: left;
   padding: 0 10px;
   width: 536px;
   height: 34px;
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  border: 0px solid rgba(255, 255, 255, 0.8);
   border-radius: 2px;
   color: #fff;
   background: rgba(14, 103, 204, 0.15);
@@ -359,7 +373,7 @@ export default {
   font-size: 18px;
   line-height: 30px;
   min-height: 400px;
-  width: 800px;
+  width: 1000px;
   margin-left: 16%;
 }
 </style>
