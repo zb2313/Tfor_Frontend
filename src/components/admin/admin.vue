@@ -58,7 +58,7 @@
   </div>
 </template>
 <script>
-import {textReport} from "../../api/AI";
+import {textReport,baiduReport} from "../../api/AI";
 export default {
   data() {
     return {
@@ -100,6 +100,13 @@ export default {
             console.log(res.data)
           }
       )
+      baiduReport().then(
+          res=>{
+            console.log('baidu',res.data)
+          }
+      )
+
+
     },
     check(contentId) {
       this.$axios.put();

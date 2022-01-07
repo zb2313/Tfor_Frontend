@@ -251,6 +251,7 @@ export default {
     },
     likePostI() {
       likePost(this.postID);
+      this.$message.success('点赞成功')
       this.reFresh();
     },
     collectPostI() {
