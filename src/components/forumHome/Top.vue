@@ -215,7 +215,7 @@
 
 <script>
 import { getAllZone } from "@/api/zoneApi";
-import { getUserImg } from "@/api/UserInfo";
+import { getUserImg } from "@/api/obsApi";
 
 export default {
   props: {

@@ -51,10 +51,7 @@ export const userRegister = data => {
   console.log(url);
   return axios.post(`${url}`, data);
 };
-export const getUserImg = userId => {
-  let url = "http://121.5.137.205:8081/api/obs/getProfileURL?uid=" + userId;
-  return axios.get(`${url}`);
-};
+
 export const getUserInfo = userId => {
   let url = baseurl + "/getInfo/" + userId;
   return axios.get(`${url}`);

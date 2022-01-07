@@ -198,8 +198,8 @@
 import vComment from "../writePost/Comment";
 import { getbyPostId, getRankByDay, getCommentPost } from "../../api/zoneApi";
 import { likePost, collectPost, reportPost } from "../../api/actionapi";
-import { getPostImgs } from "../../api/obsApi";
-import { getUserImg, getUserInfo } from "../../api/UserInfo";
+import { getPostImgs, getUserImg } from "../../api/obsApi";
+import { getUserInfo } from "../../api/UserInfo";
 import { followUser } from "../../api/actionapi";
 export default {
   name: "PostDetails",
