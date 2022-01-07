@@ -13,10 +13,14 @@
         <br />
         <el-form ref="form" :model="form" :rules="rules" label-width="100px">
           <el-form-item prop="user_NAME" label="用户昵称">
-            <el-input style="width: 380px" v-model="form.user_NAME"  />
+            <el-input style="width: 380px" v-model="form.user_NAME" />
           </el-form-item>
           <el-form-item label="密码" prop="Password">
-            <el-input type="password" style="width: 380px" v-model="form.Password" />
+            <el-input
+              type="password"
+              style="width: 380px"
+              v-model="form.Password"
+            />
           </el-form-item>
           <el-form-item label="确认密码" prop="checkPassword">
             <el-input
@@ -30,9 +34,11 @@
               style="width: 300px"
               v-model="form.tele_NUMBER"
             ></el-input>
-            <el-button style="width: 100px" @click="sendVerificode">发送验证码</el-button>
+            <el-button style="width: 100px" @click="sendVerificode"
+              >发送验证码</el-button
+            >
           </el-form-item>
-          <el-form-item label="手机验证码"  v-if="verifiVisible">
+          <el-form-item label="手机验证码" v-if="verifiVisible">
             <el-input style="width: 380px" v-model="form.verifycode"></el-input>
           </el-form-item>
           <el-form-item label="邮箱">
@@ -88,13 +94,20 @@ export default {
         verifycode: "",
         checkPassword: ""
       },
-      rules:{
-        Password: [{required:'true',message:'密码不能为空',trigger:'blur'}],
-        checkPassword: [{required:'true',message:'请重复输入密码',trigger:'blur'}],
-        user_NAME:[{required:'true',message:'用户名不能为空',trigger:'blur'}],
-        tele_NUMBER:[
-            {required:true,message:'电话不能为空',trigger:'blur'},
-          { min: 11, max:11, message: '长度不符合要求', trigger: 'blur' }]
+      rules: {
+        Password: [
+          { required: "true", message: "密码不能为空", trigger: "blur" }
+        ],
+        checkPassword: [
+          { required: "true", message: "请重复输入密码", trigger: "blur" }
+        ],
+        user_NAME: [
+          { required: "true", message: "用户名不能为空", trigger: "blur" }
+        ],
+        tele_NUMBER: [
+          { required: true, message: "电话不能为空", trigger: "blur" },
+          { min: 11, max: 11, message: "长度不符合要求", trigger: "blur" }
+        ]
       },
       coverImgUrl: require("../assets/imgs/login-bg.jpg"),
       testInfo: "",
@@ -107,7 +120,7 @@ export default {
       mailVerifyStatus: false,
       phoneVerifyStatus: false,
       registerType: "1",
-      verifiVisible:false,
+      verifiVisible: false,
       dialogVisible: false,
 
       userId: ""
@@ -164,7 +177,7 @@ export default {
             duration: 0,
             showClose: true
           });
-          this.$router.push('/Login')
+          this.$router.push("/Login");
         }
       });
     },

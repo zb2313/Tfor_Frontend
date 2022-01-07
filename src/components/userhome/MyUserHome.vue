@@ -13,7 +13,7 @@
     <div style="margin: 20px auto 20px auto; width: 1000px;">
       <div class="left">
         <el-avatar :src="userImg" :size="300" fit="cover" @error="true">
-          <img :src="defaultUserImg"/>
+          <img :src="defaultUserImg" />
         </el-avatar>
         <el-button size="mini" round @click="uploadImg" v-show="privateMode">
           上传头像
@@ -57,7 +57,7 @@
         <el-tabs type="border-card" ref="tabs">
           <el-tab-pane>
             <span slot="label"
-              ><i class="el-icon-user-solid"></i> {{this.followingTile}}</span
+              ><i class="el-icon-user-solid"></i> {{ this.followingTile }}</span
             >
             <div class="postList">
               <el-scrollbar>
@@ -77,11 +77,12 @@
                           <el-col :span="2">
                             <div @click="showDetialInfo(person.userId)">
                               <el-avatar
-                                  :src="person.userImage"
-                                  :size="40"
-                                  fit="cover"
-                                  @error="true"
-                              ><img :src="defaultUserImg"/></el-avatar>
+                                :src="person.userImage"
+                                :size="40"
+                                fit="cover"
+                                @error="true"
+                                ><img :src="defaultUserImg"
+                              /></el-avatar>
                             </div>
                           </el-col>
                           <el-col :span="1">
@@ -91,7 +92,7 @@
                             ></i>
                             <i class="el-icon-female" v-else=""></i>
                           </el-col>
-                          <el-col :span="3" :offset="-3">
+                          <el-col :span="7" :offset="-3">
                             <span style="margin-left: 15px">{{
                               person.userName
                             }}</span>
@@ -126,9 +127,14 @@
                       <div class="clearfix" style="text-align: left">
                         <span class="postNum">{{ post.contentId }}</span>
                         <el-divider direction="vertical"></el-divider>
-                        <span style="margin-left: 15px">{{
-                          post.postTitle
-                        }}</span>
+                        <div
+                          @click="showPostDetail(post.contentId)"
+                          style="display: inline;cursor: pointer"
+                        >
+                          <span style="margin-left: 15px">{{
+                            post.postTitle
+                          }}</span>
+                        </div>
                         <el-button
                           style="float: right;padding-top: 5px;padding-bottom: 5px"
                           size="small"
@@ -182,7 +188,7 @@
           </el-tab-pane>
           <el-tab-pane>
             <span slot="label"
-              ><i class="el-icon-s-promotion"></i>{{this.postTile}}</span
+              ><i class="el-icon-s-promotion"></i>{{ this.postTile }}</span
             >
             <div class="postList">
               <el-scrollbar>
@@ -197,9 +203,14 @@
                       <div class="clearfix" style="text-align: left">
                         <span class="postNum">{{ post.contentId }}</span>
                         <el-divider direction="vertical"></el-divider>
-                        <span style="margin-left: 15px">{{
-                          post.postTitle
-                        }}</span>
+                        <div
+                          @click="showPostDetail(post.contentId)"
+                          style="display: inline;cursor: pointer"
+                        >
+                          <span style="margin-left: 15px">{{
+                            post.postTitle
+                          }}</span>
+                        </div>
                         <el-button
                           style="float: right;padding-top: 5px;padding-bottom: 5px"
                           size="small"
@@ -364,7 +375,13 @@
           <el-card shadow="never">
             <input name="file" type="file" />
           </el-card>
-          <el-input name="submit" value="Upload" type="submit" @click.native="uploadBtn" style="margin-top: 20px;"/>
+          <el-input
+            name="submit"
+            value="Upload"
+            type="submit"
+            @click.native="uploadBtn"
+            style="margin-top: 20px;"
+          />
         </form>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -401,22 +418,23 @@ import { deleteContent } from "@/api/postApi";
 
 export default {
   name: "MyUserHome",
-  computed:{
-    followingTile(){
-      if(this.privateMode == true) {
-        return " 我的关注"
-      }
-      else {
-        return (this.userForm.user_gender == "女"? " 她": " 他") + "的关注"
+  computed: {
+    followingTile() {
+      if (this.privateMode == true) {
+        return " 我的关注";
+      } else {
+        return (this.userForm.user_gender === "女" ? " 她" : " 他") + "的关注";
       }
     },
-    postTile(){
-      if(this.privateMode == true) {
-        return " 我的发帖"
+    postTile() {
+      if (this.privateMode == true) {
+        return " 我的发帖";
+      } else {
+        return (this.userForm.user_gender === "女" ? " 她" : " 他") + "的发帖";
       }
-      else {
-        return (this.userForm.user_gender == "女"? " 她": " 他") + "的发帖"
-      }
+    },
+    intUserGender() {
+      return this.userForm.user_gender === "女" ? 0 : 1;
     }
   },
   data() {
@@ -450,8 +468,8 @@ export default {
         postNum: "0"
       },
       genderOptions: [
-        { value: "1", label: "男" },
-        { value: "0", label: "女" }
+        { value: "男", label: "男" },
+        { value: "女", label: "女" }
       ],
       uploadVisble: false,
       // 上传相关信息
@@ -474,24 +492,22 @@ export default {
   mounted() {
     // 需要使用这种方法来控制标签页的隐藏
     this.$nextTick(() => {
-      if(this.privateMode == false){
-        this.$refs.tabs.$children[0].$refs.tabs[1].style.display = 'none';
-        this.$refs.tabs.$children[0].$refs.tabs[2].style.display = 'none';
+      if (this.privateMode == false) {
+        this.$refs.tabs.$children[0].$refs.tabs[1].style.display = "none";
+        this.$refs.tabs.$children[0].$refs.tabs[2].style.display = "none";
       }
     });
   },
   methods: {
     async getData() {
       // 判断访问的页面的userid是否和登录的userid是否一致
-      if (this.$route.query.userId == window.localStorage.getItem("username")){
-        this.privateMode = true // 访问的是自己的页面
+      if (this.$route.query.userId == window.localStorage.getItem("username")) {
+        this.privateMode = true; // 访问的是自己的页面
         this.userForm.userId = window.localStorage.getItem("username");
+      } else {
+        this.privateMode = false; // 访问的是别人的页面
+        this.userForm.userId = this.$route.query.userId;
       }
-      else {
-        this.privateMode = false // 访问的是别人的页面
-        this.userForm.userId = this.$route.query.userId
-      }
-
 
       await getUserImg(this.userForm.userId).then(res => {
         this.userImg = res.data.data;
@@ -551,8 +567,9 @@ export default {
       let userInfo = {
         uid: this.userForm.userId,
         userName: this.userForm.userName,
-        userGender: this.userForm.user_gender
+        userGender: this.intUserGender
       };
+      console.log(userInfo);
       await modifyUserInfo(userInfo).then(res => {
         console.log(res.data.code);
         if (res.data.code == 200) {
@@ -657,9 +674,9 @@ export default {
       });
       this.uploadVisble = true;
     },
-    uploadBtn(){
+    uploadBtn() {
       this.uploadVisble = false;
-      this.$router.go(0)
+      this.$router.go(0);
     },
     async cancelFollow(followId) {
       await cancelFollowUser(this.userForm.userId, followId).then(res => {
@@ -701,12 +718,18 @@ export default {
         }
       });
     },
-    showDetialInfo(userId){
+    showDetialInfo(userId) {
       this.$router.push({
         path: `/userhome`,
         query: { userId: userId }
       });
       this.$router.go(0);
+    },
+    showPostDetail(postId) {
+      this.$router.push({
+        path: `/PostDetails`,
+        query: { contentId: postId }
+      });
     },
     handleClose(done) {
       this.$confirm("确认关闭？")
@@ -778,8 +801,7 @@ el-tabs {
   padding: 10px;
 }
 
-/deep/ input#file-load-button{
+/deep/ input#file-load-button {
   background: #0d0d0d;
 }
-
 </style>

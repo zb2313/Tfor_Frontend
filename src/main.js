@@ -9,8 +9,8 @@ import VueAxios from "vue-axios";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import moment from "moment"; //导入文件
-import Router from 'vue-router'
-Vue.use(Router)
+import Router from "vue-router";
+Vue.use(Router);
 // import infiniteScroll from "vue-infinite-scroll"
 // import Qs from "qs";
 
@@ -72,14 +72,19 @@ router.beforeEach((to, from, next) => {
   // }
   // next();
   let userId = window.localStorage.getItem("username");
-  if (to.path === "/login" || to.path === "/" || to.path == "admin" || to.path == "/Register"){
+  if (
+    to.path === "/login" ||
+    to.path === "/" ||
+    to.path == "admin" ||
+    to.path == "/Register"
+  ) {
     return next();
   }
   if (!userId) {
-    Vue.prototype.$message('该页面需要登录后访问，请登录：');
-    return next('/login')
+    Vue.prototype.$message("该页面需要登录后访问，请登录：");
+    return next("/login");
   }
-  next()
+  next();
 });
 axios.interceptors.request.use(
   function(config) {
@@ -97,7 +102,7 @@ axios.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-const originalPush = Router.prototype.push
+const originalPush = Router.prototype.push;
 Router.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch(err => err)
-}
+  return originalPush.call(this, location).catch(err => err);
+};

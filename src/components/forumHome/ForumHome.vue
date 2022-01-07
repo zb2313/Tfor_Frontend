@@ -4,7 +4,7 @@
     :style="{
       backgroundImage: 'url(' + bgTop + ')',
       backgroundSize: 'cover',
-      backgroundRepeat: 'no-repeat',
+      backgroundRepeat: 'no-repeat'
     }"
   >
     <Top

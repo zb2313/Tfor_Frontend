@@ -172,7 +172,7 @@ export default {
         userid: "1950077",
         checkPassword: "",
         sendVerify: " "
-      },
+      }
     };
   },
   methods: {
@@ -190,7 +190,7 @@ export default {
         pwd: this.param.password
       };
       loginPwd(dt).then(response => {
-        console.log(response.data)
+        console.log(response.data);
         if (response.data.code != "200") {
           alert("用户id或验证码输入有误");
           return;

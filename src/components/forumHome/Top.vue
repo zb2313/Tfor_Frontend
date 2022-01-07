@@ -94,7 +94,7 @@
         >
           <el-dropdown>
             <el-avatar :src="userImg" :size="50" fit="cover" @error="true">
-              <img :src="defaultUserImg"/>
+              <img :src="defaultUserImg" />
             </el-avatar>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item icon="el-icon-right">

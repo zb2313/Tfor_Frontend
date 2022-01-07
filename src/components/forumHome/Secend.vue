@@ -10,7 +10,7 @@
           <transition name="el-zoom-in-center">
             <el-card shadow="hover" v-show="postShow">
               <div class="clearfix" style="text-align: left">
-                <span class="postNum">{{ post.userId }}</span>
+                <span class="postNum">{{ post.userName }}</span>
                 <el-divider direction="vertical"></el-divider>
                 <!--                <span style="margin-left: 15px">{{ post.postTitle }}</span>-->
                 <el-button
@@ -87,6 +87,7 @@ import {
   reportPost,
   followZone
 } from "@/api/actionapi";
+import { ifPostsAreCollectedByUid } from "@/api/UserInfo";
 
 export default {
   props: {
@@ -111,15 +112,18 @@ export default {
     }
   },
   watch: {
-    zoneInfo1() {
-      this.changePostData();
+    async zoneInfo1() {
+      await this.changePostData();
+      await this.modifyCollectState();
     },
-    zoneInfo2() {
-      this.changePostData();
-      this.followZoneNoti();
+    async zoneInfo2() {
+      await this.changePostData();
+      await this.followZoneNoti();
+      await this.modifyCollectState();
     },
-    searchInfo() {
-      this.searchInfoChanged();
+    async searchInfo() {
+      await this.searchInfoChanged();
+      await this.modifyCollectState();
     }
   },
   data() {
@@ -230,6 +234,7 @@ export default {
     async changePostData() {
       this.postShow = false;
       this.likeindex.splice(0);
+      // 当头部组件改变之后， 将帖子信息更换
       if (this.computedInfo1 == 1) {
         console.log("推荐");
         await getRecommandByUserId(this.userId).then(res => {
@@ -303,6 +308,20 @@ export default {
         }
       });
     },
+    async modifyCollectState() {
+      var contentIdList = "";
+      for (var i in this.postInfo) {
+        contentIdList = contentIdList.concat(this.postInfo[i].postId, ",");
+      }
+      let data = {
+        uid: this.userId,
+        postid: contentIdList
+      };
+      console.log(data);
+      await ifPostsAreCollectedByUid(data).then(res => {
+        console.log(res);
+      });
+    },
     showPost(postId) {
       // console.log(postId)
       this.$router.push({
@@ -336,8 +355,9 @@ export default {
   min-width: 80px;
   margin-inline: 10px;
   font-size: 1.2em;
-  font-family: "Arial Black", arial-black, "Helvetica Black", helvetica-black,
-    Sans-serif;
+  line-height: 1.1;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
   opacity: 0.7;
 }
 

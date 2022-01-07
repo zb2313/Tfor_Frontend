@@ -1,13 +1,13 @@
 <template>
   <div
-      :style="{
+    :style="{
       backgroundImage: 'url(' + bcimg + ')',
       backgroundSize: 'contain'
     }"
   >
     <el-row>
       <el-col :span="24"
-      ><div class="grid-content bg-purple-dark"></div
+        ><div class="grid-content bg-purple-dark"></div
       ></el-col>
     </el-row>
     <el-row :gutter="20">
@@ -16,15 +16,15 @@
           <el-card>
             <div style="text-align: left">
               <span
-                  style="margin-left: 0px;font-size:28px;font-weight: bolder"
-              >{{ this.postInfo.postTitle }}</span
+                style="margin-left: 0px;font-size:28px;font-weight: bolder"
+                >{{ this.postInfo.postTitle }}</span
               >&nbsp;
               <span
-              >{{ this.postInfo.commentNum }}评论/
+                >{{ this.postInfo.commentNum }}评论/
                 {{ this.postInfo.likeNum }} 点赞/ 500浏览</span
               >
               <el-button style="float: right" type="text" @click="follow"
-              >关注发帖人</el-button
+                >关注发帖人</el-button
               >
               <el-divider></el-divider>
             </div>
@@ -33,19 +33,19 @@
               <!--          <img :src="this.userImage" height="70" width="70" style="float: left">-->
               <div @click="showDetailInfo(0)">
                 <el-avatar
-                    :src="this.userImage"
-                    :size="40"
-                    fit="cover"
-                    style="float: left"
+                  :src="this.userImage"
+                  :size="40"
+                  fit="cover"
+                  style="float: left"
                 ></el-avatar>
               </div>
               <div style="float: left">
                 <span style="font-size:20px;color: #2d8cf0"
-                >{{ this.postInfo.userId }} &nbsp;</span
+                  >{{ this.postInfo.userId }} &nbsp;</span
                 >
                 <span style="font-size: 14px">{{
-                    this.postInfo.lastEditTime
-                  }}</span>
+                  this.postInfo.lastEditTime
+                }}</span>
               </div>
               <br /><br /><br /><br />
               <p style="text-align: left" class="pre-text">
@@ -58,45 +58,45 @@
               </ul>
               <div style="float: bottom">
                 <el-button
-                    style="font-size: 16px"
-                    type="text"
-                    class="el-icon-s-opportunity"
-                    @click="likePostI"
-                >点赞</el-button
+                  style="font-size: 16px"
+                  type="text"
+                  class="el-icon-s-opportunity"
+                  @click="likePostI"
+                  >点赞</el-button
                 >({{ this.postInfo.likeNum }})
                 <el-button
-                    style="font-size: 16px"
-                    type="text"
-                    class="el-icon-tickets"
-                >评论</el-button
+                  style="font-size: 16px"
+                  type="text"
+                  class="el-icon-tickets"
+                  >评论</el-button
                 >({{ this.postInfo.commentNum }})
                 <el-button
-                    style="font-size: 16px"
-                    type="text"
-                    class="el-icon-star-off"
-                    @click="collectPostI"
-                >收藏</el-button
+                  style="font-size: 16px"
+                  type="text"
+                  class="el-icon-star-off"
+                  @click="collectPostI"
+                  >收藏</el-button
                 >
                 <el-button
-                    style="font-size: 16px"
-                    type="text"
-                    class="el-icon-warning-outline"
-                    @click="reportDialogVisible = true"
-                >举报</el-button
+                  style="font-size: 16px"
+                  type="text"
+                  class="el-icon-warning-outline"
+                  @click="reportDialogVisible = true"
+                  >举报</el-button
                 >({{ this.postInfo.reportNum }})
               </div> </el-card
             ><br />
 
             <el-dialog
-                title="举报帖子"
-                :visible="reportDialogVisible"
-                style="width: 1000px"
+              title="举报帖子"
+              :visible="reportDialogVisible"
+              style="width: 1000px"
             >
               <el-button
-                  type="text"
-                  @click="reportDialogVisible = false"
-                  style="float: right"
-              >关闭</el-button
+                type="text"
+                @click="reportDialogVisible = false"
+                style="float: right"
+                >关闭</el-button
               >
               <el-checkbox-group v-model="reportList">
                 <el-checkbox label="1">敏感词汇</el-checkbox>
@@ -106,8 +106,8 @@
                 <el-checkbox label="5">其他</el-checkbox><br />
               </el-checkbox-group>
               <el-input
-                  style="width: 300px"
-                  placeholder="请输入其他举报理由"
+                style="width: 300px"
+                placeholder="请输入其他举报理由"
               ></el-input>
               <el-button @click="reportPostI">提交举报</el-button>
             </el-dialog>
@@ -130,17 +130,17 @@
                   {{ dt.text }}<br />
                   {{ dt.lastEditTime }}<br />
                   <el-button
-                      style="font-size: 12px"
-                      type="text"
-                      class="el-icon-s-opportunity"
-                      @click="likePostI"
-                  >点赞</el-button
+                    style="font-size: 12px"
+                    type="text"
+                    class="el-icon-s-opportunity"
+                    @click="likePostI"
+                    >点赞</el-button
                   >
                   <el-button
-                      style="font-size: 12px"
-                      type="text"
-                      class="el-icon-tickets"
-                  >评论</el-button
+                    style="font-size: 12px"
+                    type="text"
+                    class="el-icon-tickets"
+                    >评论</el-button
                   >
                   <el-divider></el-divider>
                 </li>
@@ -151,9 +151,9 @@
               <span style="font-size: 15px">发表评论</span>
               <el-divider></el-divider>
               <v-comment
-                  v-bind:fatherId="postID"
-                  v-bind:userId="postInfo.userId"
-                  v-bind:fathertype="1"
+                v-bind:fatherId="postID"
+                v-bind:userId="postInfo.userId"
+                v-bind:fathertype="1"
               ></v-comment>
             </el-card>
           </el-card>
@@ -165,7 +165,7 @@
             <el-card style="text-align: left">
               <span>广告招商</span>
               <img
-                  src="https://img2.baidu.com/it/u=3349915226,4238223520&fm=26&fmt=auto"
+                src="https://img2.baidu.com/it/u=3349915226,4238223520&fm=26&fmt=auto"
               />
             </el-card> </el-row
           ><br />
@@ -176,8 +176,12 @@
               <ul>
                 <li v-for="dt in hotPosts.data" :key="dt">
                   <el-card @click="alert('jinru')">
-                  <span style="color: #1979e3">{{ dt.userName }}</span><br />
-                    <el-button @click="routerDetails(dt.postId)" type="text">{{ dt.postTitle }}</el-button><br />
+                    <span style="color: #1979e3">{{ dt.userName }}</span
+                    ><br />
+                    <el-button @click="routerDetails(dt.postId)" type="text">{{
+                      dt.postTitle
+                    }}</el-button
+                    ><br />
                   </el-card>
                   <el-divider></el-divider>
                 </li>
@@ -223,12 +227,12 @@ export default {
     };
   },
   methods: {
-    routerDetails(id){
-      let rdt=this.$router.resolve({
+    routerDetails(id) {
+      let rdt = this.$router.resolve({
         path: `/PostDetails`,
         query: { contentId: id }
       });
-      window.open(rdt.href, '_blank');
+      window.open(rdt.href, "_blank");
     },
     follow() {
       console.log(localStorage.getItem("username"), this.postInfo.userId);

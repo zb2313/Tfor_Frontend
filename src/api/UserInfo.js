@@ -86,3 +86,8 @@ export const getPostList = userId => {
   let url = baseurl + "/getPostList/" + userId;
   return axios.get(`${url}`);
 };
+export const ifPostsAreCollectedByUid = data => {
+  // let url = baseurl + "/ifPostsAreCollectedByUid"
+  let url = "http://121.5.137.205:8081/api/user/ifPostsAreCollectedByUid";
+  return axios.get(`${url}`, data);
+};
