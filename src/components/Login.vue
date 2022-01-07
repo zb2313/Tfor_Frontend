@@ -26,7 +26,6 @@
         </div>
         <el-form
           :model="param"
-          :rules="rules"
           ref="login"
           label-width="0px"
           class="ms-content"
@@ -174,16 +173,6 @@ export default {
         checkPassword: "",
         sendVerify: " "
       },
-      rules: {
-        username: [
-          {
-            required: true,
-            message: "请输入注册邮箱/手机号",
-            trigger: "blur"
-          }
-        ],
-        password: [{ required: true, message: "请输入密码", trigger: "blur" }]
-      }
     };
   },
   methods: {
@@ -201,7 +190,8 @@ export default {
         pwd: this.param.password
       };
       loginPwd(dt).then(response => {
-        if (response.status == "204") {
+        console.log(response.data)
+        if (response.data.code != "200") {
           alert("用户id或验证码输入有误");
           return;
         } else {
@@ -240,7 +230,7 @@ export default {
 
       if (this.loginType == "2") {
         loginEmial(dt).then(response => {
-          if (response.status == "204") {
+          if (response.data.code != "200") {
             alert("用户id或验证码输入有误");
             return;
           } else {
@@ -252,7 +242,7 @@ export default {
         });
       } else {
         loginTel(dt2).then(response => {
-          if (response.status == "204") {
+          if (response.data.code != "200") {
             alert("用户id或验证码输入有误");
             return;
           } else {

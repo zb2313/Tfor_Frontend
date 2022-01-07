@@ -9,6 +9,8 @@ import VueAxios from "vue-axios";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import moment from "moment"; //导入文件
+import Router from 'vue-router'
+Vue.use(Router)
 // import infiniteScroll from "vue-infinite-scroll"
 // import Qs from "qs";
 
@@ -95,3 +97,7 @@ axios.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}

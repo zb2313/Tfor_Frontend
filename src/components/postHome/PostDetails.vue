@@ -171,11 +171,14 @@
           ><br />
           <el-row>
             <el-card style="text-align: left">
-              <span style="color: red">校园热搜热帖</span>
+              <span style="font-weight:1000;color: red">校园热帖</span>
+              <el-divider></el-divider>
               <ul>
                 <li v-for="dt in hotPosts.data" :key="dt">
-                  uid:{{ dt.userId }}<br />
-                  {{ dt.postTitle }}<br />
+                  <el-card @click="alert('jinru')">
+                  <span style="color: #1979e3">{{ dt.userName }}</span><br />
+                    <el-button @click="routerDetails(dt.postId)" type="text">{{ dt.postTitle }}</el-button><br />
+                  </el-card>
                   <el-divider></el-divider>
                 </li>
               </ul>
@@ -220,6 +223,13 @@ export default {
     };
   },
   methods: {
+    routerDetails(id){
+      let rdt=this.$router.resolve({
+        path: `/PostDetails`,
+        query: { contentId: id }
+      });
+      window.open(rdt.href, '_blank');
+    },
     follow() {
       console.log(localStorage.getItem("username"), this.postInfo.userId);
       let data = {
