@@ -58,7 +58,7 @@
   </div>
 </template>
 <script>
-import {textReport,baiduReport} from "../../api/AI";
+import {textReport} from "../../api/AI";
 export default {
   data() {
     return {
@@ -91,18 +91,12 @@ export default {
   methods: {
     aiTest(){
       let dt={
-        'name':this.test,
-        'age':this.test
+        'text':this.test
       }
       console.log(dt)
       textReport(dt).then(
           res=>{
             console.log(res.data)
-          }
-      )
-      baiduReport().then(
-          res=>{
-            console.log('baidu',res.data)
           }
       )
 
