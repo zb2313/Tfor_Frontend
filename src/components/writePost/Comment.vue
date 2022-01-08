@@ -67,7 +67,7 @@ export default {
       this.minutes = date.getHours();
       this.seconds = date.getSeconds();
     },
-    PublishButton() {
+    async PublishButton() {
       this.editorContent = this.editor.txt.text();
       let date = new Date();
       let timestamp3 = date.getTime();
@@ -92,7 +92,7 @@ export default {
         userId: uid
       };
       console.log(dt);
-      postComment(dt).then(res => {
+      await postComment(dt).then(res => {
         console.log(res.status);
         this.$message.success("发布成功");
       });

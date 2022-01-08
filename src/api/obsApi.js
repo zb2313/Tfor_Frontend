@@ -12,6 +12,6 @@ export const getPostImgs = id => {
   return axios.get(`${url}`);
 };
 export const getUserImg = userId => {
-  let url = baseurl +"getProfileURL?uid=" + userId;
+  let url = baseurl + "getProfileURL?uid=" + userId;
   return axios.get(`${url}`);
 };

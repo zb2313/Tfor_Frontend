@@ -75,12 +75,12 @@ router.beforeEach((to, from, next) => {
   if (
     to.path === "/login" ||
     to.path === "/" ||
-    to.path == "admin" ||
+    to.path == "/admin" ||
     to.path == "/Register"
   ) {
     return next();
   }
-  if (!userId) {
+  else if (!userId) {
     Vue.prototype.$message("该页面需要登录后访问，请登录：");
     return next("/login");
   }

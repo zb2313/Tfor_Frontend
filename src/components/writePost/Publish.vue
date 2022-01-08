@@ -1,6 +1,10 @@
 <template>
   <div>
-    <el-tabs v-model="activeName" @tab-click="handleClick" style="width:1000px;margin-left:150px">
+    <el-tabs
+      v-model="activeName"
+      @tab-click="handleClick"
+      style="width:1000px;margin-left:150px"
+    >
       <el-tab-pane label="发帖子" name="first">
         <el-card class="box-card" style="margin: 0 auto;height: 730px">
           <el-input
@@ -15,34 +19,39 @@
             <div ref="editorElem" style="text-align:left;"></div>
           </div>
           <!-- 分区信息使用dialog -->
-          <el-button type="text" @click="dialogFormVisible = true" style="display:left">{{label}}</el-button>
-          <el-dialog title="选择分区" :visible.sync="dialogFormVisible">
-          <el-select
-            v-model="value"
-            filterable
-            clearable
-            visible-change
-            placeholder="请选择分区"
-            style="height:300px;float:left"
+          <el-button
+            type="text"
+            @click="dialogFormVisible = true"
+            style="display:left"
+            >{{ label }}</el-button
           >
-            <el-option-group
-              v-for="group in options"
-              :key="group.label"
-              :label="group.label"
+          <el-dialog title="选择分区" :visible.sync="dialogFormVisible">
+            <el-select
+              v-model="value"
+              filterable
+              clearable
+              visible-change
+              placeholder="请选择分区"
+              style="height:300px;float:left"
             >
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+              <el-option-group
+                v-for="group in options"
+                :key="group.label"
+                :label="group.label"
               >
-              </el-option>
-            </el-option-group>
-          </el-select>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="zoneConfirmed">确 定</el-button>
-          </div>
+                <el-option
+                  v-for="item in group.options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-option-group>
+            </el-select>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="dialogFormVisible = false">取 消</el-button>
+              <el-button type="primary" @click="zoneConfirmed">确 定</el-button>
+            </div>
           </el-dialog>
 
           <el-form
@@ -73,7 +82,7 @@
               @click="confirmed"
             />
           </el-form>
-          <br><br>
+          <br /><br />
           <el-card
             v-for="(item, index) in filelist"
             :key="index"
@@ -147,7 +156,7 @@ export default {
       policy: "",
       upload_video_url: "",
       value: "", //是否选择了专区
-      label:'请选择分区',//分区标签
+      label: "请选择分区", //分区标签
       activeName: "first",
       editor: null,
       editorContent: "",
@@ -198,12 +207,10 @@ export default {
   },
   components: {},
   methods: {
-    zoneConfirmed(){
+    zoneConfirmed() {
       this.dialogFormVisible = false;
-      if(this.value!="")
-      this.label="更换分区"
-      else
-      this.label="请选择一个分区"
+      if (this.value != "") this.label = "更换分区";
+      else this.label = "请选择一个分区";
     },
     confirmed() {
       this.count++;
@@ -215,7 +222,7 @@ export default {
       await this.$axios
         .get(
           "http://121.5.137.205:8081/api/obs/getPostImageUrls?contentId=" +
-          this.contentId
+            this.contentId
         )
         .then(res => {
           for (let i in res.data.data) {
@@ -286,11 +293,11 @@ export default {
   },
   mounted() {
     this.gettime();
-    console.log("id:",this.contentId)
+    console.log("id:", this.contentId);
     this.editor = new E(this.$refs.editorElem);
     this.editor.config.showMenuTooltips = true;
-    this.editor.config.zIndex = 1
-    this.editor.config.pasteFilterStyle = false;//不过滤粘贴文本样式
+    this.editor.config.zIndex = 1;
+    this.editor.config.pasteFilterStyle = false; //不过滤粘贴文本样式
     this.editor.config.showFullScreen = false; //禁用全屏
     this.editor.config.menuTooltipPosition = "down";
     this.editor.config.lineHeights = ["1", "1.15", "1.6", "2", "2.5", "3"];
@@ -338,7 +345,7 @@ export default {
 .picard {
   width: 110px;
   height: 110px;
-  float:left
+  float: left;
 }
 .input_s {
   margin: 0 auto;

@@ -54,15 +54,16 @@
         </el-option>
       </el-select>
     </el-card>
-    <el-input v-model="test" style="width: 400px"></el-input><el-button @click="aiTest">审核</el-button>
+    <el-input v-model="test" style="width: 400px"></el-input
+    ><el-button @click="aiTest">审核</el-button>
   </div>
 </template>
 <script>
-import {textReport} from "../../api/AI";
+import { textReport } from "../../api/AI";
 export default {
   data() {
     return {
-      test:"",
+      test: "",
       contentlist: [],
       reviewPostlist: [],
 
@@ -99,8 +100,6 @@ export default {
             console.log(res.data)
           }
       )
-
-
     },
     check(contentId) {
       this.$axios.put();

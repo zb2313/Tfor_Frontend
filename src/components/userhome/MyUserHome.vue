@@ -406,7 +406,7 @@ import {
   getFollowingZoneList,
   getPostList
 } from "@/api/UserInfo";
-import { getUploadAuth, getUserImg} from "@/api/obsApi";
+import { getUploadAuth, getUserImg } from "@/api/obsApi";
 // eslint-disable-next-line no-unused-vars
 import {
   cancelFollowUser,
@@ -517,7 +517,7 @@ export default {
       });
       // 获取用户基本信息
       await getInfoNeedAuth(this.userForm.userId).then(res => {
-        console.log(res)
+        console.log(res);
         let userdata = res.data.data;
         this.userForm.userName = userdata.userName;
         if (userdata.userGender === 1) {
@@ -666,10 +666,6 @@ export default {
       this.dialogTelVisible = false;
     },
     async uploadImg() {
-      await getRelationInfo(this.userForm.userId).then(res => {
-        console.log("###")
-        console.log(res)
-      })
       await getUploadAuth().then(res => {
         this.uploadForm.filePath = "profile/" + this.userForm.userId;
         this.uploadForm.accessKey = res.data.data.accessKey;

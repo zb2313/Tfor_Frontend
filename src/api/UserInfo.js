@@ -2,7 +2,7 @@ import axios from "axios";
 const baseurl = "http://121.5.137.205:8081/api/user";
 //const baseurl = "http://localhost:8081/api/user"
 export const checkVerifyCode = data => {
-  let url = baseurl + "/checkVerifyCode/"+data;
+  let url = baseurl + "/checkVerifyCode/" + data;
   console.log(url);
   return axios.get(`${url}`);
 };
