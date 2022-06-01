@@ -1,7 +1,6 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
-import store from "./store";
 import Buefy from "buefy";
 import "buefy/dist/buefy.css";
 import axios from "axios";
@@ -25,7 +24,6 @@ Vue.prototype.$axios = axios;
 
 new Vue({
   router,
-  store,
   axios,
   // render: function (h) {
   //   return h(App);
@@ -79,8 +77,7 @@ router.beforeEach((to, from, next) => {
     to.path == "/Register"
   ) {
     return next();
-  }
-  else if (!userId) {
+  } else if (!userId) {
     Vue.prototype.$message("该页面需要登录后访问，请登录：");
     return next("/login");
   }

@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseurl = "http://121.5.137.205:8082/api/";
+const baseurl = "http://139.196.202.57:8081/api/";
 export const getAllZone = () => {
   var url = baseurl + "view/getAllZone";
   console.log(url);

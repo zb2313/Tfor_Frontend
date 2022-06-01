@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseurl = "http://121.5.137.205:8085/api/action/";
+const baseurl = "http://139.196.202.57:8081/api/action/";
 
 export const likePost = contentId => {
   let url = baseurl + "likePost?contentId=" + contentId;
@@ -9,7 +9,7 @@ export const likePost = contentId => {
 };
 
 export const reportPost = contentId => {
-  let url = "http://121.5.137.205:8082/api/view/reportPost/" + contentId;
+  let url = "http://139.196.202.57:8081/api/view/reportPost/" + contentId;
   console.log(url);
   return axios.get(`${url}`);
 };

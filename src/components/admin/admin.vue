@@ -90,16 +90,14 @@ export default {
     };
   },
   methods: {
-    aiTest(){
-      let dt={
-        'text':this.test
-      }
-      console.log(dt)
-      textReport(dt).then(
-          res=>{
-            console.log(res.data)
-          }
-      )
+    aiTest() {
+      let dt = {
+        text: this.test
+      };
+      console.log(dt);
+      textReport(dt).then(res => {
+        console.log(res.data);
+      });
     },
     check(contentId) {
       this.$axios.put();

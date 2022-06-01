@@ -87,7 +87,7 @@ import {
   reportPost,
   followZone
 } from "@/api/actionapi";
-import { ifPostsAreCollectedByUid } from "@/api/UserInfo";
+// import { ifPostsAreCollectedByUid } from "@/api/UserInfo";
 
 export default {
   props: {
@@ -112,18 +112,15 @@ export default {
     }
   },
   watch: {
-    async zoneInfo1() {
-      await this.changePostData();
-      await this.modifyCollectState();
+     zoneInfo1() {
+       this.changePostData();
     },
-    async zoneInfo2() {
-      await this.changePostData();
-      await this.followZoneNoti();
-      await this.modifyCollectState();
+     zoneInfo2() {
+       this.changePostData();
+       this.followZoneNoti();
     },
-    async searchInfo() {
-      await this.searchInfoChanged();
-      await this.modifyCollectState();
+     searchInfo() {
+      this.searchInfoChanged();
     }
   },
   data() {
@@ -306,20 +303,6 @@ export default {
             duration: 1000
           });
         }
-      });
-    },
-    async modifyCollectState() {
-      var contentIdList = "";
-      for (var i in this.postInfo) {
-        contentIdList = contentIdList.concat(this.postInfo[i].postId, ",");
-      }
-      let data = {
-        uid: this.userId,
-        postid: contentIdList
-      };
-      console.log(data);
-      await ifPostsAreCollectedByUid(data).then(res => {
-        console.log(res);
       });
     },
     showPost(postId) {
