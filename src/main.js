@@ -7,11 +7,9 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
-import moment from "moment"; //导入文件
+import moment from "moment";
 import Router from "vue-router";
 Vue.use(Router);
-// import infiniteScroll from "vue-infinite-scroll"
-// import Qs from "qs";
 
 // Vue.use(infiniteScroll)
 Vue.prototype.$moment = moment; //赋值使用
@@ -25,36 +23,9 @@ Vue.prototype.$axios = axios;
 new Vue({
   router,
   axios,
-  // render: function (h) {
-  //   return h(App);
-  // }
   render: h => h(App)
 }).$mount("#app");
 
-// axios.all([axios.post("http://localhost:9090/getuser", Qs.stringify({
-//   username: "sasd",
-//   password: 123
-// })), axios.post("http://localhost:9090/getuser",
-//   Qs.stringify({
-//     username: "saaa",
-//     password: 1234
-//   }))]).then(axios.spread((res1, res2) => {
-//     console.log(res1)
-//     console.log(res2)
-//   }))
-
-// axios({
-//   url: "http://localhost:9090/getadmin",
-//   params: {
-//     username: "aaaa"
-//   }
-
-// })
-
-// axios.post("http://localhost:9090/getadmin", Qs.stringify({
-//   username: '55551',
-//   password: 1245
-// }))
 router.beforeEach((to, from, next) => {
   // console.log(to.path)
   // if (

@@ -22,17 +22,17 @@
           <el-button
             type="text"
             @click="dialogFormVisible = true"
-            style="display:left"
+            style="float: right"
             >{{ label }}</el-button
           >
-          <el-dialog title="选择分区" :visible.sync="dialogFormVisible">
+          <el-dialog title="选择分区" :visible.sync="dialogFormVisible" width="400px">
             <el-select
               v-model="value"
               filterable
               clearable
               visible-change
               placeholder="请选择分区"
-              style="height:300px;float:left"
+              style="height:50px;"
             >
               <el-option-group
                 v-for="group in options"
@@ -250,7 +250,7 @@ export default {
           if (this.value != "") {
             //都有数据，正式发送
             await this.$axios.post(
-              "http://121.5.137.205:8084/api/post/postContent",
+              "http://121.5.137.205:8081/api/post/postContent",
               {
                 contentId: this.contentId,
                 likeNum: 0,
@@ -261,7 +261,7 @@ export default {
               }
             );
             await this.$axios
-              .post("http://121.5.137.205:8084/api/post/EnterZone", {
+              .post("http://121.5.137.205:8081/api/post/EnterZone", {
                 contentId: this.contentId,
                 zoneId: this.value
               })
